@@ -965,7 +965,11 @@
 <script lang="ts">
 import { getAssetPath } from "@/core/helpers/assets";
 import { defineComponent, onMounted, ref } from "vue";
-import { config, layout, themeMode } from "@/layouts/default-layout/config/helper";
+import {
+  config,
+  layout,
+  themeMode,
+} from "@/layouts/default-layout/config/helper";
 import CodeHighlighter from "@/components/highlighters/CodeHighlighter.vue";
 import { themeName } from "@/core/helpers/system";
 import { useThemeStore } from "@/stores/theme";

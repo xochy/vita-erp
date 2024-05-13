@@ -37,12 +37,14 @@
       <!--begin::Input group-->
       <div class="fv-row mb-10">
         <!--begin::Label-->
-        <label class="form-label fs-6 fw-bold text-gray-900">Email</label>
+        <label for="email" class="form-label fs-6 fw-bold text-gray-900">
+          Email
+        </label>
         <!--end::Label-->
 
         <!--begin::Input-->
         <Field
-          tabindex="1"
+          tabindex="-1"
           class="form-control form-control-lg form-control-solid"
           type="text"
           name="email"
@@ -62,7 +64,12 @@
         <!--begin::Wrapper-->
         <div class="d-flex flex-stack mb-2">
           <!--begin::Label-->
-          <label class="form-label fw-bold text-gray-900 fs-6 mb-0">Password</label>
+          <label
+            for="passwor"
+            class="form-label fw-bold text-gray-900 fs-6 mb-0"
+          >
+            Password
+          </label>
           <!--end::Label-->
 
           <!--begin::Link-->
@@ -75,7 +82,7 @@
 
         <!--begin::Input-->
         <Field
-          tabindex="2"
+          tabindex="-2"
           class="form-control form-control-lg form-control-solid"
           type="password"
           name="password"
@@ -94,7 +101,7 @@
       <div class="text-center">
         <!--begin::Submit button-->
         <button
-          tabindex="3"
+          tabindex="-3"
           type="submit"
           ref="submitButton"
           id="kt_sign_in_submit"

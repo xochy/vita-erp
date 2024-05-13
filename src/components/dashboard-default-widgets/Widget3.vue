@@ -13,7 +13,9 @@
           <!--end::Currency-->
 
           <!--begin::Amount-->
-          <span class="fs-2hx fw-bold text-gray-900 me-2 lh-1 ls-n2">69,700</span>
+          <span class="fs-2hx fw-bold text-gray-900 me-2 lh-1 ls-n2"
+            >69,700</span
+          >
           <!--end::Amount-->
 
           <!--begin::Badge-->

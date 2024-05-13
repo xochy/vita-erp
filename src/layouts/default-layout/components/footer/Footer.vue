@@ -56,7 +56,10 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { footerDisplay, footerWidthFluid } from "@/layouts/default-layout/config/helper";
+import {
+  footerDisplay,
+  footerWidthFluid,
+} from "@/layouts/default-layout/config/helper";
 
 export default defineComponent({
   name: "theme-footer",

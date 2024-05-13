@@ -1533,7 +1533,9 @@
               />
 
               <div class="d-flex flex-column">
-                <a href="#" class="fs-5 text-gray-900 text-hover-primary fw-bold"
+                <a
+                  href="#"
+                  class="fs-5 text-gray-900 text-hover-primary fw-bold"
                   >Google</a
                 >
                 <div class="fs-6 fw-semibold text-gray-500">
@@ -1567,7 +1569,9 @@
               />
 
               <div class="d-flex flex-column">
-                <a href="#" class="fs-5 text-gray-900 text-hover-primary fw-bold"
+                <a
+                  href="#"
+                  class="fs-5 text-gray-900 text-hover-primary fw-bold"
                   >Github</a
                 >
                 <div class="fs-6 fw-semibold text-gray-500">
@@ -1601,7 +1605,9 @@
               />
 
               <div class="d-flex flex-column">
-                <a href="#" class="fs-5 text-gray-900 text-hover-primary fw-bold"
+                <a
+                  href="#"
+                  class="fs-5 text-gray-900 text-hover-primary fw-bold"
                   >Slack</a
                 >
                 <div class="fs-6 fw-semibold text-gray-500">

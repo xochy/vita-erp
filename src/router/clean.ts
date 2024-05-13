@@ -6,6 +6,8 @@ import {
 import { useAuthStore } from "@/stores/auth";
 import { useConfigStore } from "@/stores/config";
 
+import CatalogRoutes from "@/modules/catalogs/categories/router";
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -86,6 +88,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/:pathMatch(.*)*",
     redirect: "/404",
   },
+  ...CatalogRoutes,
 ];
 
 const router = createRouter({
