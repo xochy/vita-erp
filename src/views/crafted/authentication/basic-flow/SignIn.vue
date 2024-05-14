@@ -7,7 +7,7 @@
       id="kt_login_signin_form"
       @submit="onSubmitLogin"
       :validation-schema="login"
-      :initial-values="{ email: 'admin@demo.com', password: 'demo' }"
+      :initial-values="{ email: 'superadmin@mail.com', password: 'password' }"
     >
       <!--begin::Heading-->
       <div class="text-center mb-10">
@@ -198,7 +198,7 @@ export default defineComponent({
 
     //Form submit function
     const onSubmitLogin = async (values: any) => {
-      values = values as User;
+      values = values as User;      
       // Clear existing errors
       store.logout();
 
@@ -211,9 +211,9 @@ export default defineComponent({
 
       // Send login request
       await store.login(values);
-      const error = Object.values(store.errors);
+      const errors = Object.values(store.errors);
 
-      if (error.length === 0) {
+      if (errors.length === 0) {
         Swal.fire({
           text: "You have successfully logged in!",
           icon: "success",
@@ -229,7 +229,7 @@ export default defineComponent({
         });
       } else {
         Swal.fire({
-          text: error[0] as string,
+          text: (errors as any[])[0].detail,
           icon: "error",
           buttonsStyling: false,
           confirmButtonText: "Try again!",
