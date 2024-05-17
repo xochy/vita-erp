@@ -7,6 +7,7 @@ import { useAuthStore } from "@/stores/auth";
 import { useConfigStore } from "@/stores/config";
 
 import CatalogRoutes from "@/modules/catalogs/categories/router";
+import PhysicalConditionsRoutes from "@/modules/features/physicalConditions/router";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -89,6 +90,7 @@ const routes: Array<RouteRecordRaw> = [
     redirect: "/404",
   },
   ...CatalogRoutes,
+  ...PhysicalConditionsRoutes,
 ];
 
 const router = createRouter({
