@@ -702,7 +702,11 @@
 <script lang="ts">
 import { getAssetPath } from "@/core/helpers/assets";
 import { defineComponent, ref } from "vue";
-import { config, layout, themeMode } from "@/layouts/default-layout/config/helper";
+import {
+  config,
+  layout,
+  themeMode,
+} from "@/layouts/default-layout/config/helper";
 import { LS_CONFIG_NAME_KEY, useConfigStore } from "@/stores/config";
 import { useThemeStore } from "@/stores/theme";
 

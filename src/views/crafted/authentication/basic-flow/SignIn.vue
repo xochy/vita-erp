@@ -7,7 +7,7 @@
       id="kt_login_signin_form"
       @submit="onSubmitLogin"
       :validation-schema="login"
-      :initial-values="{ email: 'admin@demo.com', password: 'demo' }"
+      :initial-values="{ email: 'superadmin@mail.com', password: 'password' }"
     >
       <!--begin::Heading-->
       <div class="text-center mb-10">
@@ -37,12 +37,14 @@
       <!--begin::Input group-->
       <div class="fv-row mb-10">
         <!--begin::Label-->
-        <label class="form-label fs-6 fw-bold text-gray-900">Email</label>
+        <label for="email" class="form-label fs-6 fw-bold text-gray-900">
+          Email
+        </label>
         <!--end::Label-->
 
         <!--begin::Input-->
         <Field
-          tabindex="1"
+          tabindex="-1"
           class="form-control form-control-lg form-control-solid"
           type="text"
           name="email"
@@ -62,7 +64,12 @@
         <!--begin::Wrapper-->
         <div class="d-flex flex-stack mb-2">
           <!--begin::Label-->
-          <label class="form-label fw-bold text-gray-900 fs-6 mb-0">Password</label>
+          <label
+            for="passwor"
+            class="form-label fw-bold text-gray-900 fs-6 mb-0"
+          >
+            Password
+          </label>
           <!--end::Label-->
 
           <!--begin::Link-->
@@ -75,7 +82,7 @@
 
         <!--begin::Input-->
         <Field
-          tabindex="2"
+          tabindex="-2"
           class="form-control form-control-lg form-control-solid"
           type="password"
           name="password"
@@ -94,7 +101,7 @@
       <div class="text-center">
         <!--begin::Submit button-->
         <button
-          tabindex="3"
+          tabindex="-3"
           type="submit"
           ref="submitButton"
           id="kt_sign_in_submit"
@@ -191,7 +198,7 @@ export default defineComponent({
 
     //Form submit function
     const onSubmitLogin = async (values: any) => {
-      values = values as User;
+      values = values as User;      
       // Clear existing errors
       store.logout();
 
@@ -204,9 +211,9 @@ export default defineComponent({
 
       // Send login request
       await store.login(values);
-      const error = Object.values(store.errors);
+      const errors = Object.values(store.errors);
 
-      if (error.length === 0) {
+      if (errors.length === 0) {
         Swal.fire({
           text: "You have successfully logged in!",
           icon: "success",
@@ -222,7 +229,7 @@ export default defineComponent({
         });
       } else {
         Swal.fire({
-          text: error[0] as string,
+          text: (errors as any[])[0].detail,
           icon: "error",
           buttonsStyling: false,
           confirmButtonText: "Try again!",

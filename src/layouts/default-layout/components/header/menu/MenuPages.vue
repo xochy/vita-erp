@@ -304,7 +304,7 @@ import { getAssetPath } from "@/core/helpers/assets";
 import { defineComponent } from "vue";
 import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
-import MainMenuConfig from "@/layouts/default-layout/config/MainMenuConfig";
+import MainMenuConfig from "@/layouts/default-layout/config/CleanMainMenuConfig";
 import { headerMenuIcons } from "@/layouts/default-layout/config/helper";
 
 export default defineComponent({

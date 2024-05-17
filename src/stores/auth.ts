@@ -5,10 +5,21 @@ import JwtService from "@/core/services/JwtService";
 
 export interface User {
   name: string;
-  surname: string;
   email: string;
   password: string;
-  api_token: string;
+  token: string;
+}
+
+export interface AuthPayload {
+  data: {
+    type: string;
+    attributes: {
+      email?: string;
+      device_name?: string;
+      password?: string;
+      token?: string | null;
+    };
+  };
 }
 
 export const useAuthStore = defineStore("auth", () => {
@@ -20,7 +31,7 @@ export const useAuthStore = defineStore("auth", () => {
     isAuthenticated.value = true;
     user.value = authUser;
     errors.value = {};
-    JwtService.saveToken(user.value.api_token);
+    JwtService.saveToken(user.value.token);
   }
 
   function setError(error: any) {
@@ -35,12 +46,23 @@ export const useAuthStore = defineStore("auth", () => {
   }
 
   function login(credentials: User) {
-    return ApiService.post("login", credentials)
-      .then(({ data }) => {
+    const payload: AuthPayload = {
+      data: {
+        type: "users",
+        attributes: {
+          email: credentials.email,
+          device_name: "web",
+          password: credentials.password,
+        },
+      },
+    };
+
+    return ApiService.post("users/auth/signin", payload)
+      .then(({ data }) => {        
         setAuth(data);
       })
       .catch(({ response }) => {
-        setError(response.data.errors);
+        setError(response.data.errors);        
       });
   }
 
@@ -70,8 +92,19 @@ export const useAuthStore = defineStore("auth", () => {
 
   function verifyAuth() {
     if (JwtService.getToken()) {
+
+      const payload: AuthPayload = {
+        data: {
+          type: "users",
+          attributes: {
+            token: JwtService.getToken(),
+            device_name: "web",
+          },
+        },
+      };
+
       ApiService.setHeader();
-      ApiService.post("verify_token", { api_token: JwtService.getToken() })
+      ApiService.post("users/auth/refresh", payload)
         .then(({ data }) => {
           setAuth(data);
         })

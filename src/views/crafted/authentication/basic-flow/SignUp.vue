@@ -50,7 +50,9 @@
       <div class="row fv-row mb-7">
         <!--begin::Col-->
         <div class="col-xl-6">
-          <label class="form-label fw-bold text-gray-900 fs-6">First Name</label>
+          <label class="form-label fw-bold text-gray-900 fs-6"
+            >First Name</label
+          >
           <Field
             class="form-control form-control-lg form-control-solid"
             type="text"
@@ -109,7 +111,9 @@
         <!--begin::Wrapper-->
         <div class="mb-1">
           <!--begin::Label-->
-          <label class="form-label fw-bold text-gray-900 fs-6"> Password </label>
+          <label class="form-label fw-bold text-gray-900 fs-6">
+            Password
+          </label>
           <!--end::Label-->
 
           <!--begin::Input wrapper-->
