@@ -8,6 +8,12 @@ export default [
         keenthemesIcon: "pulse",
         bootstrapIcon: "bi-heart-pulse",
       },
+      {
+        heading: "Physical Conditions Native",
+        route: "/physical-conditions-native",
+        keenthemesIcon: "pulse",
+        bootstrapIcon: "bi-heart-pulse",
+      },
     ],
   },
 ];
