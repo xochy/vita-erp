@@ -43,7 +43,7 @@
 <script setup lang="ts">
 import CustomAlert from "@/components/shared/alerts/CustomAlert.vue";
 import LoadingAlert from "@/components/shared/alerts/LoadingAlert.vue";
-import store from "../store/physicalConditions.store";
+import store from "../store/PhysicalConditions.store";
 import { getPhysicalConditions } from "../helpers/GetPhysicalConditions";
 import { useQuery } from "@tanstack/vue-query";
 
