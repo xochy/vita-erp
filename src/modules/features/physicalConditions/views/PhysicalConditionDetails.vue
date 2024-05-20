@@ -113,10 +113,10 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from "vue-router";
+import store from "../store/PhysicalCondition.store";
 import { getPhysicalCondition } from "../helpers/GetPhysicalConditions";
 import { useQuery } from "@tanstack/vue-query";
-import store from "../store/PhysicalCondition.store";
+import { useRoute } from "vue-router";
 
 const route = useRoute();
 const { id } = route.params;
