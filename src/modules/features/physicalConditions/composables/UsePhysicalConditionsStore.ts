@@ -1,6 +1,6 @@
 import ApiService from "@/core/services/ApiService";
 import type { PhysicalConditionsListResponse } from "../interfaces";
-import { computed, watch } from "vue";
+import { watch } from "vue";
 import { useQuery } from "@tanstack/vue-query";
 import { usePhysicalConditionsStore } from "../store/PhysicalConditions";
 import { storeToRefs } from "pinia";
@@ -32,21 +32,30 @@ const usePhysicalConditions = () => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["physical-conditions?page[number]=", currentPage],
     queryFn: () => getPhysicalConditions(perPage.value, currentPage.value),
-    // retry: 3,
-    // retryDelay: 1000,
+    retry: 3,
+    retryDelay: 1000,
   });
 
   watch(data, (physicalConditionsListResponse) => {
     if (physicalConditionsListResponse) {
-      store.setCurrentPage(
-        physicalConditionsListResponse.meta.page.currentPage
-      );
-      store.setFrom(physicalConditionsListResponse.meta.page.from);
-      store.setLastPage(physicalConditionsListResponse.meta.page.lastPage);
-      store.setPerPage(physicalConditionsListResponse.meta.page.perPage);
-      store.setTo(physicalConditionsListResponse.meta.page.to);
-      store.setTotal(physicalConditionsListResponse.meta.page.total);
-      store.setPhysicalConditions(physicalConditionsListResponse.data);
+      const { meta, data: physicalConditions } = physicalConditionsListResponse;
+      const { page } = meta;
+      const {
+        currentPage,
+        from,
+        lastPage,
+        perPage,
+        to,
+        total
+      } = page;
+
+      store.setCurrentPage(currentPage);
+      store.setFrom(from);
+      store.setLastPage(lastPage);
+      store.setPerPage(perPage);
+      store.setTo(to);
+      store.setTotal(total);
+      store.setPhysicalConditions(physicalConditions);
     }
   });
 
@@ -64,17 +73,8 @@ const usePhysicalConditions = () => {
     total,
     physicalConditions,
 
-    // Getters
-
     // Methods
     getPage: store.setCurrentPage,
-
-    // Getters
-    totalPageNumbers: computed(() =>
-      [...new Array(Math.ceil(total.value / perPage.value))].map(
-        (_, index) => index + 1
-      )
-    ),
   };
 };
 

@@ -19,26 +19,6 @@ export default [
       },
     ],
   },
-  {
-    path: "/",
-    redirect: "/physical-conditions-native",
-    component: () => import("@/layouts/default-layout/DefaultLayout.vue"),
-    meta: {
-      middleware: "auth",
-    },
-    children: [
-      {
-        path: "/physical-conditions-native",
-        name: "physical-conditions-native",
-        component: () =>
-          import("@/modules/features/physicalConditions/views/PhysicalConditionsListNative.vue"),
-        meta: {
-          pageTitle: "Physical Conditions Native",
-          breadcrumbs: ["Catalog", "Physical Conditions Native"],
-        },
-      },
-    ],
-  },
   // Physical conditions details
   {
     path: "/",

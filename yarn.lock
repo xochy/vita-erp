@@ -4359,6 +4359,11 @@ vue-router@^4.1.5:
   dependencies:
     "@vue/devtools-api" "^6.5.1"
 
+vue-skeletor@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.npmjs.org/vue-skeletor/-/vue-skeletor-1.0.6.tgz"
+  integrity sha512-ER4vHlFSXCW3ixK2DlczUE6CZliHsn4d2TvZ9/26C6Oq8zoyEY23BsqweMPtF8QULSz1+G5m2New1BwKNVOZhQ==
+
 vue-template-compiler@^2.7.14:
   version "2.7.16"
   resolved "https://registry.npmjs.org/vue-template-compiler/-/vue-template-compiler-2.7.16.tgz"
