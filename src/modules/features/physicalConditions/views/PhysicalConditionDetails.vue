@@ -122,7 +122,7 @@ const route = useRoute();
 const { id } = route.params;
 
 useQuery({
-  queryKey: ["physicalCondition"],
+  queryKey: ["physicalCondition", id.toString()],
   queryFn: () => getPhysicalCondition(id.toString()),
   select: (data) => {
     store.loadedPhysicalCondition(data);
