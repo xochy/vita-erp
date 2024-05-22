@@ -25,9 +25,15 @@
             v-for="physicalCondition in store.physicalConditions.list"
             :key="physicalCondition.id"
           >
-            <td>
+            <td @mouseenter="prefetchPhysicalCondition(physicalCondition.id)">
               <router-link
-                :to="`/physical-conditions/${physicalCondition.id}/${physicalCondition.attributes.slug}`"
+                :to="{
+                  name: 'physical-condition-details',
+                  params: {
+                    id: physicalCondition.id,
+                    slug: physicalCondition.attributes.slug,
+                  },
+                }"
               >
                 {{ physicalCondition.attributes.name }}
               </router-link>
@@ -44,8 +50,13 @@
 import CustomAlert from "@/components/shared/alerts/CustomAlert.vue";
 import LoadingAlert from "@/components/shared/alerts/LoadingAlert.vue";
 import store from "../store/PhysicalConditions.store";
-import { getPhysicalConditions } from "../helpers/GetPhysicalConditions";
-import { useQuery } from "@tanstack/vue-query";
+import {
+  getPhysicalCondition,
+  getPhysicalConditions,
+} from "../helpers/GetPhysicalConditions";
+import { useQuery, useQueryClient } from "@tanstack/vue-query";
+
+const queryClient = useQueryClient();
 
 useQuery({
   queryKey: ["physicalConditions"],
@@ -54,4 +65,11 @@ useQuery({
     store.loadedPhysicalConditions(data);
   },
 });
+
+const prefetchPhysicalCondition = async (id: string) => {
+  await queryClient.prefetchQuery({
+    queryKey: ["physicalCondition", id],
+    queryFn: () => getPhysicalCondition(id),
+  });
+};
 </script>

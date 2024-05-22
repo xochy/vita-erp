@@ -113,16 +113,16 @@
 </template>
 
 <script setup lang="ts">
-import store from "../store/PhysicalCondition.store";
+import { useRoute } from "vue-router";
 import { getPhysicalCondition } from "../helpers/GetPhysicalConditions";
 import { useQuery } from "@tanstack/vue-query";
-import { useRoute } from "vue-router";
+import store from "../store/PhysicalCondition.store";
 
 const route = useRoute();
 const { id } = route.params;
 
 useQuery({
-  queryKey: ["physicalCondition"],
+  queryKey: ["physicalCondition", id.toString()],
   queryFn: () => getPhysicalCondition(id.toString()),
   select: (data) => {
     store.loadedPhysicalCondition(data);
