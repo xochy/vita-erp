@@ -29,8 +29,6 @@
 <script setup lang="ts">
 import { computed, toRef } from 'vue';
 
-
-
 interface Props {
   currentPage: number;
   from: number;

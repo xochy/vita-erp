@@ -1,0 +1,10 @@
+{
+  "signUp": "Sign Up",
+  "home": "Home",
+  "username": "Username",
+  "email": "Email",
+  "password": "Password",
+  "passwordConfirmation": "Password confirmation",
+  "passwordMismatch": "Passwords do not match",
+  "genericError": "An error occurred. Please try again"
+}

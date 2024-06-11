@@ -8,10 +8,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="physicalCondition in physicalConditions"
-          :key="physicalCondition.id"
-        >
+        <tr v-for="physicalCondition in physicalConditions" :key="physicalCondition.id">
           <td>{{ physicalCondition.attributes.name }}</td>
           <td>{{ physicalCondition.attributes.description }}</td>
         </tr>
@@ -25,7 +22,6 @@ import type { PhysicalCondition } from "../interfaces";
 
 interface Props {
   physicalConditions: PhysicalCondition[];
-  isLoading: boolean;
 }
 
 defineProps<Props>();

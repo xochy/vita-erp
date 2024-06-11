@@ -50,7 +50,7 @@
       <div class="row fv-row mb-7">
         <!--begin::Col-->
         <div class="col-xl-6">
-          <label class="form-label fw-bold text-gray-900 fs-6"
+          <label for="first_name" class="form-label fw-bold text-gray-900 fs-6"
             >First Name</label
           >
           <Field
@@ -70,7 +70,9 @@
 
         <!--begin::Col-->
         <div class="col-xl-6">
-          <label class="form-label fw-bold text-gray-900 fs-6">Last Name</label>
+          <label for="last_name" class="form-label fw-bold text-gray-900 fs-6"
+            >Last Name</label
+          >
           <Field
             class="form-control form-control-lg form-control-solid"
             type="text"
@@ -90,7 +92,7 @@
 
       <!--begin::Input group-->
       <div class="fv-row mb-7">
-        <label class="form-label fw-bold text-gray-900 fs-6">Email</label>
+        <label for="email" class="form-label fw-bold text-gray-900 fs-6">Email</label>
         <Field
           class="form-control form-control-lg form-control-solid"
           type="email"
@@ -111,7 +113,7 @@
         <!--begin::Wrapper-->
         <div class="mb-1">
           <!--begin::Label-->
-          <label class="form-label fw-bold text-gray-900 fs-6">
+          <label for="password" class="form-label fw-bold text-gray-900 fs-6">
             Password
           </label>
           <!--end::Label-->
@@ -146,9 +148,7 @@
             <div
               class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"
             ></div>
-            <div
-              class="flex-grow-1 bg-secondary bg-active-success rounded h-5px"
-            ></div>
+            <div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px"></div>
           </div>
           <!--end::Meter-->
         </div>
@@ -163,7 +163,7 @@
 
       <!--begin::Input group-->
       <div class="fv-row mb-5">
-        <label class="form-label fw-bold text-gray-900 fs-6"
+        <label for="password_confirmation" class="form-label fw-bold text-gray-900 fs-6"
           >Confirm Password</label
         >
         <Field
@@ -183,13 +183,8 @@
 
       <!--begin::Input group-->
       <div class="fv-row mb-10">
-        <label class="form-check form-check-custom form-check-solid">
-          <Field
-            class="form-check-input"
-            type="checkbox"
-            name="toc"
-            value="1"
-          />
+        <label for="toc" class="form-check form-check-custom form-check-solid">
+          <Field class="form-check-input" type="checkbox" name="toc" value="1" />
           <span class="form-check-label fw-semibold text-gray-700 fs-6">
             I Agree &
             <a href="#" class="ms-1 link-primary">Terms and conditions</a>.
@@ -209,9 +204,7 @@
           <span class="indicator-label"> Submit </span>
           <span class="indicator-progress">
             Please wait...
-            <span
-              class="spinner-border spinner-border-sm align-middle ms-2"
-            ></span>
+            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
           </span>
         </button>
       </div>

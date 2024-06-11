@@ -24,21 +24,21 @@
 
 <script setup lang="ts">
 export interface Props {
-  content   ?: string;
-  icon       : string;
-  iconType   : string;
-  title      : string;
-  titleColor : string;
-  type       : string;
+  content?: string;
+  icon: string;
+  iconType: string;
+  title: string;
+  titleColor: string;
+  type: string;
 }
 
 // Define $props with default values
 withDefaults(defineProps<Props>(), {
-  content   : "No content",
-  icon      : "info-circle",
-  iconType  : "primary",
-  title     : "Info",
+  content: "No content",
+  icon: "info-circle",
+  iconType: "primary",
+  title: "Info",
   titleColor: "primary",
-  type      : "primary",
+  type: "primary",
 });
 </script>
