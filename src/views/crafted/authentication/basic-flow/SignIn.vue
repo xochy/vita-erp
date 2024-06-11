@@ -37,9 +37,7 @@
       <!--begin::Input group-->
       <div class="fv-row mb-10">
         <!--begin::Label-->
-        <label for="email" class="form-label fs-6 fw-bold text-gray-900">
-          Email
-        </label>
+        <label for="email" class="form-label fs-6 fw-bold text-gray-900"> Email </label>
         <!--end::Label-->
 
         <!--begin::Input-->
@@ -64,10 +62,7 @@
         <!--begin::Wrapper-->
         <div class="d-flex flex-stack mb-2">
           <!--begin::Label-->
-          <label
-            for="passwor"
-            class="form-label fw-bold text-gray-900 fs-6 mb-0"
-          >
+          <label for="password" class="form-label fw-bold text-gray-900 fs-6 mb-0">
             Password
           </label>
           <!--end::Label-->
@@ -111,9 +106,7 @@
 
           <span class="indicator-progress">
             Please wait...
-            <span
-              class="spinner-border spinner-border-sm align-middle ms-2"
-            ></span>
+            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
           </span>
         </button>
         <!--end::Submit button-->
@@ -123,10 +116,7 @@
         <!--end::Separator-->
 
         <!--begin::Google link-->
-        <a
-          href="#"
-          class="btn btn-flex flex-center btn-light btn-lg w-100 mb-5"
-        >
+        <a href="#" class="btn btn-flex flex-center btn-light btn-lg w-100 mb-5">
           <img
             alt="Logo"
             :src="getAssetPath('media/svg/brand-logos/google-icon.svg')"
@@ -137,10 +127,7 @@
         <!--end::Google link-->
 
         <!--begin::Google link-->
-        <a
-          href="#"
-          class="btn btn-flex flex-center btn-light btn-lg w-100 mb-5"
-        >
+        <a href="#" class="btn btn-flex flex-center btn-light btn-lg w-100 mb-5">
           <img
             alt="Logo"
             :src="getAssetPath('media/svg/brand-logos/facebook-4.svg')"
@@ -169,13 +156,13 @@
 </template>
 
 <script lang="ts">
-import { getAssetPath } from "@/core/helpers/assets";
-import { defineComponent, ref } from "vue";
+import * as Yup from "yup";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 import { ErrorMessage, Field, Form as VForm } from "vee-validate";
+import { defineComponent, ref } from "vue";
+import { getAssetPath } from "@/core/helpers/assets";
 import { useAuthStore, type User } from "@/stores/auth";
 import { useRouter } from "vue-router";
-import Swal from "sweetalert2/dist/sweetalert2.js";
-import * as Yup from "yup";
 
 export default defineComponent({
   name: "sign-in",
@@ -198,7 +185,7 @@ export default defineComponent({
 
     //Form submit function
     const onSubmitLogin = async (values: any) => {
-      values = values as User;      
+      values = values as User;
       // Clear existing errors
       store.logout();
 

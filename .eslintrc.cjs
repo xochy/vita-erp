@@ -14,5 +14,8 @@ module.exports = {
   },
   rules: {
     'prettier/prettier': 0,
+  },
+  env: {
+    vitest: true
   }
 };

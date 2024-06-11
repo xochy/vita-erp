@@ -40,14 +40,7 @@ const usePhysicalConditions = () => {
     if (physicalConditionsListResponse) {
       const { meta, data: physicalConditions } = physicalConditionsListResponse;
       const { page } = meta;
-      const {
-        currentPage,
-        from,
-        lastPage,
-        perPage,
-        to,
-        total
-      } = page;
+      const { currentPage, from, lastPage, perPage, to, total } = page;
 
       store.setCurrentPage(currentPage);
       store.setFrom(from);
