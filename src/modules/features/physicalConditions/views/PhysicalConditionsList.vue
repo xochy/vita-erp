@@ -17,6 +17,8 @@
     :is-loading="isLoading"
   />
 
+  <button v-if="canCreatePhysicalConditions">Crear usuarios</button>
+
   <TablePaginator
     v-if="!isLoading && !isError"
     :currentPage="currentPage"
@@ -56,5 +58,9 @@ const {
   getPage,
   physicalConditions,
   // #endregion::PhysicalConditions data
+
+  // #region::PhysicalConditions permissions
+  canCreatePhysicalConditions
+  // #endregion::PhysicalConditions permissions
 } = usePhysicalConditions();
 </script>

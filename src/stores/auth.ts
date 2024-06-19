@@ -8,6 +8,7 @@ export interface User {
   email: string;
   password: string;
   token: string;
+  permissions: string;
 }
 
 export interface AuthPayload {
@@ -18,6 +19,7 @@ export interface AuthPayload {
       device_name?: string;
       password?: string;
       token?: string | null;
+      permissions?: string;
     };
   };
 }
@@ -27,17 +29,29 @@ export const useAuthStore = defineStore("auth", () => {
   const user = ref<User>({} as User);
   const isAuthenticated = ref(!!JwtService.getToken());
 
+  /**
+   * @description set the user data and token into localStorage
+   * @param authUser: User
+   */
   function setAuth(authUser: User) {
     isAuthenticated.value = true;
     user.value = authUser;
     errors.value = {};
     JwtService.saveToken(user.value.token);
+    JwtService.savePermissions(user.value.permissions);
   }
 
+  /**
+   * @description set the error message
+   * @param error: any
+   */
   function setError(error: any) {
     errors.value = { ...error };
   }
 
+  /**
+   * @description remove the user data and token from localStorage
+   */
   function purgeAuth() {
     isAuthenticated.value = false;
     user.value = {} as User;
@@ -45,6 +59,11 @@ export const useAuthStore = defineStore("auth", () => {
     JwtService.destroyToken();
   }
 
+  /**
+   * @description login the user
+   * @param credentials: User
+   * @returns Promise<void>
+   */
   function login(credentials: User) {
     const payload: AuthPayload = {
       data: {
@@ -58,18 +77,26 @@ export const useAuthStore = defineStore("auth", () => {
     };
 
     return ApiService.post("users/auth/signin", payload)
-      .then(({ data }) => {        
+      .then(({ data }) => {
         setAuth(data);
       })
       .catch(({ response }) => {
-        setError(response.data.errors);        
+        setError(response.data.errors);
       });
   }
 
+  /**
+   * @description logout the user
+   */
   function logout() {
     purgeAuth();
   }
 
+  /**
+   * @description register the user
+   * @param credentials: User
+   * @returns Promise<void>
+   */
   function register(credentials: User) {
     return ApiService.post("register", credentials)
       .then(({ data }) => {
@@ -80,6 +107,11 @@ export const useAuthStore = defineStore("auth", () => {
       });
   }
 
+  /**
+   * @description send the forgot password email
+   * @param email: string
+   * @returns Promise<void>
+   */
   function forgotPassword(email: string) {
     return ApiService.post("forgot_password", email)
       .then(() => {
@@ -90,8 +122,12 @@ export const useAuthStore = defineStore("auth", () => {
       });
   }
 
+  /**
+   * @description verify the user authentication
+   */
   function verifyAuth() {
     if (JwtService.getToken()) {
+      // JwtService.getPermission('create')
 
       const payload: AuthPayload = {
         data: {
@@ -117,6 +153,26 @@ export const useAuthStore = defineStore("auth", () => {
     }
   }
 
+  /**
+   * @description set the headers for the request
+   */
+  function setHeaders() {
+    if (JwtService.getToken()) {
+      ApiService.setHeader();
+    } else {
+      purgeAuth();
+    }
+  }
+
+  /**
+   * @description check if the user has permission to the specified permission
+   * @param permission: string
+   * @returns boolean
+   */
+  function hasPermissionTo(permission: string): boolean {
+    return JwtService.hasPermissionTo(permission)
+  }
+
   return {
     errors,
     user,
@@ -126,5 +182,7 @@ export const useAuthStore = defineStore("auth", () => {
     register,
     forgotPassword,
     verifyAuth,
+    setHeaders,
+    hasPermissionTo,
   };
 });

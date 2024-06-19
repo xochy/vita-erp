@@ -1,9 +1,10 @@
 import ApiService from "@/core/services/ApiService";
 import type { PhysicalConditionsListResponse } from "../interfaces";
-import { watch } from "vue";
-import { useQuery } from "@tanstack/vue-query";
-import { usePhysicalConditionsStore } from "../store/PhysicalConditions";
 import { storeToRefs } from "pinia";
+import { useAuthStore } from "@/stores/auth";
+import { usePhysicalConditionsStore } from "../store/PhysicalConditions";
+import { useQuery } from "@tanstack/vue-query";
+import { watch } from "vue";
 
 const getPhysicalConditions = async (
   pageSize: number,
@@ -19,6 +20,7 @@ const getPhysicalConditions = async (
 
 const usePhysicalConditions = () => {
   const store = usePhysicalConditionsStore();
+  const authStore = useAuthStore();
   const {
     currentPage,
     from,
@@ -68,6 +70,11 @@ const usePhysicalConditions = () => {
 
     // Methods
     getPage: store.setCurrentPage,
+
+    // permissions
+    canCreatePhysicalConditions: authStore.hasPermissionTo(
+      "create physical conditions"
+    ),
   };
 };
 
