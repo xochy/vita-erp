@@ -4,6 +4,7 @@
   <KTNewTargetModal />
   <KTViewUsersModal />
   <KTInviteFriendsModal />
+
 </template>
 
 <script lang="ts">

@@ -1,17 +1,17 @@
 <template>
-  <div class="card shadow-sm">
+  <div class="card shadow-sm" v-if="!isLoading">
     <div
       class="card-header collapsible cursor-pointer rotate"
       data-bs-toggle="collapse"
       data-bs-target="#kt_docs_card_collapsible"
     >
-      <!-- <h3 class="card-title">{{ store.physicalCondition.data.attributes.name }}</h3> -->
+      <h3 class="card-title">{{ physicalCondition?.attributes.name }}</h3>
       <div class="card-toolbar rotate-180">
         <i class="ki-duotone ki-down fs-1"></i>
       </div>
     </div>
     <div id="kt_docs_card_collapsible" class="collapse show">
-      <!-- <div class="card-body">{{ store.physicalCondition.data.attributes.description }}</div> -->
+      <div class="card-body">{{ physicalCondition?.attributes.description }}</div>
       <div class="card-footer">
         <!--begin::Accordion-->
         <div class="accordion accordion-icon-toggle" id="kt_accordion_2">
@@ -113,19 +113,10 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from "vue-router";
-// import { getPhysicalCondition } from "../helpers/GetPhysicalConditions";
-import { useQuery } from "@tanstack/vue-query";
-// import store from "../store/PhysicalCondition.store";
+import { useRoute } from 'vue-router';
+import usePhysicalCondition from '../composables/UsePhysicalConditionStore';
 
 const route = useRoute();
-const { id } = route.params;
 
-useQuery({
-  queryKey: ["physicalCondition", id.toString()],
-  // queryFn: () => getPhysicalCondition(id.toString()),
-  select: (data) => {
-    // store.loadedPhysicalCondition(data);
-  },
-});
+const { physicalCondition, isLoading } = usePhysicalCondition(+route.params.id);
 </script>

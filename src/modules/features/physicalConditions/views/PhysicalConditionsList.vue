@@ -14,10 +14,7 @@
   <PhysicalConditionsTable
     v-else
     :physicalConditions="physicalConditions"
-    :is-loading="isLoading"
   />
-
-  <button v-if="canCreatePhysicalConditions">Crear usuarios</button>
 
   <TablePaginator
     v-if="!isLoading && !isError"

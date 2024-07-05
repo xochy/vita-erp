@@ -30,6 +30,13 @@
           data-bs-target="#kt_modal_new_target"
           >Add Target</a
         >
+        <a
+          href="#"
+          class="btn btn-sm fw-bold btn-primary"
+          :data-bs-toggle="dataBsToggle"
+          :data-bs-target="dataBsTarget"
+          >{{ actionButtonText }}</a
+        >
         <!--end::Primary button-->
       </div>
       <!--end::Actions-->
@@ -40,9 +47,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { computed, defineComponent } from "vue";
 import { toolbarWidthFluid } from "@/layouts/default-layout/config/helper";
 import KTPageTitle from "@/layouts/default-layout/components/toolbar/PageTitle.vue";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   name: "layout-toolbar",
@@ -50,8 +58,25 @@ export default defineComponent({
     KTPageTitle,
   },
   setup() {
+    const route = useRoute();
+
+    const actionButtonText = computed(() => {
+      return route.meta.actionButtonText;
+    });
+
+    const dataBsToggle = computed(() => {
+      return route.meta.dataBsToggle;
+    });
+
+    const dataBsTarget = computed(() => {
+      return route.meta.dataBsTarget;
+    });
+
     return {
       toolbarWidthFluid,
+      actionButtonText,
+      dataBsToggle,
+      dataBsTarget,
     };
   },
 });
