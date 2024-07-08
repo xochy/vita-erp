@@ -189,8 +189,8 @@ const descriptionModel = computed({
 /* -------------------------------- Functions ------------------------------- */
 
 /**
- * @description load the physical condition data to the form
- * @param {PhysicalCondition} row
+ * @description load the physical condition data to the modal
+ * @param {PhysicalCondition} physicalCondition
  */
 const loadPhysicalCondition = (physicalCondition: PhysicalCondition) => {
   originalPhysicalCondition.value = physicalCondition;
@@ -208,7 +208,6 @@ const showModal = () => {
 
 /**
  * @description create the physical condition
- * @param {PhysicalCondition} physicalCondition
  * @returns {Promise<PhysicalConditionResponse>}
  */
 const createPhysicalCondition = async (): Promise<PhysicalConditionResponse> => {
@@ -251,6 +250,8 @@ const updatePhysicalCondition = async (
 const resetForNewModel = () => {
   originalPhysicalCondition.value = null;
   editablePhysicalCondition.value = null;
+  name.value = "";
+  description.value = "";
 };
 
 /**

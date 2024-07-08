@@ -5,6 +5,7 @@
         <tr class="fw-bold fs-6 text-gray-800">
           <th>Name</th>
           <th>Description</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>

@@ -1,6 +1,6 @@
-import type { PhysicalCondition } from "./../interfaces/PhysicalCondition";
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import type { PhysicalCondition } from "../interfaces";
 
 export const usePhysicalConditionsStore = defineStore(
   "physicalConditions",

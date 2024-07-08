@@ -1,6 +1,7 @@
 import type { MenuItem } from "@/layouts/default-layout/config/types";
-import Catalog from "@/modules/catalogs/categories/layouts";
-import Features from "@/modules/features/physicalConditions/layouts";
+import Accounts from "@/modules/accounts/layouts";
+import Catalog from "@/modules/catalogs/layouts";
+import Features from "@/modules/features/layouts";
 
 const MainMenuConfig: Array<MenuItem> = [
   {
@@ -13,6 +14,7 @@ const MainMenuConfig: Array<MenuItem> = [
       },
     ],
   },
+  ...Accounts,
   ...Catalog,
   ...Features
 ];

@@ -6,6 +6,7 @@ import {
 import { useAuthStore } from "@/stores/auth";
 import { useConfigStore } from "@/stores/config";
 
+import RolesRoutes from "@/modules/accounts/roles/router";
 import CatalogRoutes from "@/modules/catalogs/categories/router";
 import PhysicalConditionsRoutes from "@/modules/features/physicalConditions/router";
 
@@ -89,6 +90,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/:pathMatch(.*)*",
     redirect: "/404",
   },
+  ...RolesRoutes,
   ...CatalogRoutes,
   ...PhysicalConditionsRoutes,
 ];
