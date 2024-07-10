@@ -1,42 +1,64 @@
 <template>
-  <BasicModal id="role_saving_modal" reference="roleSavingModalRef">
+  <BasicModal id="role_saving_modal" ref="basicModalRef">
     <!-- #region::form -->
     <el-form
       id="role_saving_modal"
       ref="roleSavingFormRef"
-      :model="editableRole"
-      :rules="rules"
       class="form"
+      :model="role"
+      :rules="rules"
       @submit.prevent="submit()"
     >
-      <!-- @submit.prevent="originalRole ? roleMutation.mutate(editableRole!) : createRole()" -->
       <BasicModalHeading title="Role" description="Role saving modal" />
       <!-- #region::name field -->
       <FormItem
-        name="name"
+        name="attributes.name"
         label="Name"
         tooltip="Specify a role name for future usage and reference"
       >
         <el-input
-          v-model="nameModel"
+          v-model="role.attributes.name"
           placeholder="Enter role name"
-          name="name"
+          name="attributes.name"
         ></el-input>
       </FormItem>
       <!-- #endregion::name field -->
       <!-- #region::display name field -->
       <FormItem
-        name="display_name"
-        label="Display Name"
+        name="attributes.display_name"
+        label="Display name"
         tooltip="Specify a role display name for future usage and reference"
       >
         <el-input
-          v-model="displayNameModel"
+          v-model="role.attributes.display_name"
           placeholder="Enter role display name"
-          name="display_name"
+          name="attributes.display_name"
         ></el-input>
       </FormItem>
       <!-- #endregion::display name field -->
+      <!-- #region::permissions tags -->
+      <FormItem
+        name="relationships.permissions.data"
+        label="Permissions"
+        tooltip="Select the permissions that the role will have"
+      >
+        <el-select
+          v-model="role.relationships!.permissions.data"
+          multiple
+          filterable
+          allow-create
+          placeholder="Select permissions"
+          name="relationships.permissions.data"
+        >
+          <el-option
+            v-for="permissionFlat in permissionsFlat"
+            :key="permissionFlat.id"
+            :label="permissionFlat.display_name"
+            :value="permissionFlat.id"
+          ></el-option>
+        </el-select>
+      </FormItem>
+      <!-- #endregion::permissions tags -->
       <!-- #region::actions -->
       <div class="text-center">
         <!-- #region::Cancel button -->
@@ -67,60 +89,61 @@ import ApiService from "@/core/services/ApiService";
 import BasicModal from "@/components/modals/generics/BasicModal.vue";
 import BasicModalHeading from "@/components/modals/generics/BasicModalHeading.vue";
 import FormItem from "@/components/form/FormItem.vue";
-import Modal from "bootstrap/js/dist/modal";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 import type { Role, RoleResponse } from "../interfaces";
-import { computed, ref, toRaw } from "vue";
+import { hideModal, removeModalBackdrop } from "@/core/helpers/modal";
+import { ref } from "vue";
 import { useMutation } from "@tanstack/vue-query";
+import usePermissionsFlat from "../composables/UsePermissionsFlatStore";
 
 /* ---------------------------------- Props --------------------------------- */
 
 const roleSavingFormRef = ref<null | HTMLFormElement>(null);
-const roleSavingModalRef = ref<null | HTMLFormElement>(null);
+const basicModalRef = ref<InstanceType<typeof BasicModal> | null>(null);
 
-const originalRole = ref<Role | null>(null);
-const editableRole = ref<Role | null>(null);
+const { permissionsFlat, isLoadingPermissionsFlat } = usePermissionsFlat();
 
-const name = ref("");
-const displayName = ref("");
-
-const rules = ref({
-  name: [
-    {
-      required: true,
-      message: "Please enter the role name",
-      trigger: "blur",
+const role = ref<Role>({
+  id: "",
+  type: "roles",
+  attributes: {
+    name: "",
+    display_name: "",
+  },
+  relationships: {
+    permissions: {
+      data: [],
     },
-  ],
-  display_name: [
-    {
-      required: true,
-      message: "Please enter the role display name",
-      trigger: "blur",
-    },
-  ],
-});
-
-/* -------------------------------- Computed -------------------------------- */
-
-const nameModel = computed({
-  get: () => editableRole?.value?.attributes?.name || name.value,
-  set: (value) => {
-    if (editableRole && editableRole.value?.attributes) {
-      editableRole.value.attributes.name = value;
-    } else {
-      name.value = value;
-    }
   },
 });
 
-const displayNameModel = computed({
-  get: () => editableRole?.value?.attributes?.display_name || displayName.value,
-  set: (value) => {
-    if (editableRole && editableRole.value?.attributes) {
-      editableRole.value.attributes.display_name = value;
-    } else {
-      displayName.value = value;
-    }
+const rules = ref({
+  attributes: {
+    name: [
+      {
+        required: true,
+        message: "Please enter the role name",
+        trigger: "blur",
+      },
+    ],
+    display_name: [
+      {
+        required: true,
+        message: "Please enter the role display name",
+        trigger: "blur",
+      },
+    ],
+  },
+  relationships: {
+    permissions: {
+      data: [
+        {
+          required: true,
+          message: "Please select at least one permission",
+          trigger: "blur",
+        },
+      ],
+    },
   },
 });
 
@@ -131,15 +154,37 @@ const submit = () => {
     return;
   }
 
-  roleSavingFormRef.value.validate((valid: boolean) => {});
+  roleSavingFormRef.value.validate(async (valid: boolean) => {
+    if (valid) {
+      if (role.value.id) {
+        await updateRole(role.value);
+      } else {
+        await createRole();
+      }
+
+      Swal.fire({
+        text: "Form has been successfully submitted!",
+        icon: "success",
+        buttonsStyling: false,
+        confirmButtonText: "Ok, got it!",
+        heightAuto: false,
+        customClass: {
+          confirmButton: "btn btn-primary",
+        },
+      }).then(() => {
+        hideModal(basicModalRef.value!.reference);
+        removeModalBackdrop();
+        emitRoleSaved("onSavingRole", role.value);
+      });
+    }
+  });
 };
 
 /**
  * @description Load the role to the modal
  */
-const loadRole = (role: Role) => {
-  originalRole.value = role;
-  editableRole.value = JSON.parse(JSON.stringify(toRaw(role)));
+const loadRole = (selectedRole: Role) => {
+  role.value = JSON.parse(JSON.stringify(selectedRole));
 };
 
 /**
@@ -147,14 +192,22 @@ const loadRole = (role: Role) => {
  * @returns {Promise<RoleResponse>}
  */
 const createRole = async (): Promise<RoleResponse> => {
+  const { attributes, relationships } = role.value;
+  const permissions = relationships?.permissions.data!.map((id) => ({
+    type: "permissions",
+    id,
+  }));
+
   const { data } = await ApiService.vueInstance.axios.post<RoleResponse>(
     "/roles/manage/createRole",
     {
       data: {
         type: "roles",
-        attributes: {
-          name: name.value,
-          display_name: displayName.value,
+        attributes,
+        relationships: {
+          permissions: {
+            data: permissions,
+          },
         },
       },
     }
@@ -183,30 +236,14 @@ const updateRole = async (role: Role): Promise<RoleResponse> => {
   return data;
 };
 
-/**
- * @description Show the modal
- */
-const showModal = () => {
-  // @ts-ignore
-  const modal = new Modal(document.getElementById("role_saving_modal"));
-  modal.show();
-};
+/* ---------------------------------- Emits --------------------------------- */
 
 /**
- * @description hide the modal
+ * @description emit the event when the role is saved
  */
-const hideModal = () => {
-  // @ts-ignore
-  const modal = new Modal(document.getElementById("role_saving_modal"));
-  modal.hide();
-};
-
-const resetForNewModel = () => {
-  editableRole.value = null;
-  originalRole.value = null;
-  name.value = "";
-  displayName.value = "";
-};
+const emitRoleSaved = defineEmits<{
+  onSavingRole: [role: Role];
+}>();
 
 /**
  * @description mutation to create the role
@@ -215,8 +252,5 @@ const roleMutation = useMutation({ mutationFn: updateRole });
 
 /* --------------------------------- Expose --------------------------------- */
 
-defineExpose({
-  showModal,
-  loadRole,
-});
+defineExpose({ loadRole });
 </script>

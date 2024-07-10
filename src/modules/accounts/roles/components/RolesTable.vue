@@ -20,7 +20,9 @@
                 icon-name="pencil"
                 icon-class="fs-2 text-black mx-1"
                 style="cursor: pointer"
-                @click="showModal(role)"
+                @click="loadRole(role)"
+                data-bs-toggle="modal"
+                data-bs-target="#role_saving_modal"
               />
               <KTIcon
                 icon-name="trash"
@@ -33,7 +35,7 @@
       </tbody>
     </table>
   </div>
-  <RoleSavingModal ref="RoleSavingModalRef" />
+  <RoleSavingModal ref="RoleSavingModalRef" @onSavingRole="handleRoleSaved" />
 </template>
 
 <script setup lang="ts">
@@ -53,9 +55,14 @@ const RoleSavingModalRef = ref<InstanceType<
 > | null>(null);
 
 // show the modal
-const showModal = (role: Role) => {
+const loadRole = (role: Role) => {
   RoleSavingModalRef.value?.loadRole({ ...role });
-  RoleSavingModalRef.value?.showModal();
+};
+
+// handle the role saved event
+const handleRoleSaved = (role: Role) => {
+  console.log("Role saved:", role);
+  // Update the roles list or perform any other necessary actions
 };
 </script>
 

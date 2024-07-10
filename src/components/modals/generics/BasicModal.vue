@@ -1,6 +1,6 @@
 <template>
   <!-- #region::modal -->
-  <div class="modal fade" :id="id" :ref="reference" tabindex="-1" aria-hidden="true">
+  <div class="modal fade" :id="id" ref="reference" tabindex="-1" aria-hidden="true">
     <!-- #region::modal dialog -->
     <div class="modal-dialog modal-dialog-centered mw-650px">
       <!-- #region::modal content -->
@@ -32,10 +32,15 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
+
 interface Props {
   id: string;
-  reference: string;
 }
 
 defineProps<Props>();
+
+const reference = ref<null | HTMLDivElement>(null);
+
+defineExpose({ reference });
 </script>

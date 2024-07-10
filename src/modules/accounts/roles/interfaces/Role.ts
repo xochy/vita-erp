@@ -1,15 +1,17 @@
+import { PermissionFlat } from "./PermissionFlat";
+
 export interface Role {
   type:          string;
   id:            string;
   attributes:    Attributes;
-  relationships: Relationships;
-  links:         RoleLinks;
+  relationships?: Relationships;
+  links?:         RoleLinks;
 }
 
 export interface Attributes {
   name:         string;
   display_name: string;
-  default:      number;
+  default?:      number;
 }
 
 export interface RoleLinks {
@@ -21,7 +23,8 @@ export interface Relationships {
 }
 
 export interface Permissions {
-  links: PermissionsLinks;
+  links?: PermissionsLinks;
+  data?: PermissionFlat[];
 }
 
 export interface PermissionsLinks {
