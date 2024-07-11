@@ -2,7 +2,7 @@
   <BasicModal id="role_saving_modal" ref="basicModalRef">
     <!-- #region::form -->
     <el-form
-      id="role_saving_modal"
+      id="role_saving_form"
       ref="roleSavingFormRef"
       class="form"
       :model="role"
@@ -101,7 +101,7 @@ import usePermissionsFlat from "../composables/UsePermissionsFlatStore";
 const roleSavingFormRef = ref<null | HTMLFormElement>(null);
 const basicModalRef = ref<InstanceType<typeof BasicModal> | null>(null);
 
-const { permissionsFlat, isLoadingPermissionsFlat } = usePermissionsFlat();
+const { permissionsFlat } = usePermissionsFlat();
 
 const role = ref<Role>({
   id: "",

@@ -11,7 +11,7 @@ const getUsers = async (
   pageNumber: number
 ): Promise<UsersListResponse> => {
   const { data } = await ApiService.vueInstance.axios.get<UsersListResponse>(
-    `users?page[size]=${pageSize}&page[number]=${pageNumber}`
+    `users?page[size]=${pageSize}&page[number]=${pageNumber}&include=relatedRoles`
   );
 
   return data;

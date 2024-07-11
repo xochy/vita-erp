@@ -8,6 +8,12 @@ export default [
         keenthemesIcon: "key",
         bootstrapIcon: "bi bi-key",
       },
+      {
+        heading: "Users",
+        route: "/users",
+        keenthemesIcon: "people",
+        bootstrapIcon: "bi bi-people-fill",
+      },
     ],
   },
 ]

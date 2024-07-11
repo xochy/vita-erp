@@ -23,11 +23,11 @@ export interface Relationships {
 }
 
 export interface Permissions {
-  links?: PermissionsLinks;
+  links?: Links;
   data?: PermissionFlat[];
 }
 
-export interface PermissionsLinks {
+export interface Links {
   related: string;
   self:    string;
 }
