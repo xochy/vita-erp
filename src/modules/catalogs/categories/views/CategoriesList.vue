@@ -1,24 +1,35 @@
 <template>
-  <h1>Counter View: {{ counter }}</h1>
-  <button class="btn btn-primary" @click="increaseCounter">+1</button>
+  <div>
+    <el-empty description="An error occurred while fetching categories." v-if="isError" />
+
+    <CategoriesTable v-else :is-loading="isLoading" :categories="categories">
+      <template #pagination>
+        <el-pagination
+          class="center-pagination"
+          v-model:current-page="currentPage"
+          v-model:page-size="perPage"
+          :page-sizes="[5, 10, 15, 20]"
+          :disabled="isLoading"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+          @size-change="getPage"
+          @current-change="getPage"
+        />
+      </template>
+    </CategoriesTable>
+  </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from "vue";
+<script setup lang="ts">
+import CategoriesTable from "../components/CategoriesTable.vue";
+import useCategories from "../composables/UseCategoriesStore";
 
-export default defineComponent({
-  name: "categories-list",
-  setup() {
-    const counter = ref(0);
+const FIELDS_SET = "name,description,createdAt,translations";
 
-    const increaseCounter = () => {
-      counter.value++;
-    };
-
-    return {
-      counter,
-      increaseCounter,
-    };
-  },
-});
+const {
+  categories,
+  getPage,
+  status: { isLoading, isError },
+  pagination: { currentPage, perPage, total },
+} = useCategories(FIELDS_SET);
 </script>

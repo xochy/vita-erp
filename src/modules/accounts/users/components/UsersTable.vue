@@ -1,60 +1,34 @@
 <template>
-  <div class="table-responsive">
-    <table class="table">
-      <thead>
-        <tr class="fw-bold fs-6 text-gray-800">
-          <th>Name</th>
-          <th>Email</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="user in users" :key="user.id">
-          <td>{{ user.attributes.name }}</td>
-          <td>{{ user.attributes.email }}</td>
-          <td>
-            <div class="d-flex">
-              <KTIcon
-                icon-name="pencil"
-                icon-class="fs-2 text-black mx-1"
-                style="cursor: pointer"
-                @click="loadUser(user)"
-                data-bs-toggle="modal"
-                data-bs-target="#user_saving_modal"
-              />
-              <KTIcon
-                icon-name="trash"
-                icon-class="fs-2 text-black mx-1"
-                style="cursor: pointer"
-              />
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <UsersSavingModal ref="UsersSavingModalRef" @onSavingUser="handleUserSaved" />
+  <el-table v-loading="isLoading" :data="users" style="width: 100%">
+    <el-table-column fixed prop="attributes.name" label="Name" width="180" />
+    <el-table-column prop="attributes.email" label="Email" width="250" />
+    <el-table-column label="Operations" min-width="120" align="right">
+      <template #default>
+        <el-button link type="primary" size="small">Edit</el-button>
+        <el-button link type="primary" size="small">Delete</el-button>
+      </template>
+    </el-table-column>
+  </el-table>
+  <slot name="pagination"></slot>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 import type { User } from "../interfaces";
-import UsersSavingModal from "@/modules/accounts/users/components/UsersSavingModal.vue";
+import { useRouter } from "vue-router";
 
 interface Props {
   users: User[];
+  isLoading: boolean;
 }
 
 defineProps<Props>();
 
-// ref to the modal
-const UsersSavingModalRef = ref<InstanceType<
-  typeof UsersSavingModal
-> | null>(null);
+const route = useRouter();
 
 // show the modal
 const loadUser = (user: User) => {
-  UsersSavingModalRef.value?.loadUser({ ...user });
+  // Go to the user saving route with user id
+  route.push({ name: "users-saving", params: { id: user.id } });
 };
 
 // handle the user saved event
@@ -63,10 +37,3 @@ const handleUserSaved = (user: User) => {
   // Update the users list or perform any other necessary actions
 };
 </script>
-
-<style scoped>
-.btn-extra-sm {
-  font-size: 0.2rem;
-  border-radius: 0.2rem;
-}
-</style>

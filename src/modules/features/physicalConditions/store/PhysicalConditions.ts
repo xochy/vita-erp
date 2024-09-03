@@ -2,6 +2,9 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import type { PhysicalCondition } from "../interfaces";
 
+/**
+ * Store to manage the physical conditions.
+ */
 export const usePhysicalConditionsStore = defineStore(
   "physicalConditions",
   () => {

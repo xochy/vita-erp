@@ -12,3 +12,10 @@
 // Layout
 @import "./core/layout/base/layout";
 @import "layout/layout";
+
+.center-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}

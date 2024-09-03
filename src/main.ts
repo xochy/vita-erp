@@ -17,8 +17,6 @@ import { initInlineSvg } from "@/core/plugins/inline-svg";
 import { initVeeValidate } from "@/core/plugins/vee-validate";
 import { initKtIcon } from "@/core/plugins/keenthemes";
 
-import { Skeletor } from 'vue-skeletor';
-
 import "@/core/plugins/prismjs";
 
 // External packages
@@ -29,7 +27,6 @@ const app = createApp(App);
 app.use(createPinia());
 app.use(router);
 app.use(ElementPlus);
-app.component(Skeletor.name, Skeletor);
 
 VueQueryPlugin.install(app, {
   queryClientConfig: {

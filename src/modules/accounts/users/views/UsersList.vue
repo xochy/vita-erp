@@ -1,64 +1,31 @@
 <template>
-  <LoadingAlert v-if="isLoading" />
+  <el-empty description="An error occurred while fetching users." v-if="isError" />
 
-  <CustomAlert
-    v-else-if="isError"
-    :content="error?.message"
-    :icon-type="'danger'"
-    :icon="'cross-square'"
-    :title-color="'danger'"
-    :title="'Error'"
-    :type="'danger'"
-  />
-
-  <UsersTable
-    v-else
-    :users="users"
-  />
-
-  <TablePaginator
-    v-if="!isLoading && !isError"
-    :currentPage="currentPage"
-    :from="from"
-    :lastPage="lastPage"
-    :perPage="perPage"
-    :to="to"
-    :total="total"
-    :getPage="getPage"
-  />
+  <UsersTable v-else :is-loading="isLoading" :users="users">
+    <template #pagination>
+      <el-pagination
+        class="center-pagination"
+        v-model:current-page="currentPage"
+        v-model:page-size="perPage"
+        :page-sizes="[5, 10, 15, 20]"
+        :disabled="isLoading"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+        @size-change="getPage"
+        @current-change="getPage"
+      />
+    </template>
+  </UsersTable>
 </template>
 
 <script setup lang="ts">
-import CustomAlert from '@/components/shared/alerts/CustomAlert.vue';
-import LoadingAlert from '@/components/shared/alerts/LoadingAlert.vue';
-import UsersTable from '../components/UsersTable.vue';
-import TablePaginator from '@/components/shared/tables/TablePaginator.vue';
-import useUsers from '../composables/UseUsersStore';
+import UsersTable from "../components/UsersTable.vue";
+import useUsers from "../composables/UseUsersStore";
 
 const {
-  // #region::Pagination
-  currentPage,
-  from,
-  lastPage,
-  perPage,
-  to,
-  total,
-  // #endregion::Pagination
-
-  // #region::Users requests state
-  isLoading,
-  isError,
-  error,
-  // #endregion::Users requests state
-
-  // #region::Users data
-  getPage,
   users,
-  // #endregion::Users data
-
-  // #region::Users permissions
-  canCreateUsers,
-  // #endregion::Users permissions
+  getPage,
+  status: { isLoading, isError },
+  pagination: { currentPage, perPage, total },
 } = useUsers();
-
 </script>

@@ -6,6 +6,12 @@ import type {
 import ApiService from "@/core/services/ApiService";
 import { useQuery } from "@tanstack/vue-query";
 
+/**
+ * Fetches a physical condition from the API.
+ *
+ * @param {number} id - The ID of the physical condition to fetch.
+ * @returns {Promise<PhysicalConditionResponse>} The physical condition.
+ */
 const getPhysicalCondition = async (
   id: number
 ): Promise<PhysicalConditionResponse> => {
@@ -17,6 +23,12 @@ const getPhysicalCondition = async (
   return data;
 };
 
+/**
+ * Composable function to manage the physical condition.
+ *
+ * @param {number} id - The ID of the physical condition to fetch.
+ * @returns {Object} The physical condition composable.
+ */
 const usePhysicalCondition = (id: number) => {
   const physicalCondition = ref<PhysicalCondition>();
 

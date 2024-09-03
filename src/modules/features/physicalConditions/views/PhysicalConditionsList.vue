@@ -1,20 +1,9 @@
 <template>
-  <LoadingAlert v-if="isLoading" />
+  <TableSkeleton v-if="isLoading" />
 
-  <CustomAlert
-    v-else-if="isError"
-    :content="error?.message"
-    :icon-type="'danger'"
-    :icon="'cross-square'"
-    :title-color="'danger'"
-    :title="'Error'"
-    :type="'danger'"
-  />
+  <ErrorAlert v-else-if="isError" :content="error?.message" />
 
-  <PhysicalConditionsTable
-    v-else
-    :physicalConditions="physicalConditions"
-  />
+  <PhysicalConditionsTable v-else :physicalConditions="physicalConditions" />
 
   <TablePaginator
     v-if="!isLoading && !isError"
@@ -29,8 +18,8 @@
 </template>
 
 <script setup lang="ts">
-import CustomAlert from "@/components/shared/alerts/CustomAlert.vue";
-import LoadingAlert from "@/components/shared/alerts/LoadingAlert.vue";
+import TableSkeleton from "@/components/shared/skeletons/TableSkeleton.vue";
+import ErrorAlert from "@/components/shared/alerts/ErrorAlert.vue";
 import PhysicalConditionsTable from "../components/PhysicalConditionsTable.vue";
 import TablePaginator from "@/components/shared/tables/TablePaginator.vue";
 import usePhysicalConditions from "../composables/UsePhysicalConditionsStore";
@@ -57,7 +46,7 @@ const {
   // #endregion::PhysicalConditions data
 
   // #region::PhysicalConditions permissions
-  canCreatePhysicalConditions
+  canCreatePhysicalConditions,
   // #endregion::PhysicalConditions permissions
 } = usePhysicalConditions();
 </script>

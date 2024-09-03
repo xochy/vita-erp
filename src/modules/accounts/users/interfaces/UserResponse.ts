@@ -1,4 +1,4 @@
-import { User, UserLinks } from "./User";
+import type { User, UserLinks } from "./User";
 
 export interface UserResponse {
   links: UserLinks;
