@@ -6,6 +6,13 @@ import { usePhysicalConditionsStore } from "../store/PhysicalConditions";
 import { useQuery } from "@tanstack/vue-query";
 import { watch } from "vue";
 
+/**
+ * Fetches a list of physical conditions from the API.
+ *
+ * @param {number} pageSize - The number of physical conditions to fetch per page.
+ * @param {number} pageNumber - The page number to fetch.
+ * @returns {Promise<PhysicalConditionsListResponse>} The list of physical conditions.
+ */
 const getPhysicalConditions = async (
   pageSize: number,
   pageNumber: number
@@ -18,6 +25,11 @@ const getPhysicalConditions = async (
   return data;
 };
 
+/**
+ * Composable function to manage the physical conditions.
+ *
+ * @returns {Object} The physical conditions composable.
+ */
 const usePhysicalConditions = () => {
   const store = usePhysicalConditionsStore();
   const authStore = useAuthStore();
@@ -71,7 +83,7 @@ const usePhysicalConditions = () => {
     // Methods
     getPage: store.setCurrentPage,
 
-    // permissions
+    // Permissions
     canCreatePhysicalConditions: authStore.hasPermissionTo(
       "create physical conditions"
     ),

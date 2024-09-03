@@ -19,15 +19,15 @@ export interface PhysicalConditionsLinks {
 }
 
 export interface Relationships {
-  plans:        Plans;
-  translations: Plans;
+  plans:        ModelLinks;
+  translations: ModelLinks;
 }
 
-export interface Plans {
-  links: PlansLinks;
+export interface ModelLinks {
+  links: Links;
 }
 
-export interface PlansLinks {
+export interface Links {
   related: string;
   self:    string;
 }
