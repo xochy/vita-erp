@@ -10,53 +10,44 @@
   >
     <el-row :gutter="20">
       <el-col :span="12">
-        <NameInput v-model="user.attributes.name" />
+        <Form.NameInput v-model="user.attributes.name" />
       </el-col>
       <el-col :span="12">
-        <EmailInput v-model="user.attributes.email" />
-      </el-col>
-    </el-row>
-
-    <el-row :gutter="20">
-      <el-col :span="12">
-        <PasswordInput v-model="user.attributes.password" />
-      </el-col>
-      <el-col :span="12">
-        <PasswordConfirmationInput v-model="user.attributes.password_confirmation" />
+        <Form.EmailInput v-model="user.attributes.email" />
       </el-col>
     </el-row>
 
     <el-row :gutter="20">
       <el-col :span="12">
-        <RoleSelect v-model="user.relationships!.roles.data" />
+        <Form.PasswordInput v-model="user.attributes.password" />
+      </el-col>
+      <el-col :span="12">
+        <Form.PasswordConfirmationInput v-model="user.attributes.password_confirmation" />
+      </el-col>
+    </el-row>
+
+    <el-row :gutter="20">
+      <el-col :span="12">
+        <Form.RoleSelect v-model="user.relationships!.roles.data" />
       </el-col>
     </el-row>
 
     <el-row :gutter="20">
       <el-col :span="24">
-        <CancelButton />
-        <SubmitButton :isLoading="isLoading" />
+        <Form.CancelButton />
+        <Form.SubmitButton :isLoading="isLoading" />
       </el-col>
     </el-row>
   </el-form>
 </template>
 
 <script setup lang="ts">
-import type { User } from "../interfaces";
-import useUser from "../composables/UseUserStore";
+import type { User } from "@/modules/accounts/users/interfaces";
+import useUser from "@/modules/accounts/users/composables/UseUserStore";
 import { ref, onMounted } from "vue";
-import { rules } from "../validation/userFormValidationRules";
+import { rules } from "@/modules/accounts/users/validation/userFormValidationRules";
 import { useRoute } from "vue-router";
-
-import {
-  NameInput,
-  EmailInput,
-  RoleSelect,
-  SubmitButton,
-  CancelButton,
-  PasswordInput,
-  PasswordConfirmationInput,
-} from "../components/form";
+import * as Form from "../components/form";
 
 /* ---------------------------------- Props --------------------------------- */
 
@@ -77,9 +68,7 @@ onMounted(() => {
  * @returns {void}
  */
 const submit = (): void => {
-  if (!userSavingFormRef.value) {
-    return;
-  }
+  if (!userSavingFormRef.value) return;
 
   userSavingFormRef.value.validate(async (valid: boolean) => {
     if (valid) {

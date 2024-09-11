@@ -1,23 +1,26 @@
 <template>
-  <div>
-    <el-empty description="An error occurred while fetching categories." v-if="isError" />
+  <el-result
+    v-if="isError"
+    icon="error"
+    title="Error"
+    sub-title="An error occurred while fetching categories."
+  />
 
-    <CategoriesTable v-else :is-loading="isLoading" :categories="categories">
-      <template #pagination>
-        <el-pagination
-          class="center-pagination"
-          v-model:current-page="currentPage"
-          v-model:page-size="perPage"
-          :page-sizes="[5, 10, 15, 20]"
-          :disabled="isLoading"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-          @size-change="getPage"
-          @current-change="getPage"
-        />
-      </template>
-    </CategoriesTable>
-  </div>
+  <CategoriesTable v-else :is-loading="isLoading" :categories="categories">
+    <template #pagination>
+      <el-pagination
+        class="center-pagination"
+        v-model:current-page="currentPage"
+        v-model:page-size="perPage"
+        :page-sizes="[5, 10, 15, 20]"
+        :disabled="isLoading"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+        @size-change="getPage"
+        @current-change="getPage"
+      />
+    </template>
+  </CategoriesTable>
 </template>
 
 <script setup lang="ts">

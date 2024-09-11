@@ -45,9 +45,10 @@ const getCategories = async (
 
 /**
  * @description Composable function to manage the categories.
+ * @param {string} fields - The fields to fetch for the categories.
  * @returns {Object} The categories composable.
  */
-const useCategories = (fields: string) => {
+const useCategories = (fields: string): any => {
   const store = useCategoriesStore();
   const authStore = useAuthStore();
   const { currentPage, perPage, total, categories } = storeToRefs(store);

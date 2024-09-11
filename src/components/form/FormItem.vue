@@ -1,10 +1,10 @@
 <template>
   <!-- #region::input group -->
-  <div class="d-flex flex-column mb-8 fv-row">
+  <div class="d-flex flex-column mb-2">
     <!-- #region::label -->
     <label
       :for="name"
-      class="d-flex align-items-center fs-6 fw-semibold mb-2"
+      class="d-flex align-items-center mb-2"
     >
       <span class="required">{{ label }}</span>
       <i

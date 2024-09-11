@@ -1,7 +1,7 @@
 <template>
   <BasicSkeleton :height="250" />
-    <br />
-    <BasicSkeleton :height="50" />
+  <br />
+  <BasicSkeleton :height="50" />
 </template>
 
 <script setup lang="ts">

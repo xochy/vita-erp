@@ -1,28 +1,28 @@
 import type { RoleFlat } from "./RoleFlat";
 
 export interface User {
-  type: string;
-  id: string;
-  attributes: Attributes;
+  type          : string;
+  id            : string;
+  attributes    : Attributes;
   relationships?: Relationships;
-  links?: UserLinks;
+  links        ?: UserLinks;
 }
 
 export interface Attributes {
-  name: string;
-  email: string;
-  password?: string;
+  name                  : string;
+  email                 : string;
+  password             ?: string;
   password_confirmation?: string;
-  emailVerifiedAt?: Date;
-  age?: null;
-  gender?: null;
-  system?: null;
-  weight?: null;
-  height?: null;
-  bmi?: null;
-  createdAt?: Date;
-  updatedAt?: Date;
-  deletedAt?: null;
+  emailVerifiedAt      ?: Date;
+  age                  ?: null;
+  gender               ?: null;
+  system               ?: null;
+  weight               ?: null;
+  height               ?: null;
+  bmi                  ?: null;
+  createdAt            ?: Date;
+  updatedAt            ?: Date;
+  deletedAt            ?: null;
 }
 
 export interface UserLinks {
@@ -30,9 +30,9 @@ export interface UserLinks {
 }
 
 export interface Relationships {
-  plans?: Plans;
-  roles: Roles;
-  relatedRoles?: RelatedRoles;
+  plans           ?: Plans;
+  roles            : Roles;
+  relatedRoles    ?: RelatedRoles;
   rolesIdentifiers?: string[];
 }
 
@@ -46,7 +46,7 @@ export interface Roles {
 
 export interface Links {
   related: string;
-  self: string;
+  self   : string;
 }
 
 export interface RelatedRoles {
@@ -55,5 +55,5 @@ export interface RelatedRoles {
 
 export interface RelatedRole {
   type: string;
-  id: string;
+  id  : string;
 }
