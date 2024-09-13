@@ -1,10 +1,10 @@
 import ApiService from "@/core/services/ApiService";
 import type { TranslationsListResponse } from "../interfaces";
 import { ElNotification } from "element-plus";
-import { useQuery } from "@tanstack/vue-query";
+import { useMutation, useQuery } from "@tanstack/vue-query";
 import { useTranslationsStore } from "../store/Translations";
-import { watch } from "vue";
 import { storeToRefs } from "pinia";
+import { extractErrorDetail } from "@/helpers/errorHelper";
 
 /**
  * @description Fetches a list of translations from the API.
@@ -37,42 +37,56 @@ const getTranslations = async (
 };
 
 /**
- * @description Composable function to manage the translations.
+ * @description Composable function to manage the translations query.
  * @param {string} path - The path to fetch the translations from.
  * @param {string} fields - The fields to fetch for the translations.
- * @param {boolean} saveToStore - Whether to save the translations to the store.
- * @returns {Object} The translations composable.
+ * @returns {any} The translations query.
  */
-const useTranslations = (
-  path: string,
-  fields: string,
-  saveToStore: boolean = false
-): any => {
-  const store = useTranslationsStore();
-  const { translations } = storeToRefs(store);
-
-  const { data, isLoading, isError } = useQuery({
-    queryKey: [path],
+const useTranslationsQuery = (path: string, fields: string): any => {
+  const { data, isPending, isError } = useQuery({
+    queryKey: ["translations", path],
     queryFn: () => getTranslations(path, fields),
     retry: 3,
     retryDelay: 1000,
   });
 
-  if (saveToStore) {
-    watch(data, () => {
-      if (data.value) {
-        store.setTranslations(data.value.data);
-      }
-    });
-  }
+  return {
+    isPending,
+    isError,
+    data,
+  };
+};
+
+/**
+ * @description Composable function to manage the translations mutation.
+ * @param {string} path - The path to fetch the translations from.
+ * @param {string} fields - The fields to fetch for the translations.
+ * @returns {any} The translations mutation.
+ */
+const useTranslationsMutation = (path: string, fields: string): any => {
+  const store = useTranslationsStore();
+  const { translations } = storeToRefs(store);
+
+  const { mutate, isPending, isError } = useMutation({
+    mutationFn: () => getTranslations(path, fields),
+    onSuccess: (data) => {
+      store.setTranslations(data.data);
+    },
+    onError: (error) => {
+      ElNotification({
+        title: "Error",
+        message: extractErrorDetail(error),
+        type: "error",
+      });
+    },
+  });
 
   return {
-    data,
-    isLoading,
+    fetch: mutate,
+    isPending,
     isError,
-
     translations,
   };
 };
 
-export default useTranslations;
+export { useTranslationsQuery, useTranslationsMutation };

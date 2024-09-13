@@ -102,6 +102,7 @@ const useCategory = (): any => {
         type: "success",
       });
       store.setCategory(data.data);
+      router.push({ name: "categories-saving", params: { id: data.data.id } });
     },
   });
 
@@ -131,7 +132,8 @@ const useCategory = (): any => {
 
     category,
     clearCategory: store.clearCategory,
-    isLoading: isCreating || isUpdating || isFetching,
+    isLoading: isCreating || isUpdating,
+    isFetching
   };
 };
 

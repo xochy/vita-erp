@@ -10,10 +10,26 @@ const initializeTranslation = (): Translation => ({
     locale: "",
     translation: "",
   },
+  relationships: {
+    translationable: {
+      data: {
+        id: "",
+        type: "",
+      },
+    },
+  },
 });
 
 export const useTranslationStore = defineStore("translation", () => {
   const translation = ref<Translation>(initializeTranslation());
+
+  interface Locale {
+    value: string;
+    label: string;
+  }
+  const locales = ref<Locale[]>([
+    { value: "es", label: "Spanish" },
+  ]);
 
   const setTranslation = (selectedTranslation: Translation): void => {
     translation.value = JSON.parse(JSON.stringify(selectedTranslation));
@@ -24,6 +40,7 @@ export const useTranslationStore = defineStore("translation", () => {
   };
 
   return {
+    locales,
     translation,
     setTranslation,
     clearTranslation,

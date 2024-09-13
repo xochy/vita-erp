@@ -6,8 +6,8 @@
   >
     <el-input
       v-model="translation"
-      :placeholder="`Enter ${fieldLowerCase} translation`"
       name="attributes.translation"
+      :placeholder="`Enter ${fieldLowerCase} translation`"
       :type="type"
       :rows="4"
     ></el-input>

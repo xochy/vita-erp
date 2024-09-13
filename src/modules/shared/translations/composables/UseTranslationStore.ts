@@ -5,10 +5,9 @@ import { extractErrorDetail } from "@/helpers/errorHelper";
 import { storeToRefs } from "pinia";
 import { useTranslationStore } from "../store/Translation";
 import { useMutation } from "@tanstack/vue-query";
-import { useRouter } from "vue-router";
 
 /**
- * @description Fetches a translation from the API.
+ * @description Fetches a translation from the API. The translation is identified by its ID.
  * @param {number} id - The ID of the translation to fetch.
  * @returns {Promise<TranslationResponse>} The translation.
  */
@@ -21,7 +20,8 @@ const getTranslation = async (id: number): Promise<TranslationResponse> => {
 };
 
 /**
- * @description Creates a new translation.
+ * @description Creates a new translation. For creating a new translation,
+ * the translationable data is required (model type and it's id).
  * @param {Translation} translation - The translation to create.
  * @returns {Promise<TranslationResponse>} The created translation.
  */
@@ -34,6 +34,14 @@ const createTranslation = async (
       data: {
         type: "translations",
         attributes: translation.attributes,
+        relationships: {
+          translationable: {
+            data: {
+              id: translation.relationships?.translationable?.data?.id,
+              type: translation.relationships?.translationable?.data?.type,
+            },
+          },
+        },
       },
     }
   );
@@ -42,7 +50,7 @@ const createTranslation = async (
 };
 
 /**
- * @description Updates a translation.
+ * @description Updates a translation. The translationable data is not required.
  * @param {Translation} translation - The translation to update.
  * @returns {Promise<TranslationResponse>} The updated translation.
  */
@@ -65,12 +73,12 @@ const updateTranslation = async (
 };
 
 /**
- * @description Deletes a translation.
- * @param {Translation} translation - The translation to delete.
+ * @description Deletes a translation. The translation is identified by its ID.
+ * @param {number} id - The ID of the translation to delete.
  * @returns {Promise<void>} A promise that resolves when the translation is deleted.
  */
-const deleteTranslation = async (translation: Translation): Promise<void> => {
-  await ApiService.vueInstance.axios.delete(`/translations/${translation.id}`);
+const deleteTranslation = async (id: number): Promise<void> => {
+  await ApiService.vueInstance.axios.delete(`/translations/${id}`);
 };
 
 /**
@@ -80,9 +88,12 @@ const deleteTranslation = async (translation: Translation): Promise<void> => {
 const useTranslation = (): any => {
   const store = useTranslationStore();
   const { translation } = storeToRefs(store);
-  const router = useRouter();
 
-  const { isPending: isFetching, mutate: fetch } = useMutation({
+  const {
+    isPending: isFetching,
+    isError: isErrorFetching,
+    mutate: fetch,
+  } = useMutation({
     mutationFn: getTranslation,
     onSuccess: (data) => {
       store.setTranslation(data.data);
@@ -96,7 +107,11 @@ const useTranslation = (): any => {
     },
   });
 
-  const { isPending: isCreating, mutate: create } = useMutation({
+  const {
+    isPending: isCreating,
+    isError: isErrorCreating,
+    mutateAsync: createAsync,
+  } = useMutation({
     mutationFn: createTranslation,
     onSuccess: (data) => {
       store.setTranslation(data.data);
@@ -105,7 +120,6 @@ const useTranslation = (): any => {
         message: "Translation created successfully",
         type: "success",
       });
-      router.push(`/translations/${data.data.id}`);
     },
     onError: (error) => {
       ElNotification({
@@ -116,7 +130,11 @@ const useTranslation = (): any => {
     },
   });
 
-  const { isPending: isUpdating, mutate: update } = useMutation({
+  const {
+    isPending: isUpdating,
+    isError: isErrorUpdating,
+    mutateAsync: updateAsync,
+  } = useMutation({
     mutationFn: updateTranslation,
     onSuccess: (data) => {
       store.setTranslation(data.data);
@@ -135,7 +153,11 @@ const useTranslation = (): any => {
     },
   });
 
-  const { isPending: isDeleting, mutate: remove } = useMutation({
+  const {
+    isPending: isDeleting,
+    isError: isErrorDeleting,
+    mutateAsync: removeAsync,
+  } = useMutation({
     mutationFn: deleteTranslation,
     onSuccess: () => {
       store.clearTranslation();
@@ -144,7 +166,6 @@ const useTranslation = (): any => {
         message: "Translation deleted successfully",
         type: "success",
       });
-      router.push("/translations");
     },
     onError: (error) => {
       ElNotification({
@@ -160,12 +181,18 @@ const useTranslation = (): any => {
 
     actions: {
       getTranslation: fetch,
-      createTranslation: create,
-      updateTranslation: update,
-      removeTranslation: remove,
+      createTranslation: createAsync,
+      updateTranslation: updateAsync,
+      removeTranslation: removeAsync,
     },
-
+    isErrorUpdating,
+    isError:
+      isErrorFetching || isErrorCreating || isErrorUpdating || isErrorDeleting,
+    isFetching,
     isLoading: isFetching || isCreating || isUpdating || isDeleting,
+
+    locales: store.locales,
+    clearTranslation: store.clearTranslation,
   };
 };
 

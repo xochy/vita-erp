@@ -23,10 +23,16 @@ export interface Relationships {
 }
 
 export interface Translationable {
-  links: TranslationableLinks;
+  links?: TranslationableLinks;
+  data ?: TranslationableData;
 }
 
 export interface TranslationableLinks {
   related: string;
   self:    string;
+}
+
+export interface TranslationableData {
+  type: string;
+  id  : string;
 }

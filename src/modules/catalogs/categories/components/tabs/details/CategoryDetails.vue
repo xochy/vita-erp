@@ -1,5 +1,7 @@
 <template>
-  <el-descriptions border>
+  <BasicSkeleton v-if="isLoading" />
+
+  <el-descriptions v-else border>
     <el-descriptions-item label="Name">
       {{ category.attributes.name }}
     </el-descriptions-item>
@@ -10,7 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import useCategory from "@/modules/catalogs/categories/composables/UseCategoryStore";
+import BasicSkeleton from "@/components/shared/skeletons/BasicSkeleton.vue";
+import type { Category } from "@/modules/catalogs/categories/interfaces";
 
-const { category } = useCategory();
+defineProps<{ category: Category; isLoading: boolean }>();
 </script>
