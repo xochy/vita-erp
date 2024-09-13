@@ -70,7 +70,6 @@ const useUser = () => {
       });
     },
     onSuccess: (data) => {
-      console.log(data);
       store.setUser(data.data);
     },
   });

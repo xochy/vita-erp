@@ -37,9 +37,15 @@
           :data-bs-target="dataBsTarget"
           >{{ actionButtonText }}</a
         > -->
-        <router-link :to="newModelPath" class="btn btn-sm fw-bold btn-primary"
-          >{{ actionButtonText }}</router-link
-        >
+        <!-- <router-link :to="newModelPath" class="btn btn-sm fw-bold btn-primary">
+          {{ actionButtonText }}
+        </router-link> -->
+
+        <template v-for="(button, index) in actionButtons" :key="index">
+          <router-link :to="button.to" class="btn btn-sm fw-bold btn-primary">
+            {{ button.title }}
+          </router-link>
+        </template>
         <!--end::Primary button-->
       </div>
       <!-- #endregion::Actions-->
@@ -54,6 +60,7 @@ import { computed, defineComponent } from "vue";
 import { toolbarWidthFluid } from "@/layouts/default-layout/config/helper";
 import KTPageTitle from "@/layouts/default-layout/components/toolbar/PageTitle.vue";
 import { useRoute } from "vue-router";
+import type { ToolbarItem } from "./config/ToolbarItem";
 
 export default defineComponent({
   name: "layout-toolbar",
@@ -63,10 +70,6 @@ export default defineComponent({
   setup() {
     const route = useRoute();
 
-    const actionButtonText = computed(() => {
-      return route.meta.actionButtonText;
-    });
-
     const dataBsToggle = computed(() => {
       return route.meta.dataBsToggle;
     });
@@ -75,16 +78,15 @@ export default defineComponent({
       return route.meta.dataBsTarget;
     });
 
-    const newModelPath = computed(() => {
-      return route.meta.newModelPath as string;
+    const actionButtons = computed(() => {
+      return route.meta.actionButtons as ToolbarItem[];
     });
 
     return {
       toolbarWidthFluid,
-      actionButtonText,
       dataBsToggle,
       dataBsTarget,
-      newModelPath,
+      actionButtons,
     };
   },
 });

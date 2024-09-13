@@ -1,17 +1,17 @@
 export interface Category {
-  type         : string;
-  id           : string;
-  attributes   : Attributes;
-  relationships: Relationships;
-  links        : CategoryLinks;
+  type          : string;
+  id            : string;
+  attributes    : Attributes;
+  relationships?: Relationships;
+  links        ?: CategoryLinks;
 }
 
 export interface Attributes {
-  name       : string;
-  description: string;
-  slug       : string;
-  createdAt  : Date;
-  updatedAt  : Date;
+  name        : string;
+  description : string;
+  slug       ?: string;
+  createdAt  ?: Date;
+  updatedAt  ?: Date;
 }
 
 export interface CategoryLinks {
@@ -19,8 +19,8 @@ export interface CategoryLinks {
 }
 
 export interface Relationships {
-  workouts    : ModelLinks;
-  translations: ModelLinks;
+  workouts    ?: ModelLinks;
+  translations?: ModelLinks;
 }
 
 export interface ModelLinks {

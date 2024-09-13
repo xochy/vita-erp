@@ -1,17 +1,17 @@
 export interface Translation {
-  type:          string;
-  id:            string;
-  attributes:    Attributes;
-  relationships: Relationships;
-  links:         TranslationLinks;
+  type          : string;
+  id            : string;
+  attributes    : Attributes;
+  relationships?: Relationships;
+  links        ?: TranslationLinks;
 }
 
 export interface Attributes {
-  column:      string;
-  locale:      string;
-  translation: string;
-  createdAt:   Date;
-  updatedAt:   Date;
+  column      : string;
+  locale      : string;
+  translation : string;
+  createdAt  ?: Date;
+  updatedAt  ?: Date;
 }
 
 export interface TranslationLinks {
@@ -23,10 +23,16 @@ export interface Relationships {
 }
 
 export interface Translationable {
-  links: TranslationableLinks;
+  links?: TranslationableLinks;
+  data ?: TranslationableData;
 }
 
 export interface TranslationableLinks {
   related: string;
   self:    string;
+}
+
+export interface TranslationableData {
+  type: string;
+  id  : string;
 }

@@ -16,8 +16,13 @@ export default [
         meta: {
           pageTitle: "Categories",
           breadcrumbs: ["Catalog", "Categories"],
-          actionButtonText: "Add Category",
-          newModelPath: "/categories-saving",
+          actionButtons: [
+            {
+              title: "Add Category",
+              icon: "plus",
+              to: { name: "categories-saving" },
+            },
+          ],
         },
       },
       // categories saving form
@@ -30,6 +35,13 @@ export default [
         meta: {
           pageTitle: "Category Saving",
           breadcrumbs: ["Catalog", "Categories", "Category Saving"],
+          actionButtons: [
+            {
+              title: "Back to Categories",
+              icon: "arrow-left",
+              to: { name: "categories" },
+            },
+          ],
         },
       },
     ],

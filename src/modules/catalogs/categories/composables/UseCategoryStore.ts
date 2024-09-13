@@ -1,52 +1,139 @@
-import { ref, watch } from "vue";
-import type { Category, CategoryResponse } from "../interfaces";
 import ApiService from "@/core/services/ApiService";
-import { useQuery } from "@tanstack/vue-query";
+import type { Category, CategoryResponse } from "../interfaces";
+import { ElNotification } from "element-plus";
+import { extractErrorDetail } from "@/helpers/errorHelper";
+import { storeToRefs } from "pinia";
+import { useCategoryStore } from "../store/Category";
+import { useMutation } from "@tanstack/vue-query";
+import { useRouter } from "vue-router";
 
 /**
- * Fetches a category from the API.
- *
+ * @descriptio Fetches a category from the API.
  * @param {number} id - The ID of the category to fetch.
  * @returns {Promise<CategoryResponse>} The category.
  */
 const getCategory = async (id: number): Promise<CategoryResponse> => {
-  const { data } =
-    await ApiService.vueInstance.axios.get<CategoryResponse>(`categories/${id}`);
+  const { data } = await ApiService.vueInstance.axios.get<CategoryResponse>(
+    `categories/${id}`
+  );
 
   return data;
 };
 
 /**
- * Composable function to manage the category.
- *
- * @param {number} id - The ID of the category to fetch.
- * @returns {Object} The category composable.
+ * @description Creates a new category.
+ * @param {Category} category - The category to create.
+ * @returns {Promise<CategoryResponse>} The created category.
  */
-const useCategory = (id: number) => {
-  const category = ref<Category>();
-
-  const { data, isLoading } = useQuery({
-    queryKey: ["category", id],
-    queryFn: () => getCategory(id),
-    retry: 3,
-    retryDelay: 1000,
-  });
-
-  watch(
-    data,
-    (categoryResponse) => {
-      if (categoryResponse) {
-        const { data: categoryData } = { ...categoryResponse };
-        category.value = categoryData;
-      }
-    },
-    { immediate: true }
+const createCategory = async (
+  category: Category
+): Promise<CategoryResponse> => {
+  const { data } = await ApiService.vueInstance.axios.post<CategoryResponse>(
+    "/categories",
+    {
+      data: {
+        type: "categories",
+        attributes: category.attributes,
+      },
+    }
   );
 
+  return data;
+};
+
+/**
+ * @description Updates a category.
+ * @param {Category} category - The category to update.
+ * @returns {Promise<CategoryResponse>} The updated category.
+ */
+const updateCategory = async (
+  category: Category
+): Promise<CategoryResponse> => {
+  const { data } = await ApiService.vueInstance.axios.patch<CategoryResponse>(
+    `/categories/${category.id}`,
+    {
+      data: {
+        type: "categories",
+        id: category.id,
+        attributes: category.attributes,
+      },
+    }
+  );
+
+  return data;
+};
+
+/**
+ * @description Composable function to manage the category.
+ * @returns {object} The category and the loading state.
+ */
+const useCategory = (): any => {
+  const store = useCategoryStore();
+  const { category } = storeToRefs(store);
+  const router = useRouter();
+
+  const { isPending: isFetching, mutate: fetch } = useMutation({
+    mutationFn: getCategory,
+    onError: (error) => {
+      ElNotification({
+        title: "Error",
+        message: extractErrorDetail(error),
+        type: "error",
+      });
+    },
+    onSuccess: (data) => {
+      store.setCategory(data.data);
+    },
+  });
+
+  const { isPending: isCreating, mutate: create } = useMutation({
+    mutationFn: createCategory,
+    onError: (error) => {
+      ElNotification({
+        title: "Error",
+        message: extractErrorDetail(error),
+        type: "error",
+      });
+    },
+    onSuccess: (data) => {
+      ElNotification({
+        title: "Success",
+        message: "Category created successfully",
+        type: "success",
+      });
+      store.setCategory(data.data);
+      router.push({ name: "categories-saving", params: { id: data.data.id } });
+    },
+  });
+
+  const { isPending: isUpdating, mutate: update } = useMutation({
+    mutationFn: updateCategory,
+    onError: (error) => {
+      ElNotification({
+        title: "Error",
+        message: extractErrorDetail(error),
+        type: "error",
+      });
+    },
+    onSuccess: (data) => {
+      ElNotification({
+        title: "Success",
+        message: "Category updated successfully",
+        type: "success",
+      });
+      store.setCategory(data.data);
+    },
+  });
+
   return {
-    // Properties
+    getCategory: fetch,
+    createCategory: create,
+    updateCategory: update,
+
     category,
-    isLoading,
+    clearCategory: store.clearCategory,
+    isLoading: isCreating || isUpdating,
+    isFetching
   };
 };
 

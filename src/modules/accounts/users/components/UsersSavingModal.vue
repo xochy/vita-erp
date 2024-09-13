@@ -96,8 +96,6 @@ const submit = () => {
   }
 
   userSavingFormRef.value.validate(async (valid: boolean) => {
-    console.log(user.value.relationships?.roles.data);
-
     if (valid) {
       isLoading.value = true;
 
@@ -139,8 +137,6 @@ const loadUser = async (selectedUser: User) => {
   const userRolesFlat = rolesFlat.value.filter((role) =>
     relatedRolesIds.includes(role.id.toString())
   );
-  console.log(userRolesFlat);
-
   user.value.relationships!.roles.data = userRolesFlat;
 };
 
