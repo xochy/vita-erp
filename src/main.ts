@@ -8,6 +8,7 @@ TIP: To get started with clean router change path to @/router/clean.ts.
  */
 import router from "./router/clean";
 import ElementPlus from "element-plus";
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import i18n from "@/core/plugins/i18n";
 
 //imports for app initialization
@@ -23,6 +24,10 @@ import "@/core/plugins/prismjs";
 import { VueQueryPlugin } from '@tanstack/vue-query'
 
 const app = createApp(App);
+
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
 
 app.use(createPinia());
 app.use(router);
