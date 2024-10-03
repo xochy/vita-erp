@@ -4,7 +4,6 @@ export interface Directory {
   attributes    : Attributes;
   relationships?: Relationships;
   links        ?: DirectoryLinks;
-  meta         ?: Meta;
 }
 
 export interface Attributes {
@@ -31,21 +30,4 @@ export interface Medias {
 export interface MediasLinks {
   related: string;
   self   : string;
-}
-
-/* ---------------------------------- Media --------------------------------- */
-
-export interface Meta {
-  media: Media;
-}
-
-export interface Media {
-  action: string;
-  path  : string;
-  data : File[];
-}
-
-export interface File {
-  filename: string;
-  content: string;
 }

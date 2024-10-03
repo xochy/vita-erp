@@ -6,23 +6,35 @@
     sub-title="An error occurred while fetching files."
   />
 
-  <FilesTable
-    v-else
-    :files="combinedList"
-    :is-loading="isLoadingDirectories || isLoadingMedias"
-    @item-selected="handleItemSelected"
-  />
+  <template v-else>
+    <Files.FilesNavigator
+      class="mb-4"
+      :title="directory.attributes.name"
+      :history="history"
+      :medias-count="medias.length"
+      :directories-count="directories.length"
+      @change-directory="handleItemSelected"
+      @upload-click="$refs.uploaderFileModal!.open()"
+    />
 
-  <UploaderFileModal
-    :percentage="uploadPercentage"
-    @upload-files="handleUploadingFiles"
-  />
+    <Files.FilesTable
+      :files="combinedList"
+      :is-loading="isLoadingDirectories || isLoadingMedias"
+      @item-selected="handleItemSelected"
+    />
+
+    <Files.UploaderFileModal
+      ref="uploaderFileModal"
+      :path="path"
+      :directory-id="directory.id"
+      @add-file="addMedia"
+    />
+  </template>
 </template>
 
 <script setup lang="ts">
-import FilesTable from "../components/FilesTable.vue";
-import UploaderFileModal from "../components/UploaderFileModal.vue";
-import type { Directory, Media, Meta, File as RequestFile } from "../interfaces";
+import * as Files from "@/modules/media/files/components";
+import type { Directory, Media } from "../interfaces";
 import useDirectoriesStore from "../composables/UseDirectoriesStore";
 import useDirectory from "../composables/UseDirectoryStore";
 import useMediasStore from "../composables/UseMediasStore";
@@ -31,10 +43,11 @@ import { toPascalCase } from "@/helpers/stringUtils";
 
 /* ------------------------------ Props & Refs ------------------------------ */
 
-const { directory, getDirectory, addMediaToDirectory, uploadPercentage } = useDirectory();
+const { directory, getDirectory, history } = useDirectory();
 
 const {
   medias,
+  addMedia,
   getMedias,
   status: { isLoading: isLoadingMedias, isError: isMediasError },
 } = useMediasStore();
@@ -60,27 +73,21 @@ const combinedList = computed(() => {
   ];
 });
 
+const path = computed(() => {
+  return (
+    history.value.map((directory: Directory) => directory.attributes.name).join("/") + "/"
+  );
+});
+
 /* -------------------------------- Functions ------------------------------- */
 
 const handleItemSelected = (item: Directory | Media) => {
-  if (item.type === "Folder") {
+  const directoriesTypes = ["Folder", "directories"];
+
+  if (directoriesTypes.includes(item.type)) {
     getDirectory(item.id);
     getDirectories(item.id);
     getMedias(item.id);
   }
-};
-
-const handleUploadingFiles = (files: RequestFile[]) => {
-  const meta: Meta = {
-    media: {
-      action: "store",
-      path: "root/",
-      data: files,
-    },
-  };
-
-  directory.value.meta = meta;
-
-  addMediaToDirectory(directory.value);
 };
 </script>

@@ -67,6 +67,7 @@ const useMedias = (): any => {
 
     medias,
     getMedias: store.setParentId,
+    addMedia: store.addMedia,
   };
 }
 

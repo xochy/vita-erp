@@ -1,92 +1,111 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="Upload file" width="700">
+  <el-dialog v-model="dialogVisible" width="700" @close="handleOnClose">
+    <template #header>
+      <h3>Upload File</h3>
+    </template>
     <el-upload
+      v-model:file-list="files"
+      ref="uploadRef"
       drag
       multiple
-      :http-request="uploadFiles"
+      :action="url"
+      :headers="headers"
       :auto-upload="true"
-      :on-change="handleChange"
-      :on-remove="handleChange"
       :before-upload="handleBeforeUpload"
+      :on-error="handleOnError"
+      :on-success="handleOnSuccess"
+      :data="{ directoryId, path }"
     >
       <el-icon class="el-icon--upload"><upload-filled /></el-icon>
       <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
       <template #tip>
-        <div class="el-upload__tip">jpg/png files with a size less than 500kb</div>
+        <div class="el-upload__tip">Files with a size less or equal than 1GB</div>
       </template>
     </el-upload>
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button v-if="canShowUploadButton" type="primary" @click="uploadFiles">
-          Upload
-        </el-button>
       </div>
     </template>
-    {{ selectedFiles }}
-    <el-progress v-show="canShowProgressPercentage" :percentage="percentage" />
   </el-dialog>
 </template>
 
 <script setup lang="ts">
-import type { File as RequestFile } from "../interfaces";
-import type { UploadProps, UploadUserFile } from "element-plus";
-import { ElMessage } from "element-plus";
+import ApiService from "@/core/services/ApiService";
+import JwtService from "@/core/services/JwtService";
+import type {
+  UploadFile,
+  UploadFiles,
+  UploadInstance,
+  UploadUserFile,
+} from "element-plus";
+import { ElNotification } from "element-plus";
 import { computed, ref } from "vue";
-import { convertFileToBase64 } from "../helpers/fileFormatConverter";
+import { extractErrorDetail } from "@/helpers/errorHelper";
 import { handleBeforeUpload } from "../helpers/fileUploadingValidations";
+import type { Media, MediaResponse } from "../interfaces";
 
 /* ------------------------------ Props & Refs ------------------------------ */
 
-const props = defineProps<{ percentage: number }>();
+defineProps<{ directoryId: string; path: string }>();
 
-const dialogVisible = ref(true);
-const selectedFiles = ref<UploadUserFile[]>([]);
+const dialogVisible = ref(false);
+const uploadRef = ref<UploadInstance>();
+const files = ref<UploadUserFile[]>([]);
 
 /* -------------------------------- Computed -------------------------------- */
 
-const canShowUploadButton = computed(() => selectedFiles.value.length > 0);
-const canShowProgressPercentage = computed(
-  () => props.percentage > 0 && props.percentage < 100
+const url = computed(
+  () => `${ApiService.vueInstance.axios.defaults.baseURL}medias/manage/uploadFile`
 );
+
+const headers = computed(() => ({
+  Authorization: `Bearer ${JwtService.getToken()}`,
+}));
 
 /* -------------------------------- Functions ------------------------------- */
 
-/**
- * @description Handles the change event of the file upload component
- * @param {UploadUserFile} _uploadFile - The file that was uploaded
- * @param {UploadUserFile[]} uploadFiles - The list of files that were uploaded
- */
-const handleChange: UploadProps["onChange"] = (
-  _uploadFile: UploadUserFile,
-  uploadFiles: UploadUserFile[]
-) => {
-  selectedFiles.value = uploadFiles;
+const handleOnError = (error: any) => {
+  ElNotification({
+    title: "Error",
+    message: extractErrorDetail(error),
+    type: "error",
+  });
 };
 
-/**
- * @description Converts the selected files to Base64 and emits the event to upload them
- * @returns {Promise<void>}
- * @throws {Error} If the files cannot be converted to Base64
- */
-const uploadFiles = async (): Promise<void> => {
-  try {
-    const base64Files = await Promise.all(
-      selectedFiles.value.map((file) => convertFileToBase64(file))
-    );
-    const filesWithBase64Content = selectedFiles.value.map((file, index) => ({
-      filename: file.name,
-      content: base64Files[index],
-    }));
-    emit("upload-files", filesWithBase64Content);
-  } catch (error) {
-    ElMessage.error("Failed to convert files to Base64");
+const handleOnSuccess = (
+  response: MediaResponse,
+  uploadFile: UploadFile,
+  _uploadFiles: UploadFiles
+) => {
+  ElNotification({
+    title: "Success",
+    message: `File ${uploadFile.name} uploaded successfully`,
+    type: "success",
+  });
+
+  const { data: media } = response;
+  emit("add-file", media);
+};
+
+const handleOnClose = () => {
+  for (const file of files.value) {
+    uploadRef.value?.abort(file as UploadFile);
+    uploadRef.value?.clearFiles();
   }
 };
 
 /* ---------------------------------- Emits --------------------------------- */
 
 const emit = defineEmits({
-  "upload-files": (files: RequestFile[]) => files,
+  "add-file": (media: Media) => media,
+});
+
+/* --------------------------------- Expose --------------------------------- */
+
+defineExpose({
+  open: () => {
+    dialogVisible.value = true;
+  },
 });
 </script>

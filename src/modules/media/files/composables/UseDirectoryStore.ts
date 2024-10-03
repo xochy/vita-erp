@@ -7,8 +7,6 @@ import { useDirectoryStore } from "../store/Directory";
 import { useMutation, useQuery } from "@tanstack/vue-query";
 import { watch } from "vue";
 
-const store = useDirectoryStore();
-
 /**
  * @description Fetches a directory from the API.
  * @param {number} id - The ID of the directory to fetch.
@@ -65,31 +63,6 @@ const updateDirectory = async (
   return data;
 };
 
-const addMediaToDirectory = async (
-  directory: Directory
-): Promise<DirectoryResponse> => {
-  const { data } = await ApiService.vueInstance.axios.patch<DirectoryResponse>(
-    `/directories/${directory.id}`,
-    {
-      data: {
-        type: "directories",
-        id: directory.id,
-        meta: directory.meta,
-      },
-    },
-    {
-      onUploadProgress: (progressEvent) => {
-        const percentCompleted = progressEvent.total
-          ? Math.round((progressEvent.loaded * 100) / progressEvent.total)
-          : 0;
-        store.setUploadPercentage(percentCompleted);
-      },
-    }
-  );
-
-  return data;
-};
-
 /**
  * @description Deletes a directory.
  * @param {number} id - The ID of the directory to delete.
@@ -103,7 +76,8 @@ const deleteDirectory = async (id: number): Promise<void> => {
  * @returns {Object} The directory store.
  */
 const useDirectory = (): any => {
-  const { id, directory, uploadPercentage } = storeToRefs(store);
+  const store = useDirectoryStore();
+  const { id, directory, history } = storeToRefs(store);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["directory", id],
@@ -190,29 +164,11 @@ const useDirectory = (): any => {
     },
   });
 
-  const { isPending: isAddingMedia, mutate: addMedia } = useMutation({
-    mutationFn: addMediaToDirectory,
-    onError: (error) => {
-      ElNotification({
-        title: "Error",
-        message: extractErrorDetail(error),
-        type: "error",
-      });
-    },
-    onSuccess: () => {
-      ElNotification({
-        title: "Success",
-        message: "Media added successfully",
-        type: "success",
-      });
-    },
-  });
-
   return {
     fetchDirectory: fetch,
     createDirectory: create,
     updateDirectory: update,
-    addMediaToDirectory: addMedia,
+    deleteDirectory: remove,
 
     directory,
     clearCategory: store.clearDirectory,
@@ -220,7 +176,7 @@ const useDirectory = (): any => {
     isFetching,
 
     getDirectory: store.setId,
-    uploadPercentage,
+    history,
   };
 };
 

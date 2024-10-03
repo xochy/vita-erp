@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 import type { Media } from '../interfaces';
 
 /**
@@ -7,18 +7,22 @@ import type { Media } from '../interfaces';
  */
 export const useMediasStore = defineStore('medias', () => {
   const parentId = ref<number>(1);
-  const medias = ref<Media[]>([]);
+  const medias = reactive<Media[]>([]);
 
   return {
     medias,
     parentId,
 
     setMedias(value: Media[]) {
-      medias.value = value;
+      medias.splice(0, medias.length, ...value);
     },
 
     setParentId(value: number) {
       parentId.value = value;
     },
+
+    addMedia(media: Media) {
+      medias.push(media);
+    }
   };
 });

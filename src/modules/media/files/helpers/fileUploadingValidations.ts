@@ -35,7 +35,5 @@ export const handleBeforeUpload = (rawFile: UploadRawFile): boolean => {
     ElMessage.error("The file size must be less than 1GB!");
   }
 
-  console.log(isValidMimeType && isLessThan1GB);
-
   return isValidMimeType && isLessThan1GB;
 };
