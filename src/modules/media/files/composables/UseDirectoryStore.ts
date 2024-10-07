@@ -7,6 +7,8 @@ import { useDirectoryStore } from "../store/Directory";
 import { useMutation, useQuery } from "@tanstack/vue-query";
 import { watch } from "vue";
 
+let parentId = 0;
+
 /**
  * @description Fetches a directory from the API.
  * @param {number} id - The ID of the directory to fetch.
@@ -34,6 +36,14 @@ const createDirectory = async (
       data: {
         type: "directories",
         attributes: directory.attributes,
+        relationships: {
+          parent: {
+            data: {
+              type: "directories",
+              id: parentId.toString(),
+            },
+          },
+        },
       },
     }
   );
@@ -77,9 +87,11 @@ const deleteDirectory = async (id: number): Promise<void> => {
  */
 const useDirectory = (): any => {
   const store = useDirectoryStore();
-  const { id, directory, history } = storeToRefs(store);
+  const { id, directory, history, editableDirectory } = storeToRefs(store);
 
-  const { data, isLoading, isError } = useQuery({
+  parentId = id.value;
+
+  const { data } = useQuery({
     queryKey: ["directory", id],
     queryFn: () => getDirectory(id.value),
     retry: 3,
@@ -116,13 +128,12 @@ const useDirectory = (): any => {
         type: "error",
       });
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       ElNotification({
         title: "Success",
         message: "Directory created successfully",
         type: "success",
       });
-      store.setDirectory(data.data);
     },
   });
 
@@ -171,12 +182,18 @@ const useDirectory = (): any => {
     deleteDirectory: remove,
 
     directory,
+    editableDirectory,
+
     clearCategory: store.clearDirectory,
     isLoading: isCreating || isUpdating,
     isFetching,
+    isDeleting,
 
     getDirectory: store.setId,
     history,
+
+    setEditableDirectory: store.setEditableDirectory,
+    clearEditableDirectory: store.clearEditableDirectory,
   };
 };
 

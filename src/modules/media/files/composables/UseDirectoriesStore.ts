@@ -67,6 +67,8 @@ const useDirectories = (): any => {
 
     directories,
     getDirectories: store.setParentId,
+    addDirectory: store.addDirectory,
+    updateDirectory: store.updateDirectory,
   };
 };
 

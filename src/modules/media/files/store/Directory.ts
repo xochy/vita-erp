@@ -12,9 +12,11 @@ const initializeDirectory = (): Directory => ({
 
 export const useDirectoryStore = defineStore("directory", () => {
   const id = ref<number>(1);
+
   const directory = ref<Directory>(initializeDirectory());
+  const editableDirectory = ref<Directory>(initializeDirectory());
+
   const history = reactive<Directory[]>([]);
-  const directoryPath = ref<string>("root/");
 
   const setId = (value: number): void => {
     id.value = value;
@@ -28,10 +30,18 @@ export const useDirectoryStore = defineStore("directory", () => {
     else history.push(JSON.parse(JSON.stringify(selectedDirectory)));
   };
 
+  const setEditableDirectory = (selectedDirectory: Directory): void => {
+    editableDirectory.value = JSON.parse(JSON.stringify(selectedDirectory));
+  }
+
   const clearDirectory = (): void => {
     directory.value = initializeDirectory();
     history.length = 0;
   };
+
+  const clearEditableDirectory = (): void => {
+    editableDirectory.value = initializeDirectory();
+  }
 
   return {
     id,
@@ -40,6 +50,9 @@ export const useDirectoryStore = defineStore("directory", () => {
     setDirectory,
     clearDirectory,
     history,
-    directoryPath,
+
+    editableDirectory,
+    setEditableDirectory,
+    clearEditableDirectory,
   };
 });
