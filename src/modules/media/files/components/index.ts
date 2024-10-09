@@ -1,5 +1,13 @@
-import FilesTable from "./FilesTable.vue";
-import UploaderFileModal from "./UploaderFileModal.vue";
+import FileViewerModal from "./FileViewerModal.vue";
 import FilesNavigator from "./FilesNavigator.vue";
+import FilesTable from "./FilesTable.vue";
+import SavingDirectoryModal from "./SavingDirectoryModal.vue";
+import UploaderFileModal from "./UploaderFileModal.vue";
 
-export { FilesTable, UploaderFileModal, FilesNavigator };
+export {
+  FileViewerModal,
+  FilesNavigator,
+  FilesTable,
+  SavingDirectoryModal,
+  UploaderFileModal,
+};

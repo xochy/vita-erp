@@ -1,8 +1,8 @@
 export interface Media {
-  type      : string;
-  id        : string;
+  type: string;
+  id: string;
   attributes: Attributes;
-  links     : MediaLinks;
+  links: MediaLinks;
 }
 
 export interface Attributes {
@@ -14,6 +14,7 @@ export interface Attributes {
   extension        : string;
   humanReadableSize: string;
   size             : number;
+  publicUrl        : string;
   createdAt        : Date;
   updatedAt        : Date;
 }
@@ -24,5 +25,5 @@ export interface MediaLinks {
 
 export interface MediasListResponseLinks {
   related: string;
-  self   : string;
+  self: string;
 }
