@@ -6,25 +6,45 @@
     @row-dblclick="$emit('item-selected', $event)"
     @selection-change="handleSelectionChange"
   >
+    <!-- #region::Checkbox -->
     <el-table-column type="selection" width="55" />
-    <el-table-column label="Name">
+    <!-- #endregion::Checkbox -->
+
+    <!-- #region::Icon -->
+    <el-table-column width="40">
       <template #default="scope">
-        <div style="display: flex; align-items: center">
-          <el-icon><component :is="getFileIcon(scope.row.type)" /></el-icon>
-          <span style="margin-left: 10px">{{ scope.row.attributes.name }}</span>
-        </div>
+        <el-icon>
+          <component :is="getFileIcon(scope.row.attributes.mimeType)" />
+        </el-icon>
       </template>
     </el-table-column>
+    <!-- #endregion::Icon -->
+
+    <!-- #region::Name -->
+    <el-table-column label="Name" prop="attributes.name" show-overflow-tooltip />
+    <!-- #endregion::Name -->
+
+    <!-- #region::Date modified -->
     <el-table-column
       prop="attributes.createdAt"
       label="Date modified"
       :formatter="formatDateColumn"
     />
+    <!-- #endregion::Date modified -->
+
+    <!-- #region::Type -->
     <el-table-column prop="type" label="Type" />
+    <!-- #endregion::Type -->
+
+    <!-- #region::Size -->
     <el-table-column prop="attributes.humanReadableSize" label="Size" />
-    <el-table-column fixed="right" label="Operations" min-width="120">
+    <!-- #endregion::Size -->
+
+    <!-- #region::Operations -->
+    <el-table-column fixed="right" label="Operations" min-width="120" align="right">
       <template #default="scope">
         <el-button
+          v-if="scope.row.attributes.mimeType"
           :icon="View"
           size="small"
           circle
@@ -39,6 +59,7 @@
         <el-button :icon="Delete" size="small" circle />
       </template>
     </el-table-column>
+    <!-- #endregion::Operations -->
   </el-table>
   {{ selectedFiles }}
 </template>

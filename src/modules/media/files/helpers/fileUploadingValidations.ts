@@ -29,7 +29,7 @@ export const handleBeforeUpload = (rawFile: UploadRawFile): boolean => {
   const isLessThan1GB = rawFile.size < 1024 * 1024 * 1024;
 
   if (!isValidMimeType) {
-    ElMessage.error("The file must be in JPG or PNG format!");
+    ElMessage.error("The file must be a valid image, video, audio, or document!");
   }
   if (!isLessThan1GB) {
     ElMessage.error("The file size must be less than 1GB!");

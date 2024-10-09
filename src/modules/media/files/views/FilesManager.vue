@@ -50,7 +50,6 @@ import useDirectoriesStore from "../composables/UseDirectoriesStore";
 import useDirectory from "../composables/UseDirectoryStore";
 import useMediasStore from "../composables/UseMediasStore";
 import { computed, ref } from "vue";
-import { toPascalCase } from "@/helpers/stringUtils";
 
 /* ------------------------------ Props & Refs ------------------------------ */
 
@@ -83,11 +82,11 @@ const combinedList = computed(() => {
   return [
     ...directories.value.map((directory: Directory) => ({
       ...directory,
-      type: "Folder",
+      type: "folder",
     })),
     ...medias.value.map((media: Media) => ({
       ...media,
-      type: toPascalCase(media.attributes.type),
+      type: media.attributes.mimeType,
     })),
   ];
 });
@@ -101,7 +100,7 @@ const path = computed(() => {
 /* -------------------------------- Functions ------------------------------- */
 
 const handleItemSelected = (item: Directory | Media) => {
-  const directoriesTypes = ["Folder", "directories"];
+  const directoriesTypes = ["folder", "directories"];
 
   if (directoriesTypes.includes(item.type)) {
     getDirectory(item.id);
@@ -111,7 +110,7 @@ const handleItemSelected = (item: Directory | Media) => {
 };
 
 const handleEditItem = (item: Directory | Media) => {
-  const directoriesTypes = ["Folder", "directories"];
+  const directoriesTypes = ["folder", "directories"];
 
   if (directoriesTypes.includes(item.type)) {
     setEditableDirectory(item);

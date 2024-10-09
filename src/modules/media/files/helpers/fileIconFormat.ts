@@ -3,21 +3,36 @@ import {
   Picture,
   Document,
   Film,
-  Tickets,
+  VideoPlay,
 } from "@element-plus/icons-vue";
 
 export const getFileIcon = (type: string) => {
   switch (type) {
-    case "Folder":
-      return Folder;
-    case "Image":
-    case "Svg":
+    case "image/jpeg":
+    case "image/png":
+    case "image/svg+xml":
+    case "image/gif":
+    case "image/webp":
       return Picture;
-    case "video":
+    case "audio/mpeg":
+    case "audio/ogg":
+    case "audio/wav":
+    case "audio/x-ms-wma":
+    case "audio/x-wav":
+      return VideoPlay;
+    case "video/mp4":
+    case "video/quicktime":
+    case "video/3gpp":
+    case "video/x-msvideo":
+    case "video/x-flv":
       return Film;
-    case "Document":
+    case "application/pdf":
+    case "application/msword":
+    case "application/vnd.ms-excel":
+    case "application/vnd.ms-powerpoint":
+    case "application/zip":
       return Document;
     default:
-      return Tickets;
+      return Folder;
   }
 };
