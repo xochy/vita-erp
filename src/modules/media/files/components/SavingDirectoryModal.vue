@@ -70,6 +70,7 @@ const submit = () => {
 
 const handleOnClose = () => {
   clearEditableDirectory();
+  savingFolderFormRef.value?.resetFields();
 };
 
 /* ---------------------------------- Emits --------------------------------- */
