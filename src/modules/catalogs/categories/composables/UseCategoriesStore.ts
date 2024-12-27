@@ -4,7 +4,7 @@ import { ElNotification } from "element-plus";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 import { useCategoriesStore } from "../store/Categories";
-import { useQuery } from "@tanstack/vue-query";
+import { useQuery, useQueryClient } from "@tanstack/vue-query";
 import { watch } from "vue";
 
 /**
@@ -51,6 +51,7 @@ const getCategories = async (
 const useCategories = (fields: string): any => {
   const store = useCategoriesStore();
   const authStore = useAuthStore();
+  const queryClient = useQueryClient();
   const { currentPage, perPage, total, categories } = storeToRefs(store);
 
   const { data, isLoading, isError } = useQuery({
@@ -72,16 +73,24 @@ const useCategories = (fields: string): any => {
     }
   });
 
+  const refetchCategories = async () => {
+    queryClient.invalidateQueries({
+      queryKey: ["categories?page[number]="],
+    });
+  };
+
   return {
     status: {
       isError,
       isLoading,
     },
 
-    pagination: {
+    pag: {
       total,
       perPage,
       currentPage,
+
+      getPage: store.setCurrentPage,
     },
 
     Permissions: {
@@ -89,7 +98,7 @@ const useCategories = (fields: string): any => {
     },
 
     categories,
-    getPage: store.setCurrentPage,
+    refetchCategories,
   };
 };
 

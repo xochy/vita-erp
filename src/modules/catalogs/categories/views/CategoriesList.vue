@@ -31,8 +31,7 @@ const FIELDS_SET = "name,description,createdAt,translations";
 
 const {
   categories,
-  getPage,
   status: { isLoading, isError },
-  pagination: { currentPage, perPage, total },
+  pag: { currentPage, perPage, total, getPage },
 } = useCategories(FIELDS_SET);
 </script>
