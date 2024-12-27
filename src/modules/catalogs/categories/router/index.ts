@@ -27,8 +27,8 @@ export default [
       },
       // categories saving form
       {
-        // optional id parameter
-        path: "/categories-saving/:id?",
+        // optional id parameter and tab parameter
+        path: "/categories-saving/:id?/:tab?",
         name: "categories-saving",
         component: () =>
           import("@/modules/catalogs/categories/views/CategoriesSaving.vue"),

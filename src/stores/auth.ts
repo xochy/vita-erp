@@ -2,6 +2,7 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 import ApiService from "@/core/services/ApiService";
 import JwtService from "@/core/services/JwtService";
+import { extractErrorDetail } from "@/helpers/errorHelper";
 
 export interface User {
   name: string;
@@ -80,8 +81,8 @@ export const useAuthStore = defineStore("auth", () => {
       .then(({ data }) => {
         setAuth(data);
       })
-      .catch(({ response }) => {
-        setError(response.data.errors);
+      .catch((error) => {
+        setError(extractErrorDetail(error));
       });
   }
 

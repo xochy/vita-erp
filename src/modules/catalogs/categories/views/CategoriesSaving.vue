@@ -2,9 +2,13 @@
   <BasicSkeleton v-if="isFetching" />
 
   <el-tabs v-else v-model="activeName">
+    <!-- #region::Tab for category form -->
     <el-tab-pane label="Data" name="categoryData">
       <CategoryForm @saved="activeName = 'details'" />
     </el-tab-pane>
+    <!-- #endregion::Tab for category form -->
+
+    <!-- #region::Tab for category translations -->
     <el-tab-pane lazy label="Translations" name="translations">
       <TranslationsCollapse
         v-if="category.relationships?.translations"
@@ -15,9 +19,14 @@
       />
       <el-empty v-else description="No category created." :image-size="100" />
     </el-tab-pane>
+    <!-- #endregion::Tab for category translations -->
+
+    <!-- #region::Tab for category details -->
     <el-tab-pane lazy label="Details" name="details">
-      <CategoryDetails :category="category" :is-loading="isFetching" />
+      <CategoryDetails v-if="category.id" :category="category" :is-loading="isFetching" />
+      <el-empty v-else description="No category created." :image-size="100" />
     </el-tab-pane>
+    <!-- #endregion::Tab for category details -->
   </el-tabs>
 </template>
 
@@ -32,7 +41,12 @@ import { onMounted, onUnmounted, ref } from "vue";
 import { useRoute } from "vue-router";
 
 const activeName = ref("categoryData");
-const { category, getCategory, clearCategory, isFetching } = useCategory();
+const {
+  category,
+  getCategory,
+  clearCategory,
+  status: { isFetching },
+} = useCategory();
 const route = useRoute();
 
 /* ---------------------------------- Hooks --------------------------------- */
@@ -47,11 +61,16 @@ onUnmounted(() => {
 
 /* -------------------------------- Functions ------------------------------- */
 
-const loadCategory = () => {
+/**
+ * @description Load the category and set the active tab based on the route
+ * @returns {void}
+ */
+const loadCategory = (): void => {
   const categoryId = route.params.id;
+  const activeTab = route.params.tab;
   if (categoryId) {
     getCategory(categoryId);
-    activeName.value = "details";
+    activeName.value = Array.isArray(activeTab) ? activeTab[0] : activeTab;
   }
 };
 </script>

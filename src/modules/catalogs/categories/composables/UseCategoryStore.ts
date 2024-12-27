@@ -4,8 +4,9 @@ import { ElNotification } from "element-plus";
 import { extractErrorDetail } from "@/helpers/errorHelper";
 import { storeToRefs } from "pinia";
 import { useCategoryStore } from "../store/Category";
-import { useMutation } from "@tanstack/vue-query";
+import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import { useRouter } from "vue-router";
+import { reactive } from "vue";
 
 /**
  * @descriptio Fetches a category from the API.
@@ -64,6 +65,15 @@ const updateCategory = async (
 };
 
 /**
+ * @description Deletes a category.
+ * @param {number} categoryId - The ID of the category to delete.
+ * @returns {Promise<void>}
+ */
+const deleteCategory = async (categoryId: number): Promise<void> => {
+  await ApiService.vueInstance.axios.delete(`/categories/${categoryId}`);
+};
+
+/**
  * @description Composable function to manage the category.
  * @returns {object} The category and the loading state.
  */
@@ -71,6 +81,7 @@ const useCategory = (): any => {
   const store = useCategoryStore();
   const { category } = storeToRefs(store);
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { isPending: isFetching, mutate: fetch } = useMutation({
     mutationFn: getCategory,
@@ -125,15 +136,43 @@ const useCategory = (): any => {
     },
   });
 
+  const { isPending: isDeleting, mutate: destroy } = useMutation({
+    mutationFn: deleteCategory,
+    onError: (error) => {
+      ElNotification({
+        title: "Error",
+        message: extractErrorDetail(error),
+        type: "error",
+      });
+    },
+    onSuccess: () => {
+      ElNotification({
+        title: "Success",
+        message: "Category deleted successfully",
+        type: "success",
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["categories?page[number]="],
+      });
+    },
+  });
+
   return {
     getCategory: fetch,
     createCategory: create,
     updateCategory: update,
+    deleteCategory: destroy,
+
+    status: reactive({
+      isFetching,
+      isCreating,
+      isUpdating,
+      isDeleting,
+    }),
 
     category,
     clearCategory: store.clearCategory,
-    isLoading: isCreating || isUpdating,
-    isFetching
   };
 };
 
