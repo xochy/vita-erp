@@ -2,15 +2,12 @@
   <el-table v-loading="isLoading" :data="categories" style="width: 100%" height="480">
     <el-table-column fixed type="expand" align="left">
       <template #default="props">
-        <TranslationsList
-          :category-id="props.row.id"
-          :path="props.row.relationships.translations.links.related"
-        />
+        <TranslationsList :path="props.row.relationships.translations.links.related" />
       </template>
     </el-table-column>
     <el-table-column label="Name" width="180">
       <template #default="props">
-        <el-link @click="loadCategory(props.row)">{{
+        <el-link @click="handleLoadCategory(props.row)">{{
           props.row.attributes.name
         }}</el-link>
       </template>
@@ -42,8 +39,8 @@
 import TranslationsList from "@/modules/shared/translations/views/TranslationsList.vue";
 import type { Category } from "../interfaces";
 import useCategory from "../composables/UseCategoryStore";
-import { ElMessageBox } from "element-plus";
 import { useRouter } from "vue-router";
+import { useDeleteHandler } from "@/modules/shared/utilities/UseModelDeleteHandler";
 
 /* ------------------------------ Props & Refs ------------------------------ */
 
@@ -51,16 +48,16 @@ defineProps<{ categories: Category[]; isLoading: boolean }>();
 
 const route = useRouter();
 const { deleteCategory } = useCategory();
+const { handleDelete } = useDeleteHandler();
 
 /* -------------------------------- Functions ------------------------------- */
 
 /**
- * @description Load the category details when the user clicks on the
- * category name
+ * @description Load the category details.
  * @param {Category} category
  * @returns {void}
  */
-const loadCategory = (category: Category): void => {
+const handleLoadCategory = (category: Category): void => {
   route.push({
     name: "categories-saving",
     params: { id: String(category.id), tab: "details" },
@@ -68,7 +65,7 @@ const loadCategory = (category: Category): void => {
 };
 
 /**
- * @description Handle the editing of a category
+ * @description Handle the editing of a category.
  * @param {number} categoryId
  * @returns {void}
  */
@@ -80,19 +77,13 @@ const handleEditCategory = (categoryId: number): void => {
 };
 
 /**
- * @description Handle the deletion of a category
- * @param {number} categoryId
- * @returns {void}
+ * @description Handle the deletion of a category.
  */
-const handleDeleteCategory = (categoryId: number): void => {
-  ElMessageBox.confirm("Are you sure you want to delete this category?", "Warning", {
-    confirmButtonText: "Delete",
-    cancelButtonText: "Cancel",
-    type: "warning",
-  }).then(() => {
-    deleteCategory(categoryId);
-  });
-};
+const handleDeleteCategory = handleDelete(
+  "Are you sure you want to delete this category?",
+  "Deleting",
+  deleteCategory
+);
 </script>
 
 <style scoped>

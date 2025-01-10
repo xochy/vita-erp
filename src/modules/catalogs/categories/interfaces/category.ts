@@ -1,3 +1,5 @@
+import { ModelLinks } from "@/modules/shared/translations/interfaces";
+
 export interface Category {
   type          : string;
   id            : string;
@@ -21,13 +23,4 @@ export interface CategoryLinks {
 export interface Relationships {
   workouts    ?: ModelLinks;
   translations?: ModelLinks;
-}
-
-export interface ModelLinks {
-  links: Links;
-}
-
-export interface Links {
-  related: string;
-  self   : string;
 }

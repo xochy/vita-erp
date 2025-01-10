@@ -9,9 +9,15 @@ import { useConfigStore } from "@/stores/config";
 import MediaRoutes from "@/modules/media/files/router";
 import UsersRoutes from "@/modules/accounts/users/router";
 import RolesRoutes from "@/modules/accounts/roles/router";
+
+// Catalog workouts routes
 import MusclesRoutes from "@/modules/catalogs/muscles/router";
 import CategoriesRoutes from "@/modules/catalogs/categories/router";
-import PhysicalConditionsRoutes from "@/modules/features/physicalConditions/router";
+
+// Catalog plans routes
+import GoalsRoutes from "@/modules/catalogs/goals/router";
+import FrequenciesRoutes from "@/modules/catalogs/frequencies/router";
+import PhysicalConditionsRoutes from "@/modules/catalogs/physicalConditions/router";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -96,8 +102,14 @@ const routes: Array<RouteRecordRaw> = [
   ...MediaRoutes,
   ...UsersRoutes,
   ...RolesRoutes,
+
+  // Catalog workouts routes
   ...MusclesRoutes,
   ...CategoriesRoutes,
+
+  // Catalog plans routes
+  ...GoalsRoutes,
+  ...FrequenciesRoutes,
   ...PhysicalConditionsRoutes,
 ];
 

@@ -15,7 +15,7 @@
       :image-size="100"
     />
 
-    <el-collapse v-else>
+    <el-collapse v-else v-loading="translationModal?.isDeleting">
       <el-collapse-item v-for="translation in translations" :key="translation.id">
         <template #title>
           <el-badge
@@ -29,19 +29,30 @@
         <el-row :gutter="20">
           <el-col :span="21">{{ translation.attributes.translation }}</el-col>
           <el-col :span="3" class="button-col">
-            <el-button type="primary" :icon="Edit" @click="openModal(translation.id)" />
-            <el-button
-              type="primary"
-              :icon="Delete"
-              @click="deleteTranslation(translation.id)"
-            />
+            <el-tooltip content="Edit">
+              <el-button type="primary" :icon="Edit" @click="openModal(translation.id)" />
+            </el-tooltip>
+            <el-tooltip content="Delete">
+              <el-button
+                type="primary"
+                :icon="Delete"
+                @click="deleteTranslation(translation.id)"
+              />
+            </el-tooltip>
           </el-col>
         </el-row>
       </el-collapse-item>
     </el-collapse>
     <el-row v-if="canAddTranslation" class="mt-4" :gutter="20">
       <el-col :span="12" :offset="0">
-        <el-button type="primary" @click="openModal(null)">Add Translation</el-button>
+        <el-button
+          type="primary"
+          @click="openModal(null)"
+          :icon="Plus"
+          :disabled="translationModal?.isDeleting"
+        >
+          Add translation
+        </el-button>
       </el-col>
     </el-row>
 
@@ -65,7 +76,7 @@ import type {
   TranslationableField,
 } from "@/modules/shared/translations/interfaces";
 import { useTranslationsMutation } from "@/modules/shared/translations/composables/UseTranslationsStore";
-import { Delete, Edit } from "@element-plus/icons-vue";
+import { Delete, Edit, Plus } from "@element-plus/icons-vue";
 import { computed, onMounted, ref } from "vue";
 import { fields } from "@/modules/catalogs/categories/components/tabs/data/fields";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -153,17 +164,24 @@ const translationUpdated = (translation: Translation): void => {
  * @returns {void}
  */
 const deleteTranslation = (translationId: string): void => {
-  ElMessageBox.confirm("Are you sure to delete the translation?")
+  ElMessageBox.confirm("Are you sure to delete the translation?", "Deleting", {
+    confirmButtonText: "Delete",
+    cancelButtonText: "Cancel",
+    type: "warning",
+  })
     .then(() => {
-      translationModal.value?.actions.removeTranslation(translationId);
-      translations.value = translations.value.filter(
-        (item: { id: string }) => item.id !== translationId
-      );
+      translationModal.value?.actions.removeTranslation(translationId, {
+        onSuccess: () => {
+          translations.value = translations.value.filter(
+            (item: { id: string }) => item.id !== translationId
+          );
+        },
+      });
     })
     .catch(() => {
       ElMessage({
         type: "info",
-        message: "Delete canceled",
+        message: "Deleting canceled",
       });
     });
 };

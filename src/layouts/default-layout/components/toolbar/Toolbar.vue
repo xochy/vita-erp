@@ -13,36 +13,15 @@
       <KTPageTitle />
       <!-- #region::Actions-->
       <div class="d-flex align-items-center gap-2 gap-lg-3">
-        <!--begin::Secondary button-->
-        <!-- <a
-          href="#"
-          class="btn btn-sm fw-bold bg-body btn-color-gray-700 btn-active-color-primary"
-          data-bs-toggle="modal"
-          data-bs-target="#kt_modal_create_app"
-          >Rollover</a
-        > -->
-        <!--end::Secondary button-->
-        <!--begin::Primary button-->
-        <!-- <a
-          href="#"
-          class="btn btn-sm fw-bold btn-primary"
-          data-bs-toggle="modal"
-          data-bs-target="#kt_modal_new_target"
-          >Add Target</a
-        >
-        <a
-          href="#"
-          class="btn btn-sm fw-bold btn-primary"
-          :data-bs-toggle="dataBsToggle"
-          :data-bs-target="dataBsTarget"
-          >{{ actionButtonText }}</a
-        > -->
-        <!-- <router-link :to="newModelPath" class="btn btn-sm fw-bold btn-primary">
-          {{ actionButtonText }}
-        </router-link> -->
-
         <template v-for="(button, index) in actionButtons" :key="index">
-          <router-link :to="button.to" class="btn btn-sm fw-bold btn-primary">
+          <router-link
+            :to="button.to"
+            class="btn btn-sm fw-bold btn-primary d-flex align-items-center gap-2"
+          >
+            <!-- Icon (conditionally rendered if exists) -->
+            <el-icon v-if="button.icon" :size="20">
+              <component :is="button.icon" />
+            </el-icon>
             {{ button.title }}
           </router-link>
         </template>

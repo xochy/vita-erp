@@ -1,10 +1,11 @@
 import ApiService from "@/core/services/ApiService";
 import type { Translation, TranslationResponse } from "../interfaces";
 import { ElNotification } from "element-plus";
+import { computed } from "vue";
 import { extractErrorDetail } from "@/helpers/errorHelper";
 import { storeToRefs } from "pinia";
-import { useTranslationStore } from "../store/Translation";
 import { useMutation } from "@tanstack/vue-query";
+import { useTranslationStore } from "../store/Translation";
 
 /**
  * @description Fetches a translation from the API. The translation is identified by its ID.
@@ -89,11 +90,7 @@ const useTranslation = (): any => {
   const store = useTranslationStore();
   const { translation } = storeToRefs(store);
 
-  const {
-    isPending: isFetching,
-    isError: isErrorFetching,
-    mutate: fetch,
-  } = useMutation({
+  const { isPending: isFetching, mutate: fetch } = useMutation({
     mutationFn: getTranslation,
     onSuccess: (data) => {
       store.setTranslation(data.data);
@@ -107,11 +104,7 @@ const useTranslation = (): any => {
     },
   });
 
-  const {
-    isPending: isCreating,
-    isError: isErrorCreating,
-    mutateAsync: createAsync,
-  } = useMutation({
+  const { isPending: isCreating, mutateAsync: createAsync } = useMutation({
     mutationFn: createTranslation,
     onSuccess: (data) => {
       store.setTranslation(data.data);
@@ -130,11 +123,7 @@ const useTranslation = (): any => {
     },
   });
 
-  const {
-    isPending: isUpdating,
-    isError: isErrorUpdating,
-    mutateAsync: updateAsync,
-  } = useMutation({
+  const { isPending: isUpdating, mutateAsync: updateAsync } = useMutation({
     mutationFn: updateTranslation,
     onSuccess: (data) => {
       store.setTranslation(data.data);
@@ -153,11 +142,7 @@ const useTranslation = (): any => {
     },
   });
 
-  const {
-    isPending: isDeleting,
-    isError: isErrorDeleting,
-    mutateAsync: removeAsync,
-  } = useMutation({
+  const { isPending: isDeleting, mutateAsync: removeAsync } = useMutation({
     mutationFn: deleteTranslation,
     onSuccess: () => {
       store.clearTranslation();
@@ -176,6 +161,10 @@ const useTranslation = (): any => {
     },
   });
 
+  const isLoading = computed(() =>
+    isUpdating.value || isFetching.value || isCreating.value || isDeleting.value
+  );
+
   return {
     translation,
 
@@ -185,11 +174,15 @@ const useTranslation = (): any => {
       updateTranslation: updateAsync,
       removeTranslation: removeAsync,
     },
-    isErrorUpdating,
-    isError:
-      isErrorFetching || isErrorCreating || isErrorUpdating || isErrorDeleting,
-    isFetching,
-    isLoading: isFetching || isCreating || isUpdating || isDeleting,
+
+    status: {
+      isFetching,
+      isCreating,
+      isUpdating,
+      isDeleting,
+    },
+
+    isLoading,
 
     locales: store.locales,
     clearTranslation: store.clearTranslation,
