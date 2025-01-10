@@ -28,7 +28,7 @@ export default [
       // muscles saving form
       {
         // optional id parameter
-        path: "/muscles-saving/:id?",
+        path: "/muscles-saving/:id?/:tab?",
         name: "muscles-saving",
         component: () =>
           import("@/modules/catalogs/muscles/views/MusclesSaving.vue"),

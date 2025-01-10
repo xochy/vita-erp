@@ -5,11 +5,10 @@ import { extractErrorDetail } from "@/helpers/errorHelper";
 import { storeToRefs } from "pinia";
 import { useCategoryStore } from "../store/Category";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
-import { useRouter } from "vue-router";
-import { reactive } from "vue";
+import { computed } from "vue";
 
 /**
- * @descriptio Fetches a category from the API.
+ * @description Fetches a category from the API.
  * @param {number} id - The ID of the category to fetch.
  * @returns {Promise<CategoryResponse>} The category.
  */
@@ -67,7 +66,7 @@ const updateCategory = async (
 /**
  * @description Deletes a category.
  * @param {number} categoryId - The ID of the category to delete.
- * @returns {Promise<void>}
+ * @returns {Promise<void>} The result of the deletion.
  */
 const deleteCategory = async (categoryId: number): Promise<void> => {
   await ApiService.vueInstance.axios.delete(`/categories/${categoryId}`);
@@ -80,9 +79,11 @@ const deleteCategory = async (categoryId: number): Promise<void> => {
 const useCategory = (): any => {
   const store = useCategoryStore();
   const { category } = storeToRefs(store);
-  const router = useRouter();
   const queryClient = useQueryClient();
 
+  /**
+   * @description Mutation for category fetching.
+   */
   const { isPending: isFetching, mutate: fetch } = useMutation({
     mutationFn: getCategory,
     onError: (error) => {
@@ -92,12 +93,15 @@ const useCategory = (): any => {
         type: "error",
       });
     },
-    onSuccess: (data) => {
-      store.setCategory(data.data);
+    onSuccess: ({ data }) => {
+      store.setCategory(data);
     },
   });
 
-  const { isPending: isCreating, mutate: create } = useMutation({
+  /**
+   * @description Mutation for category creation.
+   */
+  const { isPending: isCreating, mutateAsync: create } = useMutation({
     mutationFn: createCategory,
     onError: (error) => {
       ElNotification({
@@ -106,18 +110,20 @@ const useCategory = (): any => {
         type: "error",
       });
     },
-    onSuccess: (data) => {
+    onSuccess: ({ data }) => {
       ElNotification({
         title: "Success",
         message: "Category created successfully",
         type: "success",
       });
-      store.setCategory(data.data);
-      router.push({ name: "categories-saving", params: { id: data.data.id } });
+      store.setCategory(data);
     },
   });
 
-  const { isPending: isUpdating, mutate: update } = useMutation({
+  /**
+   * @description Mutation for category updating.
+   */
+  const { isPending: isUpdating, mutateAsync: update } = useMutation({
     mutationFn: updateCategory,
     onError: (error) => {
       ElNotification({
@@ -126,17 +132,20 @@ const useCategory = (): any => {
         type: "error",
       });
     },
-    onSuccess: (data) => {
+    onSuccess: ({ data }) => {
       ElNotification({
         title: "Success",
         message: "Category updated successfully",
         type: "success",
       });
-      store.setCategory(data.data);
+      store.setCategory(data);
     },
   });
 
-  const { isPending: isDeleting, mutate: destroy } = useMutation({
+  /**
+   * @description Mutation for category deletion.
+   */
+  const { isPending: isDeleting, mutateAsync: destroy } = useMutation({
     mutationFn: deleteCategory,
     onError: (error) => {
       ElNotification({
@@ -158,18 +167,28 @@ const useCategory = (): any => {
     },
   });
 
+  const isLoading = computed(
+    () =>
+      isUpdating.value ||
+      isFetching.value ||
+      isCreating.value ||
+      isDeleting.value
+  );
+
   return {
     getCategory: fetch,
     createCategory: create,
     updateCategory: update,
     deleteCategory: destroy,
 
-    status: reactive({
+    status: {
       isFetching,
       isCreating,
       isUpdating,
       isDeleting,
-    }),
+    },
+
+    isLoading,
 
     category,
     clearCategory: store.clearCategory,

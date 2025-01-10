@@ -1,10 +1,10 @@
 import { ref } from "vue";
 
 /**
- * Validation rules for category form.
+ * Validation rules for muscle form.
  *
  * @remarks
- * This object defines the validation rules for the category form fields.
+ * This object defines the validation rules for the muscle form fields.
  *
  * @public
  */
@@ -13,7 +13,7 @@ export const rules = ref({
     name: [
       {
         required: true,
-        message: "Please enter the category name",
+        message: "Please enter the muscle name",
         trigger: "blur",
       },
       {
@@ -25,7 +25,7 @@ export const rules = ref({
     description: [
       {
         required: true,
-        message: "Please enter the category description",
+        message: "Please enter the muscle description",
         trigger: "blur",
       },
       {

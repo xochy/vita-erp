@@ -11,6 +11,7 @@
 
     <el-form
       v-else
+      v-loading="isLoading"
       id="category_saving_form"
       ref="translationSavingFormRef"
       class="form"
@@ -19,6 +20,7 @@
       @submit.prevent="submit()"
     >
       <el-row :gutter="20" class="mb-3">
+        <!-- #region::Field selector -->
         <el-col :span="18">
           <el-select v-model="translation.attributes.column" placeholder="Select field">
             <el-option
@@ -30,6 +32,9 @@
             />
           </el-select>
         </el-col>
+        <!-- #endregion::Field selector -->
+
+        <!-- #region::Locale selector -->
         <el-col :span="6">
           <el-select v-model="translation.attributes.locale" placeholder="Select locale">
             <el-option
@@ -40,9 +45,12 @@
             />
           </el-select>
         </el-col>
+        <!-- #endregion::Locale selector -->
       </el-row>
 
       <el-row :gutter="20">
+
+      <!-- #region:: -->
         <el-col v-if="translation.attributes.column" :span="24">
           <Form.TranslationInput
             v-model="translation.attributes.translation"
@@ -55,8 +63,14 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="onCloseModal">Cancel</el-button>
-        <el-button v-if="translation.attributes.column" type="primary" @click="submit"
-          >Confirm</el-button
+        <el-button
+          v-if="translation.attributes.column"
+          type="primary"
+          @click="submit"
+          :icon="Edit"
+          :loading="isLoading"
+          ><span v-if="isLoading">Please wait...</span>
+          <span v-else>Save</span></el-button
         >
       </div>
     </template>
@@ -71,6 +85,7 @@ import type {
   TranslationableField,
 } from "@/modules/shared/translations/interfaces";
 import useTranslation from "@/modules/shared/translations/composables/UseTranslationStore";
+import { Edit } from "@element-plus/icons-vue";
 import { ref } from "vue";
 import { rules } from "@/modules/shared/translations/validation/translationFormValidationRules";
 
@@ -85,7 +100,14 @@ const props = defineProps<{
 
 const dialogVisible = ref(false);
 const translationSavingFormRef = ref<null | HTMLFormElement>(null);
-const { actions, isFetching, translation, locales, clearTranslation } = useTranslation();
+const {
+  actions,
+  locales,
+  isLoading,
+  translation,
+  clearTranslation,
+  status: { isFetching, isDeleting },
+} = useTranslation();
 
 /* -------------------------------- Functions ------------------------------- */
 
@@ -155,6 +177,7 @@ const emit = defineEmits<{
 
 defineExpose({
   actions,
+  isDeleting,
   dialogVisible,
   loadTranslation,
 });

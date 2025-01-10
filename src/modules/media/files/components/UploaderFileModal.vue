@@ -56,7 +56,7 @@ const files = ref<UploadUserFile[]>([]);
 /* -------------------------------- Computed -------------------------------- */
 
 const url = computed(
-  () => `${ApiService.vueInstance.axios.defaults.baseURL}medias/manage/uploadFile`
+  () => `${ApiService.vueInstance.axios.defaults.baseURL}directories/upload-directory-file`
 );
 
 const headers = computed(() => ({

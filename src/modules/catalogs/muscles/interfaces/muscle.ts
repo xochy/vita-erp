@@ -1,11 +1,11 @@
 import { ModelLinks } from "@/modules/shared/translations/interfaces";
 
-export interface Category {
+export interface Muscle {
   type          : string;
   id            : string;
   attributes    : Attributes;
   relationships?: Relationships;
-  links        ?: CategoryLinks;
+  links        ?: MuscleLinks;
 }
 
 export interface Attributes {
@@ -16,11 +16,10 @@ export interface Attributes {
   updatedAt  ?: Date;
 }
 
-export interface CategoryLinks {
+export interface MuscleLinks {
   self: string;
 }
 
 export interface Relationships {
-  workouts    ?: ModelLinks;
   translations?: ModelLinks;
 }

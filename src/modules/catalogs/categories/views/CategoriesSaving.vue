@@ -40,13 +40,17 @@ import { fields } from "@/modules/catalogs/categories/components/tabs/data/field
 import { onMounted, onUnmounted, ref } from "vue";
 import { useRoute } from "vue-router";
 
+/* ------------------------------ Props & Refs ------------------------------ */
+
 const activeName = ref("categoryData");
+
 const {
   category,
   getCategory,
   clearCategory,
   status: { isFetching },
 } = useCategory();
+
 const route = useRoute();
 
 /* ---------------------------------- Hooks --------------------------------- */
@@ -68,6 +72,10 @@ onUnmounted(() => {
 const loadCategory = (): void => {
   const categoryId = route.params.id;
   const activeTab = route.params.tab;
+
+  console.log("activeTab", activeTab);
+
+
   if (categoryId) {
     getCategory(categoryId);
     activeName.value = Array.isArray(activeTab) ? activeTab[0] : activeTab;

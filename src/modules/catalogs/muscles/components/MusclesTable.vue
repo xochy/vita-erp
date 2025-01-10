@@ -1,5 +1,5 @@
 <template>
-  <el-table v-loading="isLoading" :data="categories" style="width: 100%" height="480">
+  <el-table v-loading="isLoading" :data="muscles" style="width: 100%" height="480">
     <el-table-column fixed type="expand" align="left">
       <template #default="props">
         <TranslationsList :path="props.row.relationships.translations.links.related" />
@@ -7,7 +7,7 @@
     </el-table-column>
     <el-table-column label="Name" width="180">
       <template #default="props">
-        <el-link @click="handleLoadCategory(props.row)">{{
+        <el-link @click="handleLoadMuscle(props.row)">{{
           props.row.attributes.name
         }}</el-link>
       </template>
@@ -19,14 +19,14 @@
           link
           type="primary"
           size="small"
-          @click="handleEditCategory(props.row.id)"
+          @click="handleEditMuscle(props.row.id)"
           >Edit</el-button
         >
         <el-button
           link
           type="primary"
           size="small"
-          @click="handleDeleteCategory(props.row.id)"
+          @click="handleDeleteMuscle(props.row.id)"
           >Delete</el-button
         >
       </template>
@@ -37,52 +37,52 @@
 
 <script setup lang="ts">
 import TranslationsList from "@/modules/shared/translations/views/TranslationsList.vue";
-import type { Category } from "../interfaces";
-import useCategory from "../composables/UseCategoryStore";
+import type { Muscle } from "../interfaces";
+import useMuscle from "../composables/UseMuscleStore";
 import { useRouter } from "vue-router";
 import { useDeleteHandler } from "@/modules/shared/utilities/UseModelDeleteHandler";
 
 /* ------------------------------ Props & Refs ------------------------------ */
 
-defineProps<{ categories: Category[]; isLoading: boolean }>();
+defineProps<{ muscles: Muscle[]; isLoading: boolean }>();
 
 const route = useRouter();
-const { deleteCategory } = useCategory();
+const { deleteMuscle } = useMuscle();
 const { handleDelete } = useDeleteHandler();
 
 /* -------------------------------- Functions ------------------------------- */
 
 /**
- * @description Load the category details.
- * @param {Category} category
+ * @description Load the muscle details.
+ * @param {Muscle} muscle
  * @returns {void}
  */
-const handleLoadCategory = (category: Category): void => {
+const handleLoadMuscle = (muscle: Muscle): void => {
   route.push({
-    name: "categories-saving",
-    params: { id: String(category.id), tab: "details" },
+    name: "muscles-saving",
+    params: { id: String(muscle.id), tab: "details" },
   });
 };
 
 /**
- * @description Handle the editing of a category.
- * @param {number} categoryId
+ * @description Handle the editing of a muscle.
+ * @param {number} muscleId
  * @returns {void}
  */
-const handleEditCategory = (categoryId: number): void => {
+const handleEditMuscle = (muscleId: number): void => {
   route.push({
-    name: "categories-saving",
-    params: { id: String(categoryId), tab: "categoryData" },
+    name: "muscles-saving",
+    params: { id: String(muscleId), tab: "muscleData" },
   });
 };
 
 /**
- * @description Handle the deletion of a category.
+ * @description Handle the deletion of a muscle.
  */
-const handleDeleteCategory = handleDelete(
-  "Are you sure you want to delete this category?",
+const handleDeleteMuscle = handleDelete(
+  "Are you sure you want to delete this muscle?",
   "Deleting",
-  deleteCategory
+  deleteMuscle
 );
 </script>
 

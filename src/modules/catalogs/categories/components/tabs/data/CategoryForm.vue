@@ -22,11 +22,11 @@
 
     <el-row class="mb-4" :gutter="20">
       <el-col :span="12" :offset="0">
-        <el-button type="primary" @click="submit" :loading="isLoading">
+        <el-button type="primary" @click="submit" :icon="Edit" :loading="isLoading">
           <span v-if="isLoading">Please wait...</span>
           <span v-else>Save</span>
         </el-button>
-        <el-button type="primary">Clear</el-button>
+        <el-button type="primary" @click="hancleClear">Clear</el-button>
       </el-col>
     </el-row>
   </el-form>
@@ -34,18 +34,23 @@
 
 <script setup lang="ts">
 import useCategory from "@/modules/catalogs/categories/composables/UseCategoryStore";
+import { Edit } from "@element-plus/icons-vue";
 import { rules } from "@/modules/catalogs/categories/validation/categoryFormValidationRules";
 import { ref } from "vue";
 
 import * as Form from "./fields";
 
-/* ---------------------------------- Props --------------------------------- */
+/* ------------------------------ Props & Refs ------------------------------ */
 
 const categorySavingFormRef = ref<null | HTMLFormElement>(null);
 const { category, isLoading, createCategory, updateCategory } = useCategory();
 
 /* -------------------------------- Functions ------------------------------- */
 
+/**
+ * @description Submit the form data and save the category.
+ * @returns {void}
+ */
 const submit = () => {
   if (!categorySavingFormRef.value) return;
 
@@ -53,13 +58,26 @@ const submit = () => {
     if (!valid) return;
 
     if (category.value.id) {
-      updateCategory(category.value);
+      await updateCategory(category.value);
     } else {
-      createCategory(category.value);
+      await createCategory(category.value);
     }
 
     emit("saved");
   });
+};
+
+/**
+ * @description Clear the form data.
+ * @returns {void}
+ */
+const hancleClear = () => {
+  category.value = {
+    attributes: {
+      name: "",
+      description: "",
+    },
+  };
 };
 
 /* ---------------------------------- Emits --------------------------------- */

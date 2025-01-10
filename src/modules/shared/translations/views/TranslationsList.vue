@@ -3,7 +3,6 @@
   <TranslationsTable
     v-else
     :is-loading="isPending"
-    :category-id="categoryId"
     :translations="data?.data ?? []"
   />
 </template>
@@ -13,10 +12,6 @@ import TranslationsTable from "../components/TranslationsTable.vue";
 import { useTranslationsQuery } from "../composables/UseTranslationsStore";
 
 const props = defineProps({
-  categoryId: {
-    type: String,
-    required: true,
-  },
   path: {
     type: String,
     required: true,

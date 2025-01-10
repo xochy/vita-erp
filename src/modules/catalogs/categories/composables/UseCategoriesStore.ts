@@ -60,6 +60,7 @@ const useCategories = (fields: string): any => {
     retry: 3,
     retryDelay: 1000,
   });
+
   watch(data, (categoriesListResponse) => {
     if (categoriesListResponse) {
       const { meta, data: categories } = categoriesListResponse;
@@ -93,7 +94,7 @@ const useCategories = (fields: string): any => {
       getPage: store.setCurrentPage,
     },
 
-    Permissions: {
+    permissions: {
       canCreateCategories: authStore.hasPermissionTo("create categories"),
     },
 
