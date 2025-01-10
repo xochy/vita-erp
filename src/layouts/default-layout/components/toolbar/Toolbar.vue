@@ -13,7 +13,7 @@
       <KTPageTitle />
       <!-- #region::Actions-->
       <div class="d-flex align-items-center gap-2 gap-lg-3">
-        <template v-for="button in actionButtons" :key="index">
+        <template v-for="(button, index) in actionButtons" :key="index">
           <router-link
             :to="button.to"
             class="btn btn-sm fw-bold btn-primary d-flex align-items-center gap-2"

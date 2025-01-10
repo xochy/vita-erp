@@ -15,7 +15,7 @@ export default [
           import("@/modules/catalogs/muscles/views/MusclesList.vue"),
         meta: {
           pageTitle: "Muscles",
-          breadcrumbs: ["Catalog", "Muscles"],
+          breadcrumbs: ["Catalog", "Workouts", "Muscles"],
           actionButtons: [
             {
               title: "Add Muscle",
@@ -34,7 +34,7 @@ export default [
           import("@/modules/catalogs/muscles/views/MusclesSaving.vue"),
         meta: {
           pageTitle: "Muscle Saving",
-          breadcrumbs: ["Catalog", "Muscles", "Muscle Saving"],
+          breadcrumbs: ["Catalog", "Workouts", "Muscles", "Muscle Saving"],
           actionButtons: [
             {
               title: "Back to Muscles",

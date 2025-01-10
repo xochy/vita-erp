@@ -15,7 +15,7 @@ export default [
           import("@/modules/catalogs/categories/views/CategoriesList.vue"),
         meta: {
           pageTitle: "Categories",
-          breadcrumbs: ["Catalog", "Categories"],
+          breadcrumbs: ["Catalog", 'Workouts', "Categories"],
           actionButtons: [
             {
               title: "Add Category",
@@ -34,7 +34,7 @@ export default [
           import("@/modules/catalogs/categories/views/CategoriesSaving.vue"),
         meta: {
           pageTitle: "Category Saving",
-          breadcrumbs: ["Catalog", "Categories", "Category Saving"],
+          breadcrumbs: ["Catalog", "Workouts", "Categories", "Category Saving"],
           actionButtons: [
             {
               title: "Back to Categories",
