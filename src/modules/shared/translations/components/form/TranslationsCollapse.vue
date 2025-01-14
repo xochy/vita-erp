@@ -27,14 +27,20 @@
           </el-badge>
         </template>
         <el-row :gutter="20">
-          <el-col :span="21">{{ translation.attributes.translation }}</el-col>
-          <el-col :span="3" class="button-col">
+          <el-col :span="can.modify ? 21 : 24">
+            {{ translation.attributes.translation }}
+          </el-col>
+          <el-col v-if="can.modify" :span="3" class="button-col">
             <el-tooltip content="Edit">
-              <el-button type="primary" :icon="Edit" @click="openModal(translation.id)" />
+              <el-button
+                type="primary"
+                :icon="Edit"
+                @click="openModal(translation.id)"
+              />
             </el-tooltip>
             <el-tooltip content="Delete">
               <el-button
-                type="primary"
+                type="danger"
                 :icon="Delete"
                 @click="deleteTranslation(translation.id)"
               />
@@ -92,7 +98,7 @@ const props = defineProps<{
   fields: TranslationableField[];
 }>();
 
-const { fetch, isPending, isError, translations } = useTranslationsMutation(
+const { can, fetch, isPending, isError, translations } = useTranslationsMutation(
   props.translationsLink,
   FIELDS_SET
 );

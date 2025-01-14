@@ -15,14 +15,16 @@ export default [
           import("@/modules/catalogs/categories/views/CategoriesList.vue"),
         meta: {
           pageTitle: "Categories",
-          breadcrumbs: ["Catalog", 'Workouts', "Categories"],
+          breadcrumbs: ["Catalog", "Workouts", "Categories"],
           actionButtons: [
             {
               title: "Add Category",
               icon: "plus",
               to: { name: "categories-saving" },
+              permissions: ["create categories"],
             },
           ],
+          permissions: ["read categories"],
         },
       },
       // categories saving form
@@ -42,6 +44,7 @@ export default [
               to: { name: "categories" },
             },
           ],
+          permissions: ["show categories"],
         },
       },
     ],

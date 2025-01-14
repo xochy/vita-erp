@@ -5,6 +5,7 @@ import { useMutation, useQuery } from "@tanstack/vue-query";
 import { useTranslationsStore } from "../store/Translations";
 import { storeToRefs } from "pinia";
 import { extractErrorDetail } from "@/helpers/errorHelper";
+import { useAuthStore } from "@/stores/auth";
 
 /**
  * @description Fetches a list of translations from the API.
@@ -64,6 +65,7 @@ const useTranslationsQuery = (path: string, fields: string): any => {
  * @returns {any} The translations mutation.
  */
 const useTranslationsMutation = (path: string, fields: string): any => {
+  const authStore = useAuthStore();
   const store = useTranslationsStore();
   const { translations } = storeToRefs(store);
 
@@ -86,6 +88,12 @@ const useTranslationsMutation = (path: string, fields: string): any => {
     isPending,
     isError,
     translations,
+
+    can: {
+      modify:
+        authStore.hasPermissionTo("update transalations") ||
+        authStore.hasPermissionTo("delete categories"),
+    },
   };
 };
 

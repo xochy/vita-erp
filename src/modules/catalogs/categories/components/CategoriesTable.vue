@@ -13,7 +13,13 @@
       </template>
     </el-table-column>
     <el-table-column prop="attributes.description" label="Description" width="960" />
-    <el-table-column fixed="right" label="Operations" align="right" min-width="120">
+    <el-table-column
+      v-if="can.modify"
+      fixed="right"
+      label="Operations"
+      align="right"
+      min-width="120"
+    >
       <template #default="props">
         <el-button
           link
@@ -47,7 +53,7 @@ import { useDeleteHandler } from "@/modules/shared/utilities/UseModelDeleteHandl
 defineProps<{ categories: Category[]; isLoading: boolean }>();
 
 const route = useRouter();
-const { deleteCategory } = useCategory();
+const { can, deleteCategory } = useCategory();
 const { handleDelete } = useDeleteHandler();
 
 /* -------------------------------- Functions ------------------------------- */

@@ -62,7 +62,7 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="onCloseModal">Cancel</el-button>
+        <el-button type="info" @click="onCloseModal">Cancel</el-button>
         <el-button
           v-if="translation.attributes.column"
           type="primary"

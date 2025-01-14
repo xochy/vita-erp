@@ -26,7 +26,7 @@
           <span v-if="isLoading">Please wait...</span>
           <span v-else>Save</span>
         </el-button>
-        <el-button type="primary" @click="hancleClear">Clear</el-button>
+        <el-button type="info" @click="hancleClear">Clear</el-button>
       </el-col>
     </el-row>
   </el-form>

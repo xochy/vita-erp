@@ -6,6 +6,7 @@ import { storeToRefs } from "pinia";
 import { useCategoryStore } from "../store/Category";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import { computed } from "vue";
+import { useAuthStore } from "@/stores/auth";
 
 /**
  * @description Fetches a category from the API.
@@ -78,6 +79,7 @@ const deleteCategory = async (categoryId: number): Promise<void> => {
  */
 const useCategory = (): any => {
   const store = useCategoryStore();
+  const authStore = useAuthStore();
   const { category } = storeToRefs(store);
   const queryClient = useQueryClient();
 
@@ -192,6 +194,18 @@ const useCategory = (): any => {
 
     category,
     clearCategory: store.clearCategory,
+
+    can: {
+      save:
+        authStore.hasPermissionTo("create categories") ||
+        authStore.hasPermissionTo("update categories"),
+
+      modify:
+        authStore.hasPermissionTo("update categories") ||
+        authStore.hasPermissionTo("delete categories"),
+
+      destroy: authStore.hasPermissionTo("delete categories"),
+    },
   };
 };
 

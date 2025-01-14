@@ -4,4 +4,5 @@ export interface ToolbarItem {
   to: {
     name: string;
   };
+  permissions?: string[];
 }
