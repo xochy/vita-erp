@@ -1,11 +1,12 @@
 import ApiService from "@/core/services/ApiService";
 import type { MusclesListResponse } from "../interfaces";
-import { ElNotification } from "element-plus";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 import { useMusclesStore } from "../store/Muscles";
 import { useQuery, useQueryClient } from "@tanstack/vue-query";
 import { watch } from "vue";
+import { generateQueryParams } from "@/modules/shared/utilities/QueryParamsGenerator";
+import { showErrorNotification } from "@/modules/shared/utilities/ShowErrorNotification";
 
 /**
  * @description Fetches a list of muscles from the API.
@@ -17,25 +18,27 @@ import { watch } from "vue";
 const getMuscles = async (
   pageSize: number,
   pageNumber: number,
+  sortBy: string,
+  searchBy: string,
   fields: string
 ): Promise<MusclesListResponse> => {
   try {
+    const params = generateQueryParams({
+      "page[size]": pageSize,
+      "page[number]": pageNumber,
+      "fields[categories]": fields,
+      sort: sortBy,
+      ...(searchBy && { "filter[search]": searchBy }),
+    });
+
     const { data } =
       await ApiService.vueInstance.axios.get<MusclesListResponse>("muscles", {
-        params: {
-          "page[size]": pageSize,
-          "page[number]": pageNumber,
-          "fields[muscles]": fields,
-        },
+        params,
       });
 
     return data;
   } catch (error) {
-    ElNotification({
-      title: "Error",
-      message: "An error occurred while fetching muscles.",
-      type: "error",
-    });
+    showErrorNotification("An error occurred while fetching muscles.");
     throw error;
   }
 };
@@ -49,12 +52,24 @@ const useMuscles = (fields: string): any => {
   const store = useMusclesStore();
   const authStore = useAuthStore();
   const queryClient = useQueryClient();
-  const { currentPage, perPage, total, muscles } = storeToRefs(store);
+  const { currentPage, perPage, sortBy, searchBy, total, muscles } =
+    storeToRefs(store);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["muscles?page[number]=", currentPage],
-    queryFn: () => getMuscles(perPage.value, currentPage.value, fields),
+    queryKey: [
+      "muscles?page[number]=",
+      { currentPage, perPage, sortBy, searchBy },
+    ],
+    queryFn: () =>
+      getMuscles(
+        perPage.value,
+        currentPage.value,
+        sortBy.value,
+        searchBy.value,
+        fields
+      ),
     retry: 3,
+    retryDelay: 1000,
   });
 
   watch(data, (musclesListResponse) => {
@@ -87,6 +102,9 @@ const useMuscles = (fields: string): any => {
       perPage,
       currentPage,
 
+      getSortBy: store.setSortBy,
+      getPerPage: store.setPerPage,
+      getSearchBy: store.setSearchBy,
       getPage: store.setCurrentPage,
     },
 

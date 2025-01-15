@@ -15,7 +15,7 @@ export const useDeleteHandler = () => {
   const handleDelete = (
     message: string,
     title: string,
-    deleteCallback: (id: number, {}) => void,
+    deleteCallback: (id: number, options: { onSuccess: () => void }) => void,
     goToRoute: string = ""
   ) => {
     const route = useRouter();

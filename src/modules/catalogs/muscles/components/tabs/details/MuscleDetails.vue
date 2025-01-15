@@ -1,24 +1,60 @@
 <template>
   <BasicSkeleton v-if="isLoading" />
 
-  <el-descriptions v-else border>
-    <el-descriptions-item label="Name" :span="4">
-      {{ muscle.attributes.name }}
-    </el-descriptions-item>
-    <el-descriptions-item label="Description" :span="2">
-      {{ muscle.attributes.description }}
-    </el-descriptions-item>
-    <el-descriptions-item label="Images">
-      <MusclesImagesCarousel :images="images" />
-    </el-descriptions-item>
-  </el-descriptions>
+  <el-row :gutter="20" v-else>
+    <el-col :span="19">
+      <BasicCard :title="muscle.attributes.name" :footer="can.destroy">
+        <p>{{ muscle.attributes.description }}</p>
+        <template #footer>
+          <el-col class="button-col">
+            <el-tooltip content="Delete">
+              <el-button
+                type="danger"
+                :icon="Delete"
+                @click="handleDeleteCategory(Number(muscle.id))"
+              />
+            </el-tooltip>
+          </el-col>
+        </template>
+      </BasicCard>
+    </el-col>
+    <el-col :span="5">
+      <BasicCard>
+        <MusclesImagesCarousel :images="images" />
+      </BasicCard>
+    </el-col>
+  </el-row>
 </template>
 
 <script setup lang="ts">
+import BasicCard from "@/components/shared/cards/BasicCard.vue";
 import BasicSkeleton from "@/components/shared/skeletons/BasicSkeleton.vue";
 import MusclesImagesCarousel from "@/components/shared/carousels/MusclesImagesCarousel.vue";
-import type { Muscle } from "@/modules/catalogs/muscles/interfaces";
 import type { Media } from "@/modules/media/files/interfaces";
+import type { Muscle } from "@/modules/catalogs/muscles/interfaces";
+import useMuscle from "../../../composables/UseMuscleStore";
+import { Delete } from "@element-plus/icons-vue";
+import { useDeleteHandler } from "@/modules/shared/utilities/UseModelDeleteHandler";
 
 defineProps<{ muscle: Muscle; isLoading: boolean; images: Media[] }>();
+
+const { can, deleteMuscle } = useMuscle();
+const { handleDelete } = useDeleteHandler();
+
+/**
+ * @description Handle the deletion of a muscle.
+ */
+const handleDeleteCategory = handleDelete(
+  "Are you sure you want to delete this muscle?",
+  "Deleting",
+  deleteMuscle,
+  "muscles"
+);
 </script>
+
+<style scoped>
+.button-col {
+  display: flex;
+  justify-content: flex-end;
+}
+</style>

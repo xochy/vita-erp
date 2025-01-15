@@ -1,53 +1,72 @@
 <template>
-  <el-table v-loading="isLoading" :data="muscles" style="width: 100%" height="480">
+  <slot name="options"></slot>
+  <el-table
+    v-loading="isLoading"
+    :data="muscles"
+    style="width: 100%"
+    height="480"
+    @sort-change="handleSortChange"
+  >
+    <!-- #region::Translations -->
     <el-table-column fixed type="expand" align="left">
       <template #default="props">
         <TranslationsList :path="props.row.relationships.translations.links.related" />
       </template>
     </el-table-column>
-    <el-table-column label="Name" width="180">
+    <!-- #endregion::Translations -->
+
+    <!-- #region::Name -->
+    <el-table-column
+      prop="name"
+      label="Name"
+      sortable="custom"
+      min-width="120"
+      width="200"
+    >
       <template #default="props">
         <el-link @click="handleLoadMuscle(props.row)">{{
           props.row.attributes.name
         }}</el-link>
       </template>
     </el-table-column>
+    <!-- #endregion::Name -->
+
+    <!-- #region::Description -->
     <el-table-column prop="attributes.description" label="Description" width="960" />
-    <el-table-column fixed="right" label="Operations" align="right" min-width="120">
-      <template #default="props">
-        <el-button
-          link
-          type="primary"
-          size="small"
-          @click="handleEditMuscle(props.row.id)"
-          >Edit</el-button
-        >
-        <el-button
-          link
-          type="primary"
-          size="small"
-          @click="handleDeleteMuscle(props.row.id)"
-          >Delete</el-button
-        >
-      </template>
-    </el-table-column>
+    <!-- #endregion::Description -->
+
+    <!-- #region::Actions -->
+    <ActionsColumn
+      v-if="can.modify"
+      @edit="handleEditMuscle"
+      @delete="handleDeleteMuscle"
+    />
+    <!-- #endregion::Actions -->
+
+    <!-- #region::Empty table message -->
+    <template v-if="!isLoading" #empty>
+      <TableEmptyResult message="No muscles found." />
+    </template>
+    <!-- #endregion::Empty table message -->
   </el-table>
   <slot name="pagination"></slot>
 </template>
 
 <script setup lang="ts">
+import ActionsColumn from "@/components/shared/tables/colums/ActionsColumn.vue";
+import TableEmptyResult from "@/components/shared/tables/TableEmptyResult.vue";
 import TranslationsList from "@/modules/shared/translations/views/TranslationsList.vue";
 import type { Muscle } from "../interfaces";
 import useMuscle from "../composables/UseMuscleStore";
-import { useRouter } from "vue-router";
 import { useDeleteHandler } from "@/modules/shared/utilities/UseModelDeleteHandler";
+import { useRouter } from "vue-router";
 
 /* ------------------------------ Props & Refs ------------------------------ */
 
 defineProps<{ muscles: Muscle[]; isLoading: boolean }>();
 
 const route = useRouter();
-const { deleteMuscle } = useMuscle();
+const { can, deleteMuscle } = useMuscle();
 const { handleDelete } = useDeleteHandler();
 
 /* -------------------------------- Functions ------------------------------- */
@@ -84,6 +103,24 @@ const handleDeleteMuscle = handleDelete(
   "Deleting",
   deleteMuscle
 );
+
+/**
+ * @description Handle the sorting of the table.
+ * @param {{ prop: string; order: string }} { prop, order }
+ */
+const handleSortChange = ({ prop, order }: { prop: string; order: string }): void => {
+  let sortValue = "";
+  if (order === "ascending") {
+    sortValue = prop;
+  } else if (order === "descending") {
+    sortValue = `-${prop}`;
+  }
+  emit("sort-change", sortValue);
+};
+
+/* ---------------------------------- Emits --------------------------------- */
+
+const emit = defineEmits(["sort-change"]);
 </script>
 
 <style scoped>

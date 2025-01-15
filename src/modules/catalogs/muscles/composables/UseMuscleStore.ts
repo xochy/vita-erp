@@ -4,9 +4,9 @@ import { ElNotification } from "element-plus";
 import { computed } from "vue";
 import { extractErrorDetail } from "@/helpers/errorHelper";
 import { storeToRefs } from "pinia";
+import { useAuthStore } from "@/stores/auth";
 import { useMuscleStore } from "../store/Muscle";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
-import { useRouter } from "vue-router";
 
 /**
  * @description Fetches a muscle from the API.
@@ -102,8 +102,8 @@ const saveMuscleFiles = async ({ muscleId, files }): Promise<any> => {
  */
 const useMuscle = (): any => {
   const store = useMuscleStore();
+  const authStore = useAuthStore();
   const { muscle } = storeToRefs(store);
-  const router = useRouter();
   const queryClient = useQueryClient();
 
   /**
@@ -137,7 +137,6 @@ const useMuscle = (): any => {
     },
     onSuccess: ({ data }) => {
       store.setMuscle(data);
-      router.push({ name: "muscles-saving", params: { id: data.id } });
     },
   });
 
@@ -237,6 +236,18 @@ const useMuscle = (): any => {
 
     muscle,
     clearMuscle: store.clearMuscle,
+
+    can: {
+      save:
+        authStore.hasPermissionTo("create muscles") ||
+        authStore.hasPermissionTo("update muscles"),
+
+      modify:
+        authStore.hasPermissionTo("update muscles") ||
+        authStore.hasPermissionTo("delete muscles"),
+
+      destroy: authStore.hasPermissionTo("delete muscles"),
+    },
   };
 };
 

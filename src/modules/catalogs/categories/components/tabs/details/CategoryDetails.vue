@@ -3,36 +3,26 @@
 
   <el-row v-else>
     <el-col :span="24">
-      <el-card v-if="!isLoading">
-        <el-row>
-          <el-col :span="24">
-            <h3>{{ category.attributes.name }}</h3>
+      <BasicCard :title="category.attributes.name" :footer="can.destroy">
+        <p>{{ category.attributes.description }}</p>
+        <template #footer>
+          <el-col class="button-col">
+            <el-tooltip content="Delete">
+              <el-button
+                type="danger"
+                :icon="Delete"
+                @click="handleDeleteCategory(Number(category.id))"
+              />
+            </el-tooltip>
           </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <p>{{ category.attributes.description }}</p>
-          </el-col>
-        </el-row>
-        <template #footer v-if="can.destroy">
-          <el-row :gutter="24">
-            <el-col class="button-col">
-              <el-tooltip content="Delete">
-                <el-button
-                  type="danger"
-                  :icon="Delete"
-                  @click="handleDeleteCategory(Number(category.id))"
-                />
-              </el-tooltip>
-            </el-col>
-          </el-row>
         </template>
-      </el-card>
+      </BasicCard>
     </el-col>
   </el-row>
 </template>
 
 <script setup lang="ts">
+import BasicCard from "@/components/shared/cards/BasicCard.vue";
 import BasicSkeleton from "@/components/shared/skeletons/BasicSkeleton.vue";
 import type { Category } from "@/modules/catalogs/categories/interfaces";
 import useCategory from "../../../composables/UseCategoryStore";

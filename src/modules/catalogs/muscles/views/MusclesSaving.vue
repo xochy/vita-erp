@@ -3,7 +3,7 @@
 
   <el-tabs v-else v-model="activeName">
     <!-- #region::Tab for muscle form -->
-    <el-tab-pane lazy label="Data" name="muscleData">
+    <el-tab-pane v-if="can.save" label="Data" name="muscleData">
       <BasicSkeleton v-if="isFetchingMedias || convertingFiles" />
       <MuscleForm v-else :files="files" @saved="handleSaved" />
     </el-tab-pane>
@@ -23,7 +23,7 @@
     <!-- #endregion::Tab for muscle translations -->
 
     <!-- #region::Tab for muscle details -->
-    <el-tab-pane lazy label="Details" name="details">
+    <el-tab-pane label="Details" name="details">
       <BasicSkeleton v-if="isFetchingMedias" />
       <MuscleDetails
         v-else-if="muscle.id"
@@ -58,6 +58,7 @@ const files = ref<UploadUserFile[]>([]);
 const images = ref<Media[]>([]);
 
 const {
+  can,
   muscle,
   getMuscle,
   clearMuscle,

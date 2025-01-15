@@ -6,7 +6,19 @@
     sub-title="An error occurred while fetching muscles."
   />
 
-  <MusclesTable v-else :is-loading="isLoading" :muscles="muscles">
+  <MusclesTable
+    v-else
+    :is-loading="isLoading"
+    :muscles="muscles"
+    @sort-change="getSortBy"
+  >
+    <template #options>
+      <el-row class="mb-5">
+        <el-col :span="6">
+          <TableSearcher @search="getSearchBy" />
+        </el-col>
+      </el-row>
+    </template>
     <template #pagination>
       <el-pagination
         class="center-pagination"
@@ -16,7 +28,7 @@
         :disabled="isLoading"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
-        @size-change="getPage"
+        @size-change="getPerPage"
         @current-change="getPage"
       />
     </template>
@@ -24,14 +36,15 @@
 </template>
 
 <script setup lang="ts">
-import MusclesTable from '../components/MusclesTable.vue';
-import useMuscles from '../composables/UseMusclesStore';
+import MusclesTable from "../components/MusclesTable.vue";
+import TableSearcher from "@/components/shared/tables/TableSearcher.vue";
+import useMuscles from "../composables/UseMusclesStore";
 
 const FIELDS_SET = "name,description,createdAt,translations";
 
 const {
   muscles,
   status: { isLoading, isError },
-  pag: { currentPage, perPage, total, getPage },
+  pag: { currentPage, perPage, total, getPage, getSortBy, getPerPage, getSearchBy },
 } = useMuscles(FIELDS_SET);
 </script>

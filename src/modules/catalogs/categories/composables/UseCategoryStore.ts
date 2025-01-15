@@ -1,12 +1,12 @@
 import ApiService from "@/core/services/ApiService";
 import type { Category, CategoryResponse } from "../interfaces";
 import { ElNotification } from "element-plus";
+import { computed } from "vue";
 import { extractErrorDetail } from "@/helpers/errorHelper";
 import { storeToRefs } from "pinia";
+import { useAuthStore } from "@/stores/auth";
 import { useCategoryStore } from "../store/Category";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
-import { computed } from "vue";
-import { useAuthStore } from "@/stores/auth";
 
 /**
  * @description Fetches a category from the API.
