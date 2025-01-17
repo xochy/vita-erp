@@ -20,7 +20,8 @@
     </el-col>
     <el-col :span="5">
       <BasicCard>
-        <MusclesImagesCarousel :images="images" />
+        <MusclesImagesCarousel v-if="areImagesAvailable" :images="images" />
+        <el-empty v-else description="No images" :image-size="100" />
       </BasicCard>
     </el-col>
   </el-row>
@@ -35,11 +36,20 @@ import type { Muscle } from "@/modules/catalogs/muscles/interfaces";
 import useMuscle from "../../../composables/UseMuscleStore";
 import { Delete } from "@element-plus/icons-vue";
 import { useDeleteHandler } from "@/modules/shared/utilities/UseModelDeleteHandler";
+import { computed } from "vue";
 
-defineProps<{ muscle: Muscle; isLoading: boolean; images: Media[] }>();
+/* ------------------------------ Props & Refs ------------------------------ */
+
+const props = defineProps<{ muscle: Muscle; isLoading: boolean; images: Media[] }>();
 
 const { can, deleteMuscle } = useMuscle();
 const { handleDelete } = useDeleteHandler();
+
+/* -------------------------------- computed -------------------------------- */
+
+const areImagesAvailable = computed(() => props.images.length > 0);
+
+/* -------------------------------- Functions ------------------------------- */
 
 /**
  * @description Handle the deletion of a muscle.

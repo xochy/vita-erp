@@ -1,7 +1,7 @@
 <template>
   <el-card>
     <el-row>
-      <el-col :span="24">
+      <el-col :span="24" :class="{ 'mb-4': title }">
         <h3>{{ title }}</h3>
       </el-col>
       <el-col :span="24">

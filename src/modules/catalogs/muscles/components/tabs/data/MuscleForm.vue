@@ -1,44 +1,55 @@
 <template>
-  <el-form
-    v-loading="isLoading"
-    id="muscle_saving_form"
-    ref="muscleSavingFormRef"
-    class="form"
-    :model="muscle"
-    :rules="rules"
-    @submit.prevent="submit()"
-  >
-    <el-row :gutter="20">
-      <el-col :span="12">
-        <Form.NameInput v-model="muscle.attributes.name" />
-      </el-col>
-    </el-row>
+  <BasicCard title="Muscle Form">
+    <el-form
+      v-loading="isLoading"
+      id="muscle_saving_form"
+      ref="muscleSavingFormRef"
+      class="form"
+      :model="muscle"
+      :rules="rules"
+      @submit.prevent="submit()"
+    >
+      <!-- #region::Name -->
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <Form.NameInput v-model="muscle.attributes.name" />
+        </el-col>
+      </el-row>
+      <!-- #endregion::Name -->
 
-    <el-row :gutter="20">
-      <el-col :span="24">
-        <Form.DescriptionInput v-model="muscle.attributes.description" />
-      </el-col>
-    </el-row>
+      <!-- #region::Description -->
+      <el-row :gutter="20">
+        <el-col :span="24">
+          <Form.DescriptionInput v-model="muscle.attributes.description" />
+        </el-col>
+      </el-row>
+      <!-- #endregion::Description -->
 
-    <el-row :gutter="20">
-      <el-col :span="24">
-        <Form.ImagesUploader v-model="images" />
-      </el-col>
-    </el-row>
+      <!-- #region::Images -->
+      <el-row :gutter="20">
+        <el-col :span="24">
+          <Form.ImagesUploader v-model="images" />
+        </el-col>
+      </el-row>
+      <!-- #endregion::Images -->
 
-    <el-row class="mb-4" :gutter="20">
-      <el-col :span="12" :offset="0">
-        <el-button type="primary" @click="submit" :icon="Edit" :loading="isLoading">
-          <span v-if="isLoading">Please wait...</span>
-          <span v-else>Save</span>
-        </el-button>
-        <el-button type="primary" @click="hancleClear">Clear</el-button>
-      </el-col>
-    </el-row>
-  </el-form>
+      <!-- #region::Actions buttons -->
+      <el-row class="mb-4" :gutter="20">
+        <el-col :span="12" :offset="0">
+          <el-button type="primary" @click="submit" :icon="Edit" :loading="isLoading">
+            <span v-if="isLoading">Please wait...</span>
+            <span v-else>Save</span>
+          </el-button>
+          <el-button type="primary" @click="hancleClear">Clear</el-button>
+        </el-col>
+      </el-row>
+      <!-- #endregion::Actions buttons -->
+    </el-form>
+  </BasicCard>
 </template>
 
 <script setup lang="ts">
+import BasicCard from "@/components/shared/cards/BasicCard.vue";
 import type { Media } from "@/modules/media/files/interfaces";
 import type { UploadUserFile } from "element-plus";
 import useMuscle from "@/modules/catalogs/muscles/composables/UseMuscleStore";

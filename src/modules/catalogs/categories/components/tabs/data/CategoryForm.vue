@@ -1,38 +1,47 @@
 <template>
-  <el-form
-    v-loading="isLoading"
-    id="category_saving_form"
-    ref="categorySavingFormRef"
-    class="form"
-    :model="category"
-    :rules="rules"
-    @submit.prevent="submit()"
-  >
-    <el-row :gutter="20">
-      <el-col :span="12">
-        <Form.NameInput v-model="category.attributes.name" />
-      </el-col>
-    </el-row>
+  <BasicCard title="Category Form">
+    <el-form
+      v-loading="isLoading"
+      id="category_saving_form"
+      ref="categorySavingFormRef"
+      class="form"
+      :model="category"
+      :rules="rules"
+      @submit.prevent="submit()"
+    >
+      <!-- #region::Name -->
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <Form.NameInput v-model="category.attributes.name" />
+        </el-col>
+      </el-row>
+      <!-- #endregion::Name -->
 
-    <el-row :gutter="20">
-      <el-col :span="24">
-        <Form.DescriptionInput v-model="category.attributes.description" />
-      </el-col>
-    </el-row>
+      <!-- #region::Description -->
+      <el-row :gutter="20">
+        <el-col :span="24">
+          <Form.DescriptionInput v-model="category.attributes.description" />
+        </el-col>
+      </el-row>
+      <!-- #endregion::Description -->
 
-    <el-row class="mb-4" :gutter="20">
-      <el-col :span="12" :offset="0">
-        <el-button type="primary" @click="submit" :icon="Edit" :loading="isLoading">
-          <span v-if="isLoading">Please wait...</span>
-          <span v-else>Save</span>
-        </el-button>
-        <el-button type="info" @click="hancleClear">Clear</el-button>
-      </el-col>
-    </el-row>
-  </el-form>
+      <!-- #region::Actions buttons -->
+      <el-row class="mb-4" :gutter="20">
+        <el-col :span="12" :offset="0">
+          <el-button type="primary" @click="submit" :icon="Edit" :loading="isLoading">
+            <span v-if="isLoading">Please wait...</span>
+            <span v-else>Save</span>
+          </el-button>
+          <el-button type="info" @click="hancleClear">Clear</el-button>
+        </el-col>
+      </el-row>
+      <!-- #endregion::Actions buttons -->
+    </el-form>
+  </BasicCard>
 </template>
 
 <script setup lang="ts">
+import BasicCard from "@/components/shared/cards/BasicCard.vue";
 import useCategory from "@/modules/catalogs/categories/composables/UseCategoryStore";
 import { Edit } from "@element-plus/icons-vue";
 import { rules } from "@/modules/catalogs/categories/validation/categoryFormValidationRules";

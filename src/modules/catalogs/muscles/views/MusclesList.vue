@@ -27,6 +27,7 @@
         :page-sizes="[5, 10, 15, 20]"
         :disabled="isLoading"
         layout="total, sizes, prev, pager, next, jumper"
+        size="small"
         :total="total"
         @size-change="getPerPage"
         @current-change="getPage"

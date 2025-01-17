@@ -25,6 +25,7 @@
         v-model:page-size="perPage"
         class="center-pagination"
         layout="total, sizes, prev, pager, next, jumper"
+        size="small"
         :page-sizes="[5, 10, 15, 20]"
         :disabled="isLoading"
         :total="total"

@@ -29,6 +29,8 @@ import useCategory from "../../../composables/UseCategoryStore";
 import { Delete } from "@element-plus/icons-vue";
 import { useDeleteHandler } from "@/modules/shared/utilities/UseModelDeleteHandler";
 
+/* ------------------------------ Props & Refs ------------------------------ */
+
 defineProps<{ category: Category; isLoading: boolean }>();
 
 const { can, deleteCategory } = useCategory();

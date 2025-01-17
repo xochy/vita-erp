@@ -15,52 +15,54 @@
       :image-size="100"
     />
 
-    <el-collapse v-else v-loading="translationModal?.isDeleting">
-      <el-collapse-item v-for="translation in translations" :key="translation.id">
-        <template #title>
-          <el-badge
-            :value="translation.attributes.locale"
+    <BasicCard v-else>
+      <el-collapse v-loading="translationModal?.isDeleting">
+        <el-collapse-item v-for="translation in translations" :key="translation.id">
+          <template #title>
+            <el-badge
+              :value="translation.attributes.locale"
+              type="primary"
+              :offset="[13, 5]"
+            >
+              <h4>Field {{ translation.attributes.column }}</h4>
+            </el-badge>
+          </template>
+          <el-row :gutter="20">
+            <el-col :span="can.modify ? 21 : 24">
+              {{ translation.attributes.translation }}
+            </el-col>
+            <el-col v-if="can.modify" :span="3" class="button-col">
+              <el-tooltip content="Edit">
+                <el-button
+                  type="primary"
+                  :icon="Edit"
+                  @click="openModal(translation.id)"
+                />
+              </el-tooltip>
+              <el-tooltip content="Delete">
+                <el-button
+                  type="danger"
+                  :icon="Delete"
+                  @click="deleteTranslation(translation.id)"
+                />
+              </el-tooltip>
+            </el-col>
+          </el-row>
+        </el-collapse-item>
+      </el-collapse>
+      <el-row v-if="canAddTranslation" class="mt-4" :gutter="20">
+        <el-col :span="12" :offset="0">
+          <el-button
             type="primary"
-            :offset="[13, 5]"
+            @click="openModal(null)"
+            :icon="Plus"
+            :disabled="translationModal?.isDeleting"
           >
-            <h4>Field {{ translation.attributes.column }}</h4>
-          </el-badge>
-        </template>
-        <el-row :gutter="20">
-          <el-col :span="can.modify ? 21 : 24">
-            {{ translation.attributes.translation }}
-          </el-col>
-          <el-col v-if="can.modify" :span="3" class="button-col">
-            <el-tooltip content="Edit">
-              <el-button
-                type="primary"
-                :icon="Edit"
-                @click="openModal(translation.id)"
-              />
-            </el-tooltip>
-            <el-tooltip content="Delete">
-              <el-button
-                type="danger"
-                :icon="Delete"
-                @click="deleteTranslation(translation.id)"
-              />
-            </el-tooltip>
-          </el-col>
-        </el-row>
-      </el-collapse-item>
-    </el-collapse>
-    <el-row v-if="canAddTranslation" class="mt-4" :gutter="20">
-      <el-col :span="12" :offset="0">
-        <el-button
-          type="primary"
-          @click="openModal(null)"
-          :icon="Plus"
-          :disabled="translationModal?.isDeleting"
-        >
-          Add translation
-        </el-button>
-      </el-col>
-    </el-row>
+            Add translation
+          </el-button>
+        </el-col>
+      </el-row>
+    </BasicCard>
 
     <TranslationModal
       ref="translationModal"
@@ -75,6 +77,7 @@
 </template>
 
 <script setup lang="ts">
+import BasicCard from "@/components/shared/cards/BasicCard.vue";
 import BasicSkeleton from "@/components/shared/skeletons/BasicSkeleton.vue";
 import TranslationModal from "@/modules/shared/translations/components/form/TranslationModal.vue";
 import type {
