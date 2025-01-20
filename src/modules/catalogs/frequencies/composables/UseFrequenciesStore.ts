@@ -119,3 +119,5 @@ const useFrequencies = (fields: string): any => {
     refetchFrequencies,
   };
 };
+
+export default useFrequencies;

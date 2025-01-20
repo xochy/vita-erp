@@ -2,7 +2,7 @@
   <slot name="options"></slot>
   <el-table
     v-loading="isLoading"
-    :data="categories"
+    :data="goals"
     style="width: 100%"
     height="480"
     @sort-change="onSortChange"
@@ -24,7 +24,7 @@
       width="200"
     >
       <template #default="props">
-        <el-link @click="handleLoadCategory(props.row)">
+        <el-link @click="handleLoadGoal(props.row)">
           {{ props.row.attributes.name }}
         </el-link>
       </template>
@@ -36,16 +36,12 @@
     <!-- #endregion::Description -->
 
     <!-- #region::Actions -->
-    <ActionsColumn
-      v-if="can.modify"
-      @edit="handleEditCategory"
-      @delete="handleDeleteCategory"
-    />
+    <ActionsColumn v-if="can.modify" @edit="handleEditGoal" @delete="handleDeleteGoal" />
     <!-- #endregion::Actions -->
 
     <!-- #region::Empty table message -->
     <template v-if="!isLoading" #empty>
-      <TableEmptyResult message="No categories found." />
+      <TableEmptyResult message="No goals found." />
     </template>
     <!-- #endregion::Empty table message -->
   </el-table>
@@ -56,53 +52,53 @@
 import ActionsColumn from "@/components/shared/tables/colums/ActionsColumn.vue";
 import TableEmptyResult from "@/components/shared/tables/TableEmptyResult.vue";
 import TranslationsList from "@/modules/shared/translations/views/TranslationsList.vue";
-import type { Category } from "../interfaces";
-import useCategory from "../composables/UseCategoryStore";
+import type { Goal } from "../interfaces";
+import useGoal from "../composables/UseGoalStore";
 import { handleSortChange } from "@/modules/shared/utilities/UseModelSortHandler";
 import { useDeleteHandler } from "@/modules/shared/utilities/UseModelDeleteHandler";
 import { useRouter } from "vue-router";
 
 /* ------------------------------ Props & Refs ------------------------------ */
 
-defineProps<{ categories: Category[]; isLoading: boolean }>();
+defineProps<{ goals: Goal[]; isLoading: boolean }>();
 
 const route = useRouter();
-const { can, deleteCategory } = useCategory();
+const { can, deleteGoal } = useGoal();
 const { handleDelete } = useDeleteHandler();
 
 /* -------------------------------- Functions ------------------------------- */
 
 /**
- * @description Load the category details.
- * @param {Category} category
+ * @description Load the goal details.
+ * @param {Goal} goal
  * @returns {void}
  */
-const handleLoadCategory = (category: Category): void => {
+const handleLoadGoal = (goal: Goal): void => {
   route.push({
-    name: "categories-saving",
-    params: { id: String(category.id), tab: "details" },
+    name: "goals-saving",
+    params: { id: String(goal.id), tab: "details" },
   });
 };
 
 /**
- * @description Handle the editing of a category.
- * @param {number} categoryId
+ * @description Handle the editing of a goal.
+ * @param {number} goalId
  * @returns {void}
  */
-const handleEditCategory = (categoryId: number): void => {
+const handleEditGoal = (goalId: number): void => {
   route.push({
-    name: "categories-saving",
-    params: { id: String(categoryId), tab: "categoryData" },
+    name: "goals-saving",
+    params: { id: String(goalId), tab: "goalData" },
   });
 };
 
 /**
- * @description Handle the deletion of a category.
+ * @description Handle the deletion of a goal.
  */
-const handleDeleteCategory = handleDelete(
-  "Are you sure you want to delete this category?",
+const handleDeleteGoal = handleDelete(
+  "Are you sure you want to delete this goal?",
   "Deleting",
-  deleteCategory
+  deleteGoal
 );
 
 /**

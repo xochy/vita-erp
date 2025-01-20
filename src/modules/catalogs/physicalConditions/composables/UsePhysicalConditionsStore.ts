@@ -123,3 +123,5 @@ const usePhysicalConditions = (fields: string): any => {
     refetchPhysicalConditions,
   };
 };
+
+export default usePhysicalConditions;

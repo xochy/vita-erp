@@ -193,3 +193,5 @@ const useFrequencies = (): any => {
     },
   };
 };
+
+export default useFrequencies;
