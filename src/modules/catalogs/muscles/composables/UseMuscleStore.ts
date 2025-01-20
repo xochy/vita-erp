@@ -1,12 +1,15 @@
 import ApiService from "@/core/services/ApiService";
 import type { Muscle, MuscleResponse } from "../interfaces";
-import { ElNotification } from "element-plus";
 import { computed } from "vue";
 import { extractErrorDetail } from "@/helpers/errorHelper";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 import { useMuscleStore } from "../store/Muscle";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
+import {
+  showErrorNotification,
+  showSuccessNotification,
+} from "@/modules/shared/utilities/ShowErrorNotification";
 
 /**
  * @description Fetches a muscle from the API.
@@ -112,11 +115,7 @@ const useMuscle = (): any => {
   const { isPending: isFetching, mutate: fetch } = useMutation({
     mutationFn: getMuscle,
     onError: (error) => {
-      ElNotification({
-        title: "Error",
-        message: extractErrorDetail(error),
-        type: "error",
-      });
+      showErrorNotification(extractErrorDetail(error));
     },
     onSuccess: ({ data }) => {
       store.setMuscle(data);
@@ -129,11 +128,7 @@ const useMuscle = (): any => {
   const { isPending: isCreating, mutate: create } = useMutation({
     mutationFn: createMuscle,
     onError: (error) => {
-      ElNotification({
-        title: "Error",
-        message: extractErrorDetail(error),
-        type: "error",
-      });
+      showErrorNotification(extractErrorDetail(error));
     },
     onSuccess: ({ data }) => {
       store.setMuscle(data);
@@ -146,18 +141,10 @@ const useMuscle = (): any => {
   const { isPending: isUpdating, mutate: update } = useMutation({
     mutationFn: updateMuscle,
     onError: (error) => {
-      ElNotification({
-        title: "Error",
-        message: extractErrorDetail(error),
-        type: "error",
-      });
+      showErrorNotification(extractErrorDetail(error));
     },
     onSuccess: ({ data }) => {
-      ElNotification({
-        title: "Success",
-        message: "Muscle updated successfully",
-        type: "success",
-      });
+      showSuccessNotification("Muscle updated successfully");
       store.setMuscle(data);
     },
   });
@@ -168,19 +155,10 @@ const useMuscle = (): any => {
   const { isPending: isDeleting, mutate: destroy } = useMutation({
     mutationFn: deleteMuscle,
     onError: (error) => {
-      ElNotification({
-        title: "Error",
-        message: extractErrorDetail(error),
-        type: "error",
-      });
+      showErrorNotification(extractErrorDetail(error));
     },
     onSuccess: () => {
-      ElNotification({
-        title: "Success",
-        message: "Muscle deleted successfully",
-        type: "success",
-      });
-
+      showSuccessNotification("Muscle deleted successfully");
       queryClient.invalidateQueries({
         queryKey: ["muscles?page[number]="],
       });
@@ -193,18 +171,10 @@ const useMuscle = (): any => {
   const { isPending: isSavingFiles, mutate: saveFiles } = useMutation({
     mutationFn: saveMuscleFiles,
     onError: (error) => {
-      ElNotification({
-        title: "Error",
-        message: extractErrorDetail(error),
-        type: "error",
-      });
+      showErrorNotification(extractErrorDetail(error));
     },
     onSuccess: () => {
-      ElNotification({
-        title: "Success",
-        message: "Files saved successfully",
-        type: "success",
-      });
+      showSuccessNotification("Muscle files saved successfully");
     },
   });
 

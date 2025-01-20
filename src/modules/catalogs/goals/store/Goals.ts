@@ -1,25 +1,25 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import type { Category } from "../interfaces";
+import type { Goal } from "../interfaces";
 
 /**
- * @description Defines the categories store.
- * @returns {Object} The categories store.
+ * @description Define the goals store.
+ * @returns {Object} The goals store.
  */
-export const useCategoriesStore = defineStore("categories", () => {
+export const useGoalsStore = defineStore("goals", () => {
   const total = ref<number>(1);
   const sortBy = ref<string>("");
   const perPage = ref<number>(5);
   const searchBy = ref<string>("");
   const currentPage = ref<number>(1);
 
-  const categories = ref<Category[]>([]);
+  const goals = ref<Goal[]>([]);
 
   return {
-    categories,
+    goals,
 
-    setCategories(value: Category[]) {
-      categories.value = value;
+    setGoals(value: Goal[]) {
+      goals.value = value;
     },
 
     // #region::Pagination
@@ -28,7 +28,6 @@ export const useCategoriesStore = defineStore("categories", () => {
     perPage,
     searchBy,
     currentPage,
-
 
     setTotal(value: number) {
       total.value = value;

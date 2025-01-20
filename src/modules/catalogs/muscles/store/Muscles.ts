@@ -3,7 +3,8 @@ import { ref } from "vue";
 import type { Muscle } from "../interfaces";
 
 /**
- * @description Defines the muscle store.
+ * @description Defines the muscles store.
+ * @returns {Object} The muscles store.
  */
 export const useMusclesStore = defineStore("muscles", () => {
   const total = ref<number>(1);
@@ -15,10 +16,16 @@ export const useMusclesStore = defineStore("muscles", () => {
   const muscles = ref<Muscle[]>([]);
 
   return {
+    muscles,
+
+    setMuscles(value: Muscle[]) {
+      muscles.value = value;
+    },
+
+    // #region::Pagination
     total,
     sortBy,
     perPage,
-    muscles,
     searchBy,
     currentPage,
 
@@ -43,9 +50,6 @@ export const useMusclesStore = defineStore("muscles", () => {
     setCurrentPage(page: number) {
       currentPage.value = page;
     },
-
-    setMuscles(value: Muscle[]) {
-      muscles.value = value;
-    },
+    // #endregion::Pagination
   };
 });

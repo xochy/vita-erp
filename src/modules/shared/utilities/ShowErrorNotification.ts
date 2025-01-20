@@ -7,3 +7,11 @@ export const showErrorNotification = (message: string) => {
     type: "error",
   });
 };
+
+export const showSuccessNotification = (message: string) => {
+  ElNotification({
+    title: "Success",
+    message,
+    type: "success",
+  });
+};
