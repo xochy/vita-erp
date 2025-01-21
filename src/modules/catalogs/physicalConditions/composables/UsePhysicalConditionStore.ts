@@ -113,7 +113,7 @@ const useFrequencies = (): any => {
   /**
    * @description Mutation for physical condition creation.
    */
-  const { isPending: isCreating, mutate: create } = useMutation({
+  const { isPending: isCreating, mutateAsync: create } = useMutation({
     mutationFn: createPhysicalCondition,
     onError: (error) => {
       showErrorNotification(extractErrorDetail(error));
@@ -127,7 +127,7 @@ const useFrequencies = (): any => {
   /**
    * @description Mutation for physical condition update.
    */
-  const { isPending: isUpdating, mutate: update } = useMutation({
+  const { isPending: isUpdating, mutateAsync: update } = useMutation({
     mutationFn: updatePhysicalCondition,
     onError: (error) => {
       showErrorNotification(extractErrorDetail(error));
@@ -141,7 +141,7 @@ const useFrequencies = (): any => {
   /**
    * @description Mutation for physical condition deletion.
    */
-  const { isPending: isDeleting, mutate: destroy } = useMutation({
+  const { isPending: isDeleting, mutateAsync: destroy } = useMutation({
     mutationFn: deletePhysicalCondition,
     onError: (error) => {
       showErrorNotification(extractErrorDetail(error));

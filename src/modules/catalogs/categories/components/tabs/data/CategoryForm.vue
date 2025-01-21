@@ -42,10 +42,10 @@
 
 <script setup lang="ts">
 import BasicCard from "@/components/shared/cards/BasicCard.vue";
-import useCategory from "@/modules/catalogs/categories/composables/UseCategoryStore";
+import useCategory from "../../../composables/UseCategoryStore";
 import { Edit } from "@element-plus/icons-vue";
-import { rules } from "@/modules/catalogs/categories/validation/categoryFormValidationRules";
 import { ref } from "vue";
+import { rules } from "../../../validation/categoryFormValidationRules";
 
 import * as Form from "./fields";
 

@@ -98,7 +98,7 @@ const useGoal = (): any => {
   /**
    * @description Mutation for goal creation.
    */
-  const { isPending: isCreating, mutate: create } = useMutation({
+  const { isPending: isCreating, mutateAsync: create } = useMutation({
     mutationFn: createGoal,
     onError: (error) => {
       showErrorNotification(extractErrorDetail(error));
@@ -112,7 +112,7 @@ const useGoal = (): any => {
   /**
    * @description Mutation for goal updating.
    */
-  const { isPending: isUpdating, mutate: update } = useMutation({
+  const { isPending: isUpdating, mutateAsync: update } = useMutation({
     mutationFn: updateGoal,
     onError: (error) => {
       showErrorNotification(extractErrorDetail(error));
@@ -126,7 +126,7 @@ const useGoal = (): any => {
   /**
    * @description Mutation for goal deletion.
    */
-  const { isPending: isDeleting, mutate: destroy } = useMutation({
+  const { isPending: isDeleting, mutateAsync: destroy } = useMutation({
     mutationFn: deleteGoal,
     onError: (error) => {
       showErrorNotification(extractErrorDetail(error));

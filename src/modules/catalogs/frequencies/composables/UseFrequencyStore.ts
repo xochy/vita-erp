@@ -80,7 +80,7 @@ const deleteFrequency = async (frequency: Frequency): Promise<void> => {
  * @description Composable function to manage the frequencies.
  * @returns {Object} The frequencies composable.
  */
-const useFrequencies = (): any => {
+const useFrequency = (): any => {
   const store = useFrequencyStore();
   const authStore = useAuthStore();
   const { frequency } = storeToRefs(store);
@@ -102,7 +102,7 @@ const useFrequencies = (): any => {
   /**
    * @description Mutation for frequency creation.
    */
-  const { isPending: isCreating, mutate: create } = useMutation({
+  const { isPending: isCreating, mutateAsync: create } = useMutation({
     mutationFn: createFrequency,
     onError: (error) => {
       showErrorNotification(extractErrorDetail(error));
@@ -116,7 +116,7 @@ const useFrequencies = (): any => {
   /**
    * @description Mutation for frequency update.
    */
-  const { isPending: isUpdating, mutate: update } = useMutation({
+  const { isPending: isUpdating, mutateAsync: update } = useMutation({
     mutationFn: updateFrequency,
     onError: (error) => {
       showErrorNotification(extractErrorDetail(error));
@@ -130,7 +130,7 @@ const useFrequencies = (): any => {
   /**
    * @description Mutation for frequency deletion.
    */
-  const { isPending: isDeleting, mutate: destroy } = useMutation({
+  const { isPending: isDeleting, mutateAsync: destroy } = useMutation({
     mutationFn: deleteFrequency,
     onError: (error) => {
       showErrorNotification(extractErrorDetail(error));
@@ -183,4 +183,4 @@ const useFrequencies = (): any => {
   };
 };
 
-export default useFrequencies;
+export default useFrequency;

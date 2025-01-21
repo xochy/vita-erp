@@ -2,11 +2,11 @@
   <FormItem
     name="attributes.name"
     label="Name"
-    tooltip="Specify a category name"
+    tooltip="Specify a goal name"
   >
     <el-input
       v-model="name"
-      placeholder="Enter category name"
+      placeholder="Enter goal name"
       name="attributes.name"
     ></el-input>
   </FormItem>

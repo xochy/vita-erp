@@ -32,11 +32,11 @@
 
 <script setup lang="ts">
 import BasicSkeleton from "@/components/shared/skeletons/BasicSkeleton.vue";
-import CategoryDetails from "@/modules/catalogs/categories/components/tabs/details/CategoryDetails.vue";
-import CategoryForm from "@/modules/catalogs/categories/components/tabs/data/CategoryForm.vue";
+import CategoryDetails from "../components/tabs/details/CategoryDetails.vue";
+import CategoryForm from "../components/tabs/data/CategoryForm.vue";
 import TranslationsCollapse from "@/modules/shared/translations/components/form/TranslationsCollapse.vue";
-import useCategory from "@/modules/catalogs/categories/composables/UseCategoryStore";
-import { fields } from "@/modules/catalogs/categories/components/tabs/data/fields";
+import useCategory from "../composables/UseCategoryStore";
+import { fields } from "../components/tabs/data/fields";
 import { onMounted, onUnmounted, ref } from "vue";
 import { useRoute } from "vue-router";
 

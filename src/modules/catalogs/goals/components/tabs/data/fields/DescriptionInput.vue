@@ -2,11 +2,11 @@
   <FormItem
     name="attributes.description"
     label="Description"
-    tooltip="Specify a category description"
+    tooltip="Specify a goal description"
   >
     <el-input
       v-model="description"
-      placeholder="Enter category description"
+      placeholder="Enter goal description"
       name="attributes.description"
       type="textarea"
     ></el-input>
