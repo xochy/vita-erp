@@ -1,3 +1,4 @@
+import { Page } from "@/modules/shared/interfaces/pagination/Page";
 import { Frequency } from "./frequency";
 
 export interface FrequenciesListResponse {
@@ -14,13 +15,4 @@ export interface FrequenciesListResponseLinks {
 
 export interface Meta {
   page: Page;
-}
-
-export interface Page {
-  currentPage: number;
-  from       : number;
-  lastPage   : number;
-  perPage    : number;
-  to         : number;
-  total      : number;
 }

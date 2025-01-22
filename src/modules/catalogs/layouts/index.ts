@@ -21,7 +21,7 @@ export default [
       },
       {
         sectionTitle: "Plans",
-        route: "/plans",
+        route: "/plans-cat",
         keenthemesIcon: "calendar",
         bootstrapIcon: "bi-calendar",
         sub: [

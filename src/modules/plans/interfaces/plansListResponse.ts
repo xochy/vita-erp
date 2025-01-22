@@ -1,9 +1,9 @@
 import { Page } from "@/modules/shared/interfaces/pagination/Page";
-import type { Muscle } from "./muscle";
+import { Plan } from "./plan";
 
-export interface MusclesListResponse {
+export interface PlansListResponse {
   meta : Meta;
-  data : Muscle[];
+  data : Plan[];
 }
 
 export interface Meta {

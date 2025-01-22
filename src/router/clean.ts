@@ -19,6 +19,8 @@ import GoalsRoutes from "@/modules/catalogs/goals/router";
 import FrequenciesRoutes from "@/modules/catalogs/frequencies/router";
 import PhysicalConditionsRoutes from "@/modules/catalogs/physicalConditions/router";
 
+import PlansRoutes from "@/modules/plans/router";
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -111,6 +113,8 @@ const routes: Array<RouteRecordRaw> = [
   ...GoalsRoutes,
   ...FrequenciesRoutes,
   ...PhysicalConditionsRoutes,
+
+  ...PlansRoutes,
 ];
 
 const router = createRouter({
