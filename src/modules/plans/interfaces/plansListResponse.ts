@@ -1,5 +1,5 @@
-import { Page } from "@/modules/shared/interfaces/pagination/Page";
-import { Plan } from "./plan";
+import type { Page } from "@/modules/shared/interfaces/pagination/Page";
+import type { Plan } from "./plan";
 
 export interface PlansListResponse {
   meta : Meta;

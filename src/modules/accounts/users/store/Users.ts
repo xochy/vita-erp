@@ -4,7 +4,7 @@ import type { User } from "../interfaces";
 
 export const useUsersStore = defineStore("users", () => {
   const currentPage = ref<number>(1);
-  const perPage = ref<number>(5);
+  const perPage = ref<number>(10);
   const total = ref<number>(1);
 
   const users = ref<User[]>([]);

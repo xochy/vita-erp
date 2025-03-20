@@ -9,7 +9,7 @@ import type { Category } from "../interfaces";
 export const useCategoriesStore = defineStore("categories", () => {
   const total = ref<number>(1);
   const sortBy = ref<string>("");
-  const perPage = ref<number>(5);
+  const perPage = ref<number>(10);
   const searchBy = ref<string>("");
   const currentPage = ref<number>(1);
 

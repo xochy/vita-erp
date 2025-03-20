@@ -1,4 +1,4 @@
-import { Page } from "@/modules/shared/interfaces/pagination/Page";
+import type { Page } from "@/modules/shared/interfaces/pagination/Page";
 import type { Category } from "./category";
 
 export interface CategoriesListResponse {

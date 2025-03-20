@@ -1,4 +1,4 @@
-import { ModelLinks } from "@/modules/shared/translations/interfaces";
+import type { ModelLinks } from "@/modules/shared/translations/interfaces";
 
 export interface PhysicalCondition {
   type          : string;

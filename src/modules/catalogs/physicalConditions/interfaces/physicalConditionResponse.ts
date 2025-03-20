@@ -1,4 +1,4 @@
-import { PhysicalCondition } from "./physicalCondition";
+import type { PhysicalCondition } from "./physicalCondition";
 
 export interface PhysicalConditionResponse {
   data: PhysicalCondition;

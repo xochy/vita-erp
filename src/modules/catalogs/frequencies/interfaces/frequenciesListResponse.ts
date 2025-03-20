@@ -1,5 +1,5 @@
-import { Page } from "@/modules/shared/interfaces/pagination/Page";
-import { Frequency } from "./frequency";
+import type { Page } from "@/modules/shared/interfaces/pagination/Page";
+import type { Frequency } from "./frequency";
 
 export interface FrequenciesListResponse {
   meta : Meta;

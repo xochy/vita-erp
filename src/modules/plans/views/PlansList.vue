@@ -36,7 +36,8 @@ import PlansTable from "../components/PlansTable.vue";
 import TableSearcher from "@/components/shared/tables/TableSearcher.vue";
 import usePlans from "../composables/UsePlansStore";
 
-const FIELDS_SET = "name,createdAt,translations";
+const FIELDS_SET =
+  "name,goalName,frequencyName,physicalConditionName,createdAt,translations";
 
 const {
   plans,

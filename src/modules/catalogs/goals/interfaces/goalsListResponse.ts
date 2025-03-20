@@ -1,5 +1,5 @@
-import { Page } from "@/modules/shared/interfaces/pagination/Page";
-import { Goal } from "./goal";
+import type { Page } from "@/modules/shared/interfaces/pagination/Page";
+import type { Goal } from "./goal";
 
 export interface GoalsListResponse {
   meta : Meta;

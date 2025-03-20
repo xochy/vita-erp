@@ -4,7 +4,7 @@
     v-loading="isLoading"
     :data="frequencies"
     style="width: 100%"
-    height="480"
+    height="640"
     @sort-change="onSortChange"
   >
     <!-- #region::Translations -->

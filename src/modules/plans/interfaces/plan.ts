@@ -1,4 +1,4 @@
-import { ModelLinks } from "@/modules/shared/translations/interfaces";
+import type { ModelLinks } from "@/modules/shared/translations/interfaces";
 
 export interface Plan {
   type          : string;
@@ -9,10 +9,13 @@ export interface Plan {
 }
 
 export interface Attributes {
-  name        : string;
-  slug       ?: string;
-  createdAt  ?: Date;
-  updatedAt  ?: Date;
+  name                  : string;
+  goalName             ?: string;
+  frequencyName        ?: string;
+  physicalConditionName?: string;
+  slug                 ?: string;
+  createdAt            ?: Date;
+  updatedAt            ?: Date;
 }
 
 export interface PlanLinks {

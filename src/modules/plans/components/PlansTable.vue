@@ -4,7 +4,7 @@
     v-loading="isLoading"
     :data="plans"
     style="width: 100%"
-    height="480"
+    height="640"
     @sort-change="onSortChange"
   >
     <!-- #region::Translations -->
@@ -16,7 +16,13 @@
     <!-- #endregion::Translations -->
 
     <!-- #region::Name -->
-    <el-table-column prop="name" label="Name" sortable="custom">
+    <el-table-column
+      prop="name"
+      label="Name"
+      sortable="custom"
+      min-width="120"
+      width="200"
+    >
       <template #default="props">
         <el-link @click="handleLoadPlan(props.row)">
           {{ props.row.attributes.name }}
@@ -24,6 +30,18 @@
       </template>
     </el-table-column>
     <!-- #endregion::Name -->
+
+    <!-- #region::Goal -->
+    <el-table-column prop="attributes.goalName" label="Goal" />
+    <!-- #endregion::Goal -->
+
+    <!-- #region::Frequency -->
+    <el-table-column prop="attributes.frequencyName" label="Frequency" />
+    <!-- #endregion::Frequency -->
+
+    <!-- #region::Physical condition -->
+    <el-table-column prop="attributes.physicalConditionName" label="Physical condition" />
+    <!-- #endregion::Physical condition -->
 
     <!-- #region::Actions -->
     <ActionsColumn v-if="can.modify" @edit="handleEditPlan" @delete="handleDeletePlan" />
