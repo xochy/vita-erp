@@ -6,7 +6,7 @@ export const useRolesStore = defineStore("roles", () => {
   const currentPage = ref<number>(1);
   const from = ref<number>(1);
   const lastPage = ref<number>(1);
-  const perPage = ref<number>(5);
+  const perPage = ref<number>(10);
   const to = ref<number>(1);
   const total = ref<number>(1);
 

@@ -16,6 +16,7 @@
         <template v-for="(button, index) in actionButtons" :key="index">
           <router-link
             :to="button.to"
+            v-if="canDoAction(button.permissions || [])"
             class="btn btn-sm fw-bold btn-primary d-flex align-items-center gap-2"
           >
             <!-- Icon (conditionally rendered if exists) -->
@@ -40,6 +41,7 @@ import { toolbarWidthFluid } from "@/layouts/default-layout/config/helper";
 import KTPageTitle from "@/layouts/default-layout/components/toolbar/PageTitle.vue";
 import { useRoute } from "vue-router";
 import type { ToolbarItem } from "./config/ToolbarItem";
+import { useAuthStore } from "@/stores/auth";
 
 export default defineComponent({
   name: "layout-toolbar",
@@ -48,6 +50,7 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute();
+    const authStore = useAuthStore();
 
     const dataBsToggle = computed(() => {
       return route.meta.dataBsToggle;
@@ -61,11 +64,19 @@ export default defineComponent({
       return route.meta.actionButtons as ToolbarItem[];
     });
 
+    const canDoAction = (permissions: string[]): boolean => {
+      if (!permissions || permissions.length === 0) {
+        return true;
+      }
+      return permissions.every((permission) => authStore.hasPermissionTo(permission));
+    };
+
     return {
       toolbarWidthFluid,
       dataBsToggle,
       dataBsTarget,
       actionButtons,
+      canDoAction,
     };
   },
 });

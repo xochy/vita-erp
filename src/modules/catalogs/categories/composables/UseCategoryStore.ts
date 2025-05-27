@@ -1,11 +1,15 @@
 import ApiService from "@/core/services/ApiService";
 import type { Category, CategoryResponse } from "../interfaces";
-import { ElNotification } from "element-plus";
+import { computed } from "vue";
 import { extractErrorDetail } from "@/helpers/errorHelper";
 import { storeToRefs } from "pinia";
+import { useAuthStore } from "@/stores/auth";
 import { useCategoryStore } from "../store/Category";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
-import { computed } from "vue";
+import {
+  showErrorNotification,
+  showSuccessNotification,
+} from "@/modules/shared/utilities/ShowErrorNotification";
 
 /**
  * @description Fetches a category from the API.
@@ -78,6 +82,7 @@ const deleteCategory = async (categoryId: number): Promise<void> => {
  */
 const useCategory = (): any => {
   const store = useCategoryStore();
+  const authStore = useAuthStore();
   const { category } = storeToRefs(store);
   const queryClient = useQueryClient();
 
@@ -87,11 +92,7 @@ const useCategory = (): any => {
   const { isPending: isFetching, mutate: fetch } = useMutation({
     mutationFn: getCategory,
     onError: (error) => {
-      ElNotification({
-        title: "Error",
-        message: extractErrorDetail(error),
-        type: "error",
-      });
+      showErrorNotification(extractErrorDetail(error));
     },
     onSuccess: ({ data }) => {
       store.setCategory(data);
@@ -104,18 +105,10 @@ const useCategory = (): any => {
   const { isPending: isCreating, mutateAsync: create } = useMutation({
     mutationFn: createCategory,
     onError: (error) => {
-      ElNotification({
-        title: "Error",
-        message: extractErrorDetail(error),
-        type: "error",
-      });
+      showErrorNotification(extractErrorDetail(error));
     },
     onSuccess: ({ data }) => {
-      ElNotification({
-        title: "Success",
-        message: "Category created successfully",
-        type: "success",
-      });
+      showSuccessNotification("Category created successfully");
       store.setCategory(data);
     },
   });
@@ -126,18 +119,10 @@ const useCategory = (): any => {
   const { isPending: isUpdating, mutateAsync: update } = useMutation({
     mutationFn: updateCategory,
     onError: (error) => {
-      ElNotification({
-        title: "Error",
-        message: extractErrorDetail(error),
-        type: "error",
-      });
+      showErrorNotification(extractErrorDetail(error));
     },
     onSuccess: ({ data }) => {
-      ElNotification({
-        title: "Success",
-        message: "Category updated successfully",
-        type: "success",
-      });
+      showSuccessNotification("Category updated successfully");
       store.setCategory(data);
     },
   });
@@ -148,19 +133,10 @@ const useCategory = (): any => {
   const { isPending: isDeleting, mutateAsync: destroy } = useMutation({
     mutationFn: deleteCategory,
     onError: (error) => {
-      ElNotification({
-        title: "Error",
-        message: extractErrorDetail(error),
-        type: "error",
-      });
+      showErrorNotification(extractErrorDetail(error));
     },
     onSuccess: () => {
-      ElNotification({
-        title: "Success",
-        message: "Category deleted successfully",
-        type: "success",
-      });
-
+      showSuccessNotification("Category deleted successfully");
       queryClient.invalidateQueries({
         queryKey: ["categories?page[number]="],
       });
@@ -192,6 +168,18 @@ const useCategory = (): any => {
 
     category,
     clearCategory: store.clearCategory,
+
+    can: {
+      save:
+        authStore.hasPermissionTo("create categories") ||
+        authStore.hasPermissionTo("update categories"),
+
+      modify:
+        authStore.hasPermissionTo("update categories") ||
+        authStore.hasPermissionTo("delete categories"),
+
+      destroy: authStore.hasPermissionTo("delete categories"),
+    },
   };
 };
 

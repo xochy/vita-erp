@@ -21,8 +21,10 @@ export default [
               title: "Add Muscle",
               icon: "plus",
               to: { name: "muscles-saving" },
+              permissions: ["create muscles"],
             },
           ],
+          permissions: ["read muscles"],
         },
       },
       // muscles saving form
@@ -42,6 +44,7 @@ export default [
               to: { name: "muscles" },
             },
           ],
+          permissions: ["show muscles"],
         },
       },
     ],

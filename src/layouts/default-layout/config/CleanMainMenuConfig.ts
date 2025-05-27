@@ -3,6 +3,8 @@ import Accounts from "@/modules/accounts/layouts";
 import Catalog from "@/modules/catalogs/layouts";
 import Media from "@/modules/media/layouts";
 
+import Plans from "@/modules/plans/layout";
+
 const MainMenuConfig: Array<MenuItem> = [
   {
     pages: [
@@ -14,9 +16,11 @@ const MainMenuConfig: Array<MenuItem> = [
       },
     ],
   },
+  ...Plans,
   ...Accounts,
   ...Catalog,
   ...Media,
+
 ];
 
 export default MainMenuConfig;

@@ -2,6 +2,10 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import type { Muscle } from "../interfaces";
 
+/**
+ * @description Initialize a muscle object
+ * @returns {Muscle} An empty muscle object
+ */
 const initializeMuscle = (): Muscle => ({
   id: "",
   type: "muscles",
@@ -11,6 +15,10 @@ const initializeMuscle = (): Muscle => ({
   },
 });
 
+/**
+ * @description Store for managing the muscle state
+ * @returns {Object} The muscle store
+ */
 export const useMuscleStore = defineStore("muscle", () => {
   const muscle = ref<Muscle>(initializeMuscle());
 

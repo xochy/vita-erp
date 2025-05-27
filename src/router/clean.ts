@@ -19,6 +19,8 @@ import GoalsRoutes from "@/modules/catalogs/goals/router";
 import FrequenciesRoutes from "@/modules/catalogs/frequencies/router";
 import PhysicalConditionsRoutes from "@/modules/catalogs/physicalConditions/router";
 
+import PlansRoutes from "@/modules/plans/router";
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -111,6 +113,8 @@ const routes: Array<RouteRecordRaw> = [
   ...GoalsRoutes,
   ...FrequenciesRoutes,
   ...PhysicalConditionsRoutes,
+
+  ...PlansRoutes,
 ];
 
 const router = createRouter({
@@ -138,25 +142,41 @@ router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   const configStore = useConfigStore();
 
-  // current page view title
+  //? current page view title
   document.title = `${to.meta.pageTitle} - ${import.meta.env.VITE_APP_NAME}`;
 
-  // reset config to initial state
+  //? reset config to initial state
   configStore.resetLayoutConfig();
 
-  // set headers for api requests
+  //? set headers for api requests
   authStore.setHeaders();
 
-  // before page access check if page requires authentication
-  if (to.meta.middleware == "auth") {
-    if (authStore.isAuthenticated) {
-      next();
-    } else {
-      next({ name: "sign-in" });
+  // #region::Check if the route requires authentication
+  if (to.meta.middleware === "auth") {
+    // #region::Check if the user is authenticated
+    if (!authStore.isAuthenticated) {
+      //! Redirect to sign-in if not authenticated
+      return next({ name: "sign-in" });
     }
-  } else {
-    next();
+    // #endregion
+
+    // #region::Check if the user has the required permissions
+    if (Array.isArray(to.meta.permissions)) {
+      const hasAllPermissions = to.meta.permissions.every((permission) =>
+        authStore.hasPermissionTo(permission)
+      );
+
+      if (!hasAllPermissions) {
+        //! Redirect to an unauthorized page or display an error message
+        return next({ name: "500" });
+      }
+    }
+    // #endregion
   }
+  // #endregion
+
+  //* If no conditions block access, proceed to the route
+  next();
 });
 
 export default router;
