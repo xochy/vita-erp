@@ -2091,7 +2091,7 @@ date-fns@^2.0.0:
   dependencies:
     "@babel/runtime" "^7.21.0"
 
-dayjs@^1.11.3:
+dayjs@^1.11.3, dayjs@^1.5.24:
   version "1.11.13"
   resolved "https://registry.npmjs.org/dayjs/-/dayjs-1.11.13.tgz"
   integrity sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==
@@ -5442,6 +5442,13 @@ vue-date-fns@^2.0.2:
   integrity sha512-XHd2oYZY0AfWJohCwREhvfziJdiUHit6HYKUPTyvx5wDUaFA4TWDdkFp78IIrn0nl86oTGM1/5yXtNvqYXL5ew==
   dependencies:
     date-fns "^2.0.0"
+
+vue-dayjs@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.npmjs.org/vue-dayjs/-/vue-dayjs-1.0.2.tgz"
+  integrity sha512-rYvbpjZ6ZZ2MyQPpyltQmPBqd4+2RRfcFZb5/Fa6VsmBCmeSXTl6RHrHSOY72y5NJOrrxTpBg6VnP556gNSU7w==
+  dependencies:
+    dayjs "^1.5.24"
 
 vue-demi@*:
   version "0.14.10"
