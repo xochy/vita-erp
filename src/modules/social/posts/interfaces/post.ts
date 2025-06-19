@@ -1,25 +1,31 @@
 import type { ModelLinks } from "@/modules/shared/translations/interfaces";
 
-export interface Muscle {
+export interface Post {
   type          : string;
   id            : string;
   attributes    : Attributes;
   relationships?: Relationships;
-  links        ?: MuscleLinks;
+  links        ?: PostLinks;
 }
 
 export interface Attributes {
-  name        : string;
-  description : string;
+  title       : string;
+  content     : string;
+  publisher  ?: string;
+  imageUrl   ?: string;
   slug       ?: string;
+  publishedAt?: Date;
   createdAt  ?: Date;
   updatedAt  ?: Date;
 }
 
-export interface MuscleLinks {
+export interface PostLinks {
   self: string;
 }
 
 export interface Relationships {
+  user        ?: ModelLinks;
+  medias      ?: ModelLinks;
+  comments    ?: ModelLinks;
   translations?: ModelLinks;
 }

@@ -50,6 +50,7 @@ import { convertToUploadUserFile } from "@/helpers/MediasUtils";
 import { fields } from "../components/tabs/data/fields";
 import { onMounted, onUnmounted, ref } from "vue";
 import { useRoute } from "vue-router";
+import type { MediasDownload } from "@/modules/shared/interfaces/medias/MediasDownload";
 
 /* ------------------------------ Props & Refs ------------------------------ */
 
@@ -103,7 +104,13 @@ const loadMuscle = (): void => {
             images.value = data;
 
             convertingFiles.value = true;
-            files.value = await convertToUploadUserFile(muscleId, data);
+            const mediasDownload: MediasDownload = {
+              modelId: Array.isArray(muscleId) ? muscleId[0] : muscleId,
+              modelType: "muscles",
+              medias: data,
+              collection: "images",
+            };
+            files.value = await convertToUploadUserFile(mediasDownload);
             convertingFiles.value = false;
           },
         });

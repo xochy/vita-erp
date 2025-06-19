@@ -1,0 +1,30 @@
+.posts-grid {
+  margin: 0 -10px;
+}
+
+.post-col {
+  margin-bottom: 20px;
+  padding: 0 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .posts-container {
+    padding: 15px;
+  }
+
+  .post-col {
+    margin-bottom: 15px;
+    padding: 0 7.5px;
+  }
+
+  .posts-grid {
+    margin: 0 -7.5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .posts-container {
+    padding: 10px;
+  }
+}

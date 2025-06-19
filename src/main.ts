@@ -53,7 +53,7 @@ initVeeValidate();
 app.use(i18n);
 
 app.directive("tooltip", (el) => {
-  new Tooltip(el);
+  el._tooltipInstance = new Tooltip(el);
 });
 
 app.mount("#app");

@@ -21,6 +21,8 @@ import PhysicalConditionsRoutes from "@/modules/catalogs/physicalConditions/rout
 
 import PlansRoutes from "@/modules/plans/router";
 
+import PostsRoutes from "@/modules/social/posts/router";
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -115,6 +117,7 @@ const routes: Array<RouteRecordRaw> = [
   ...PhysicalConditionsRoutes,
 
   ...PlansRoutes,
+  ...PostsRoutes,
 ];
 
 const router = createRouter({
