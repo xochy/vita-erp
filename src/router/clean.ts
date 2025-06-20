@@ -20,6 +20,7 @@ import FrequenciesRoutes from "@/modules/catalogs/frequencies/router";
 import PhysicalConditionsRoutes from "@/modules/catalogs/physicalConditions/router";
 
 import PlansRoutes from "@/modules/plans/router";
+import RoutinesGeneratorRoutes from "@/modules/generator/router";
 
 import PostsRoutes from "@/modules/social/posts/router";
 
@@ -118,6 +119,7 @@ const routes: Array<RouteRecordRaw> = [
 
   ...PlansRoutes,
   ...PostsRoutes,
+  ...RoutinesGeneratorRoutes,
 ];
 
 const router = createRouter({

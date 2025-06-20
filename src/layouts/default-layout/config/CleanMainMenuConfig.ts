@@ -5,6 +5,7 @@ import Media from "@/modules/media/layouts";
 import Social from "@/modules/social/layouts";
 
 import Plans from "@/modules/plans/layout";
+import RoutinesGenerator from "@/modules/generator/layout";
 
 const MainMenuConfig: Array<MenuItem> = [
   {
@@ -18,6 +19,7 @@ const MainMenuConfig: Array<MenuItem> = [
     ],
   },
   ...Plans,
+  ...RoutinesGenerator,
   ...Accounts,
   ...Catalog,
   ...Media,
