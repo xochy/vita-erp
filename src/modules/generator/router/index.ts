@@ -12,16 +12,8 @@ export default [
         name: "routines-generator",
         component: () => import("@/modules/generator/views/RoutinesGenerator.vue"),
         meta: {
-          pageTitle: "Plans",
-          breadcrumbs: ["Plans"],
-          actionButtons: [
-            {
-              title: "Add Plan",
-              icon: "plus",
-              to: { name: "plans-saving" },
-              permissions: ["create plans"],
-            },
-          ],
+          pageTitle: "Routines Generator",
+          breadcrumbs: ["Routines Generator"],
           permissions: ["read plans"],
         },
       },

@@ -1,0 +1,24 @@
+@import "./step-shared.scss";
+
+.slider-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.age-slider {
+  margin-bottom: 20px;
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  color: var(--el-text-color-regular);
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .slider-container {
+    padding: 10px;
+  }
+}

@@ -1,0 +1,40 @@
+@import "./step-shared.scss";
+
+.checkbox-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  justify-items: center;
+}
+
+.checkbox-option {
+  width: 200px;
+  height: 48px;
+  border: 2px solid var(--el-border-color);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.checkbox-option:hover {
+  border-color: var(--el-color-primary);
+  background-color: var(--el-color-primary-light-9);
+}
+
+.checkbox-option.is-checked {
+  border-color: var(--el-color-primary);
+  background-color: var(--el-color-primary-light-8);
+}
+
+
+@media (max-width: 768px) {
+    .checkbox-option {
+        width: 100%;
+        min-width: 150px;
+    }
+    .checkbox-group {
+        grid-template-columns: 1fr;
+    }
+}
