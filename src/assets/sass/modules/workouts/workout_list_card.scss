@@ -1,0 +1,163 @@
+@import "../common-variables";
+
+// Main card styles
+.exercise-card {
+  max-width: 100%;
+  margin: 0 0 $spacing-md 0;
+}
+
+// Header styles
+.exercise-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: $spacing-md;
+
+  .exercise-header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: $spacing-md;
+  }
+
+  .exercise-title {
+    margin: 0;
+    font-size: $font-size-xl;
+    font-weight: 600;
+    flex: 1;
+
+    @media (max-width: 480px) {
+      font-size: $card-content-font-size;
+    }
+  }
+
+  .exercise-header-inner h4 {
+    margin: 0;
+    font-size: $font-size-sm;
+    font-weight: 400;
+  }
+
+  .group-tag {
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-sm;
+  }
+}
+
+// Main content layout
+.exercise-content {
+  display: flex;
+  gap: $spacing-lg;
+  padding: $spacing-lg;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: $spacing-md;
+    padding: $spacing-md;
+  }
+
+  @media (max-width: 480px) {
+    gap: $spacing-sm;
+  }
+}
+
+// Image section
+.image-section {
+  flex: 0 0 300px;
+
+  @media (max-width: 768px) {
+    flex: none;
+  }
+
+  .exercise-image {
+    width: 100%;
+    height: 250px;
+    border-radius: $border-radius;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.02);
+    }
+
+    @media (max-width: 768px) {
+      height: 200px;
+    }
+  }
+
+  .image-placeholder,
+  .image-error {
+    @include image-placeholder;
+    height: 100%;
+
+    .el-icon {
+      font-size: 2rem;
+      margin-bottom: $spacing-sm;
+    }
+
+    .loading-icon {
+      font-size: $font-size-xl; // 24px
+      margin-bottom: $spacing-sm;
+      animation: rotate 2s linear infinite;
+    }
+  }
+}
+
+// Info section
+.info-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+
+  @media (max-width: 480px) {
+    gap: $spacing-sm;
+  }
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+
+  &.warning-item {
+    .warning-alert {
+      border-radius: $border-radius;
+    }
+  }
+}
+
+// Levels container
+.levels-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+
+  .level-tag {
+    font-weight: 500;
+  }
+}
+
+// Tab content
+.tab-content {
+  padding: $spacing-md;
+
+  h4 {
+    margin: 0 0 $spacing-md 0;
+    font-weight: 600;
+  }
+
+  .tab-placeholder {
+    font-style: italic;
+    margin: 0;
+  }
+
+}
+
+.collapse-content {
+  padding: $spacing-lg;
+}

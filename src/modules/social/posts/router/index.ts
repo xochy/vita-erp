@@ -11,8 +11,7 @@ export default [
       {
         path: "/posts",
         name: "posts",
-        component: () =>
-          import("@/modules/social/posts/views/PostsList.vue"),
+        component: () => import("@/modules/social/posts/views/PostsList.vue"),
         meta: {
           pageTitle: "Posts",
           breadcrumbs: ["Social", "Posts"],
@@ -32,8 +31,7 @@ export default [
         // optional id parameter and tab parameter
         path: "/posts-saving/:id?/:tab?",
         name: "posts-saving",
-        component: () =>
-          import("@/modules/social/posts/views/PostsSaving.vue"),
+        component: () => import("@/modules/social/posts/views/PostsSaving.vue"),
         meta: {
           pageTitle: "Post Saving",
           breadcrumbs: ["Social", "Posts", "Post Saving"],
@@ -46,7 +44,7 @@ export default [
           ],
           permissions: ["show posts"],
         },
-      }
-    ]
-  }
-]
+      },
+    ],
+  },
+];
