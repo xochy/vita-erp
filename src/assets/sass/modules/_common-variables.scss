@@ -1,0 +1,61 @@
+// Variables comunes para todos los componentes de cards
+$border-radius: 8px;
+$border-radius-sm: 4px;
+
+// Espaciado
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+
+// Font Sizes (20% increased, converted to rem)
+$font-size-xs: 0.9rem;   // 12px + 20% = 14.4px / 16 = 0.9rem
+$font-size-sm: 1.05rem;  // 14px + 20% = 16.8px / 16 = 1.05rem
+$font-size-base: 1.2rem; // 16px + 20% = 19.2px / 16 = 1.2rem
+$font-size-lg: 1.35rem;  // 18px + 20% = 21.6px / 16 = 1.35rem
+$font-size-xl: 1.5rem;   // 20px + 20% = 24px / 16 = 1.5rem
+
+// Specific Sizes for Card Content (20% increased, converted to rem)
+$card-content-font-size: 1.125rem; // 15px + 20% = 18px / 16 = 1.125rem
+$card-excerpt-font-size: 1.05rem;  // 14px + 20% = 16.8px / 16 = 1.05rem
+$card-meta-font-size: 0.975rem;    // 13px + 20% = 15.6px / 16 = 0.975rem
+
+@mixin image-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--card-bg-secondary);
+  color: var(--card-text-placeholder);
+}
+
+@mixin text-truncate($lines: 1) {
+  @if $lines == 1 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+// Animaciones comunes
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Transiciones para cambios de tema
+* {
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}

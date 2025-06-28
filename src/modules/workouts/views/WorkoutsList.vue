@@ -6,7 +6,7 @@
     sub-title="An error occurred while fetching categories."
   />
 
-  <PostsTable v-else :is-loading="isLoading" :posts="posts" @sort-change="getSortBy">
+  <WorkoutsTable v-else :is-loading="isLoading" :workouts="workouts">
     <template #options>
       <el-row class="mb-5">
         <el-col :span="6">
@@ -28,19 +28,17 @@
         @current-change="getPage"
       />
     </template>
-  </PostsTable>
+  </WorkoutsTable>
 </template>
 
 <script setup lang="ts">
-import PostsTable from "../components/PostsTable.vue";
+import WorkoutsTable from "../components/WorkoutsTable.vue";
 import TableSearcher from "@/components/shared/tables/TableSearcher.vue";
-import usePosts from "../composables/UsePostsStore";
-
-const FIELDS_SET = "title,content,publisher,imageUrl,publishedAt,translations";
+import useWorkouts from "../composables/UseWorkoutsStore";
 
 const {
-  posts,
+  workouts,
   status: { isLoading, isError },
   pag: { currentPage, perPage, total, getPage, getSortBy, getPerPage, getSearchBy },
-} = usePosts(FIELDS_SET);
+} = useWorkouts();
 </script>

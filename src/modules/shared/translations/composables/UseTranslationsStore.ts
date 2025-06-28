@@ -6,6 +6,7 @@ import { useTranslationsStore } from "../store/Translations";
 import { storeToRefs } from "pinia";
 import { extractErrorDetail } from "@/helpers/errorHelper";
 import { useAuthStore } from "@/stores/auth";
+import type { Ref } from "vue";
 
 /**
  * @description Fetches a list of translations from the API.
@@ -41,14 +42,20 @@ const getTranslations = async (
  * @description Composable function to manage the translations query.
  * @param {string} path - The path to fetch the translations from.
  * @param {string} fields - The fields to fetch for the translations.
+ * @param {boolean} enabled - Whether the query should be enabled or not.
  * @returns {any} The translations query.
  */
-const useTranslationsQuery = (path: string, fields: string): any => {
+const useTranslationsQuery = (
+  path: string,
+  fields: string,
+  enabled: Ref<boolean> | boolean = true
+): any => {
   const { data, isPending, isError } = useQuery({
     queryKey: ["translations", path],
     queryFn: () => getTranslations(path, fields),
     retry: 3,
     retryDelay: 1000,
+    enabled: enabled,
   });
 
   return {

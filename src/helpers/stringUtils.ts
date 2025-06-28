@@ -22,3 +22,12 @@ export const toPascalCase = (str: string): string => {
     .toLowerCase()
     .replace(/(?:^|[-_])(.)/g, (_, group1) => group1.toUpperCase());
 };
+
+/**
+ * Converts a string to kebab case.
+ * @param {string} str - The string to convert.
+ * @returns {string} - The kebab case formatted string.
+ */
+export const capitalizeFirst = (str: string): string => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
