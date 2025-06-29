@@ -5,13 +5,10 @@
       :key="translation.id"
       :title="getTitle(translation.attributes.column, translation.attributes.locale)"
       :name="translation.id"
-      class="translation-item"
     >
-      <div class="p-4 bg-gray-50 rounded-b-md">
-        <p class="text-gray-700 leading-relaxed">
-          {{ translation.attributes.translation }}
-        </p>
-      </div>
+      <p class="text-gray-700">
+        {{ translation.attributes.translation }}
+      </p>
     </el-collapse-item>
   </el-collapse>
 </template>

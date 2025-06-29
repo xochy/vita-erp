@@ -9,7 +9,7 @@ import { useRelationship } from "@/modules/shared/interfaces/Services/useRelatio
 import BasicSkeleton from "@/components/shared/skeletons/BasicSkeleton.vue";
 import CategoryWithTranslations from "@/components/shared/categories/CategoryWithTranslations.vue";
 
-const CATEGORY_FIELDS_SET = "name,description,createdAt,translations";
+const CATEGORY_FIELDS_SET = "name,description,translations";
 
 const props = defineProps<{ relatedUrl: string }>();
 

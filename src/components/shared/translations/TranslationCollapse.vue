@@ -1,5 +1,5 @@
 <template>
-  <Transition name="el-fade-in-linear">
+  <Transition>
     <div v-if="isShowingTranslations">
       <br />
       <TranslationsCollapse :translations="translationsData" />
