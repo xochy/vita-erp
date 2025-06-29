@@ -1,37 +1,29 @@
 <template>
-  <BasicSkeleton v-if="isCategoryLoading" />
-
-  <CategoryWithTranslations
-    v-else
-    :category="categoryResponse!.data"
-    v-if="!isCategoryError"
-  />
-
-  <el-alert v-if="isCategoryError" title="Error" type="error" :closable="false">
-    An error occurred while fetching category data.
-  </el-alert>
+  <RelationshipLoader
+    :related-url="props.relatedUrl"
+    query-key="workout-category"
+    model-type="categories"
+    :fields-set="FIELDS_SET"
+  >
+    <template #default="{ data }">
+      <DetailsWithTranslations
+        :items="(data as CategoryResponse).data"
+        :display-config="{
+          title: 'name',
+          descriptionFields: ['description'],
+        }"
+      />
+    </template>
+  </RelationshipLoader>
 </template>
 
 <script setup lang="ts">
-import BasicSkeleton from "@/components/shared/skeletons/BasicSkeleton.vue";
-import CategoryWithTranslations from "@/components/shared/categories/CategoryWithTranslations.vue";
+import RelationshipLoader from "@/modules/shared/generic/RelationshipLoader.vue";
+import DetailsWithTranslations from "@/modules/shared/translations/views/DetailsWithTranslations.vue";
 import type { CategoryResponse } from "@/modules/catalogs/categories/interfaces";
-import { useRelationship } from "@/modules/shared/interfaces/Services/useRelationship";
 
-/* ------------------------------ Refs & Props ------------------------------ */
-
-const FIELDS_SET = "name,description,translations";
+/* ------------------------------ Props y Constantes ----------------------- */
 
 const props = defineProps<{ relatedUrl: string }>();
-
-const {
-  data: categoryResponse,
-  isLoading: isCategoryLoading,
-  isError: isCategoryError,
-} = useRelationship<CategoryResponse>(
-  props.relatedUrl,
-  "workout-category",
-  "categories",
-  FIELDS_SET
-);
+const FIELDS_SET = "name,description,createdAt,translations";
 </script>

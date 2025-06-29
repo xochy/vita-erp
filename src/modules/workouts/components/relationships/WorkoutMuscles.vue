@@ -1,37 +1,29 @@
 <template>
-  <BasicSkeleton v-if="areMusclesLoading" />
-
-  <MusclesWithTranslations
-    v-else
-    :muscles="musclesListResponse!.data"
-    v-if="!isMusclesError"
-  />
-
-  <el-alert v-if="isMusclesError" title="Error" type="error" :closable="false">
-    An error occurred while fetching muscles data.
-  </el-alert>
+  <RelationshipLoader
+    :related-url="props.relatedUrl"
+    query-key="workout-muscles"
+    model-type="muscles"
+    :fields-set="FIELDS_SET"
+  >
+    <template #default="{ data }">
+      <DetailsWithTranslations
+        :items="(data as MusclesListResponse).data"
+        :display-config="{
+          title: 'name',
+          descriptionFields: ['description'],
+        }"
+      />
+    </template>
+  </RelationshipLoader>
 </template>
 
 <script setup lang="ts">
-import BasicSkeleton from "@/components/shared/skeletons/BasicSkeleton.vue";
-import MusclesWithTranslations from "@/components/shared/muscles/MusclesWithTranslations.vue";
+import RelationshipLoader from "@/modules/shared/generic/RelationshipLoader.vue";
+import DetailsWithTranslations from "@/modules/shared/translations/views/DetailsWithTranslations.vue";
 import type { MusclesListResponse } from "@/modules/catalogs/muscles/interfaces";
-import { useRelationship } from "@/modules/shared/interfaces/Services/useRelationship";
 
-/* ------------------------------ Refs & Props ------------------------------ */
-
-const FIELDS_SET = "name,description,translations";
+/* ------------------------------ Props y Constantes ----------------------- */
 
 const props = defineProps<{ relatedUrl: string }>();
-
-const {
-  data: musclesListResponse,
-  isLoading: areMusclesLoading,
-  isError: isMusclesError,
-} = useRelationship<MusclesListResponse>(
-  props.relatedUrl,
-  "workout-muscles",
-  "muscles",
-  FIELDS_SET
-);
+const FIELDS_SET = "name,description,translations";
 </script>
