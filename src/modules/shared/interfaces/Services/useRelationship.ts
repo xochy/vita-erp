@@ -15,11 +15,12 @@ import { generateQueryParams } from "../../utilities/QueryParamsGenerator";
  */
 const getRelationship = async <T>(
   url: string,
+  type: string,
   fields: string = ""
 ): Promise<T> => {
   try {
     const params = generateQueryParams({
-      ...(fields && { "fields[categories]": fields }),
+      ...(fields && { [`fields[${type}]`]: fields }),
     });
 
     // The ApiService is configured with a baseURL. To make requests to absolute
@@ -46,6 +47,7 @@ const getRelationship = async <T>(
 export const useRelationship = <T>(
   relationshipUrl: MaybeRefOrGetter<string | undefined>,
   queryKey: string,
+  type: string,
   fields: string = "",
   enabled: Ref<boolean> | boolean = true
 ) => {
@@ -62,7 +64,7 @@ export const useRelationship = <T>(
         // This should not happen if `enabled` is working correctly, but it's a good safeguard.
         return Promise.reject(new Error("URL is not provided."));
       }
-      return getRelationship<T>(url, fields);
+      return getRelationship<T>(url, type, fields);
     },
 
     // This query will only run if the URL is truthy (i.e., not null or undefined).

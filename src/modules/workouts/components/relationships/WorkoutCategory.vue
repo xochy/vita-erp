@@ -1,25 +1,29 @@
 <template>
-  <BasicSkeleton v-if="isCategoryLoading" />
-  <CategoryWithTranslations v-else :category="categoryResponse!.data" />
+  <RelationshipLoader
+    :related-url="props.relatedUrl"
+    query-key="workout-category"
+    model-type="categories"
+    :fields-set="FIELDS_SET"
+  >
+    <template #default="{ data }">
+      <DetailsWithTranslations
+        :items="(data as CategoryResponse).data"
+        :display-config="{
+          title: 'name',
+          descriptionFields: ['description'],
+        }"
+      />
+    </template>
+  </RelationshipLoader>
 </template>
 
 <script setup lang="ts">
+import RelationshipLoader from "@/modules/shared/generic/RelationshipLoader.vue";
+import DetailsWithTranslations from "@/modules/shared/translations/views/DetailsWithTranslations.vue";
 import type { CategoryResponse } from "@/modules/catalogs/categories/interfaces";
-import { useRelationship } from "@/modules/shared/interfaces/Services/useRelationship";
-import BasicSkeleton from "@/components/shared/skeletons/BasicSkeleton.vue";
-import CategoryWithTranslations from "@/components/shared/categories/CategoryWithTranslations.vue";
 
-const CATEGORY_FIELDS_SET = "name,description,createdAt,translations";
+/* ------------------------------ Props y Constantes ----------------------- */
 
 const props = defineProps<{ relatedUrl: string }>();
-
-const {
-  data: categoryResponse,
-  isLoading: isCategoryLoading,
-  isError: isCategoryError,
-} = useRelationship<CategoryResponse>(
-  props.relatedUrl,
-  "workout-category",
-  CATEGORY_FIELDS_SET
-);
+const FIELDS_SET = "name,description,createdAt,translations";
 </script>

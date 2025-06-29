@@ -6,6 +6,7 @@
   gap: $spacing-sm;
   font-weight: 600;
   font-size: $card-excerpt-font-size;
+  margin-bottom: $spacing-sm;
 
   &.warning-label {
     color: var(--el-color-warning);

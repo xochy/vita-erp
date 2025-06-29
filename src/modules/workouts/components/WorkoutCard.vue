@@ -16,7 +16,7 @@
           </Transition>
         </div>
 
-        <div class="exercise-header-inner" <div>
+        <div class="exercise-header-inner">
           <el-tag
             :type="getGroupTagType(workout.attributes.group)"
             size="small"
@@ -220,6 +220,7 @@ const props = defineProps<{ workout: Workout }>();
 const isShowingTranslations = ref(false);
 
 const FIELDS_SET = "column,locale,translation";
+
 const {
   data: translationsData,
   isPending: isPendingTranslations,
@@ -244,6 +245,7 @@ const parsedLevels = computed(() => {
     return [];
   }
 });
+
 </script>
 
 <style lang="scss">
