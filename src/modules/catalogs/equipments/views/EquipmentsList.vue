@@ -31,8 +31,7 @@
         </el-col>
       </el-row>
     </template>
-    <template #columns>
-      </template>
+    <template #columns> </template>
     <template #pagination>
       <el-pagination
         v-model:current-page="currentPage"
@@ -102,7 +101,7 @@ const handleLoadEquipment = (equipment: Equipment): void => {
 const handleEditEquipment = (equipmentId: number): void => {
   router.push({
     name: "equipments-saving",
-    params: { id: String(equipmentId), tab: "equipmentData" }, // 'equipmentData' is specific here
+    params: { id: String(equipmentId), tab: "equipmentData" },
   });
 };
 </script>

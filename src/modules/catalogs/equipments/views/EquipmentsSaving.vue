@@ -39,8 +39,8 @@
 
 <script setup lang="ts">
 import BasicSkeleton from "@/components/shared/skeletons/BasicSkeleton.vue";
-import EquipmentDetails from "../components/details/EquipmentDetails.vue";
-import EquipmentForm from "../components/data/EquipmentForm.vue";
+import EquipmentDetails from "../components/EquipmentDetails.vue";
+import EquipmentForm from "../components/EquipmentForm.vue";
 import TranslationsCollapse from "@/modules/shared/translations/components/form/TranslationsCollapse.vue";
 import { useEquipment, translationableFields } from "../composables/UseEquipmentStore";
 import { useModelLoader } from "@/modules/shared/generic/composables/useModelLoader";

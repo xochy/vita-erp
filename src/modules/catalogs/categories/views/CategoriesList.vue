@@ -6,19 +6,32 @@
     sub-title="An error occurred while fetching categories."
   />
 
-  <CategoriesTable
+  <GenericTable
     v-else
+    :data="items"
     :is-loading="isLoading"
-    :categories="categories"
-    @sort-change="getSortBy"
+    main-column-prop="name"
+    main-column-label="Name"
+    show-description-column
+    use-link-for-main-column
+    show-translations-column
+    :can-modify="can.modify"
+    :delete-action="destroy"
+    @sort-change="setSortBy"
+    @load-item="handleLoadCategory"
+    @edit-item="handleEditCategory"
+    empty-message="No category found."
+    router-name-for-saving="categories-saving"
+    main-column-attribute-path="attributes.name"
   >
     <template #options>
       <el-row class="mb-5">
         <el-col :span="6">
-          <TableSearcher @search="getSearchBy" />
+          <TableSearcher @search="setSearchBy" />
         </el-col>
       </el-row>
     </template>
+    <template #columns> </template>
     <template #pagination>
       <el-pagination
         v-model:current-page="currentPage"
@@ -29,23 +42,66 @@
         :page-sizes="[5, 10, 15, 20]"
         :disabled="isLoading"
         :total="total"
-        @size-change="getPerPage"
-        @current-change="getPage"
+        @size-change="setPerPage"
+        @current-change="setCurrentPage"
       />
     </template>
-  </CategoriesTable>
+  </GenericTable>
 </template>
 
 <script setup lang="ts">
-import CategoriesTable from "../components/CategoriesTable.vue";
+import GenericTable from "@/components/shared/tables/GenericTable.vue";
 import TableSearcher from "@/components/shared/tables/TableSearcher.vue";
-import useCategories from "../composables/UseCategoriesStore";
+import type { Category } from "../interfaces/category";
+import { useCategory } from "../composables/UseCategoryStore";
+import { useCategories } from "../composables/UseCategoriesStore";
+import { useRouter } from "vue-router";
+
+/* ------------------------------ Refs & Props ------------------------------ */
 
 const FIELDS_SET = "name,description,createdAt,translations";
 
 const {
-  categories,
+  items,
   status: { isLoading, isError },
-  pag: { currentPage, perPage, total, getPage, getSortBy, getPerPage, getSearchBy },
+  pagination: {
+    currentPage,
+    perPage,
+    total,
+    setSortBy,
+    setSearchBy,
+    setPerPage,
+    setCurrentPage,
+  },
 } = useCategories(FIELDS_SET);
+
+const { can, destroy } = useCategory();
+
+const router = useRouter();
+
+/* -------------------------------- Functions ------------------------------- */
+
+/**
+ * @description Load the equipment details.
+ * @param {Equipment} equipment
+ * @returns {void}
+ */
+const handleLoadCategory = (category: Category): void => {
+  router.push({
+    name: "categories-saving",
+    params: { id: String(category.id), tab: "details" },
+  });
+};
+
+/**
+ * @description Handle the editing of a category.
+ * @param {number} categoryId
+ * @returns {void}
+ */
+const handleEditCategory = (categoryId: number): void => {
+  router.push({
+    name: "categories-saving",
+    params: { id: String(categoryId), tab: "categoryData" },
+  });
+};
 </script>

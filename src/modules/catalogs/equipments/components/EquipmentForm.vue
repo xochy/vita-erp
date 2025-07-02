@@ -41,13 +41,13 @@
 
 <script setup lang="ts">
 import GenericForm from "@/components/shared/forms/GenericForm.vue";
-import { useEquipment } from "../../composables/UseEquipmentStore";
 import GenericImagesUploader from "@/components/shared/forms/fields/GenericImagesUploader.vue";
-import { rules as equipmentRules } from "@/modules/catalogs/equipments/validation/equipmentFormValidationRules";
 import GenericTextInput from "@/components/shared/forms/fields/GenericTextInput.vue"; // Ajusta la ruta
+import type { Media } from "@/modules/media/files/interfaces";
 import type { UploadUserFile } from "element-plus";
 import { ref } from "vue";
-import type { Media } from "@/modules/media/files/interfaces";
+import { rules as equipmentRules } from "@/modules/catalogs/equipments/validation/equipmentFormValidationRules";
+import { useEquipment } from "../composables/UseEquipmentStore";
 
 /* ------------------------------ Props & Refs ------------------------------ */
 

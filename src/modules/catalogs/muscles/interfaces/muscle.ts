@@ -1,25 +1,9 @@
-import type { ModelLinks } from "@/modules/shared/translations/interfaces";
+import type { BaseModel } from "@/modules/shared/generic/interfaces/generic";
 
-export interface Muscle {
-  type          : string;
-  id            : string;
-  attributes    : Attributes;
-  relationships?: Relationships;
-  links        ?: MuscleLinks;
-}
-
-export interface Attributes {
-  name        : string;
-  description : string;
-  slug       ?: string;
-  createdAt  ?: Date;
-  updatedAt  ?: Date;
-}
-
-export interface MuscleLinks {
-  self: string;
-}
-
-export interface Relationships {
-  translations?: ModelLinks;
+export interface Muscle extends BaseModel {
+  type: "muscles";
+  attributes: {
+    name: string;
+    description: string;
+  };
 }

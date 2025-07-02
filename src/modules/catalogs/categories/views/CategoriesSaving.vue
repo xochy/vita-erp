@@ -2,81 +2,70 @@
   <BasicSkeleton v-if="isFetching" />
 
   <el-tabs v-else v-model="activeName">
-    <!-- #region::Tab for category form -->
+    <!-- #region::Tab for equipment form -->
     <el-tab-pane v-if="can.save" label="Data" name="categoryData">
-      <CategoryForm @saved="activeName = 'details'" />
+      <BasicSkeleton v-if="isLoadingMediasOrConverting" />
+      <CategoryForm v-else :files="files" @saved="handleSaved" />
     </el-tab-pane>
     <!-- #endregion::Tab for category form -->
 
-    <!-- #region::Tab for category translations -->
+    <!-- #region::Tab for muscle translations -->
     <el-tab-pane lazy label="Translations" name="translations">
       <TranslationsCollapse
-        v-if="category.relationships?.translations"
-        :fields="fields"
+        v-if="item.relationships?.translations"
+        :fields="translationableFields"
         :model-type="'categories'"
-        :model-id="category.id"
-        :translations-link="category.relationships?.translations.links.related"
+        :model-id="item.id"
+        :translations-link="item.relationships?.translations.links.related"
+      />
+      <el-empty v-else description="No category translations created." :image-size="100" />
+    </el-tab-pane>
+    <!-- #endregion::Tab for muscle translations -->
+
+    <!-- #region::Tab for equipment details -->
+    <el-tab-pane label="Details" name="details">
+      <BasicSkeleton v-if="isLoadingMediasOrConverting" />
+      <CategoryDetails
+        v-else-if="item.id"
+        :category="item"
+        :images="images"
+        :is-loading="isFetching"
       />
       <el-empty v-else description="No category created." :image-size="100" />
     </el-tab-pane>
-    <!-- #endregion::Tab for category translations -->
-
-    <!-- #region::Tab for category details -->
-    <el-tab-pane label="Details" name="details">
-      <CategoryDetails v-if="category.id" :category="category" :is-loading="isFetching" />
-      <el-empty v-else description="No category created." :image-size="100" />
-    </el-tab-pane>
-    <!-- #endregion::Tab for category details -->
+    <!-- #endregion::Tab for equipment details -->
   </el-tabs>
 </template>
 
 <script setup lang="ts">
 import BasicSkeleton from "@/components/shared/skeletons/BasicSkeleton.vue";
-import CategoryDetails from "../components/tabs/details/CategoryDetails.vue";
-import CategoryForm from "../components/tabs/data/CategoryForm.vue";
+import CategoryDetails from "../components/CategoryDetails.vue";
+import CategoryForm from "../components/CategoryForm.vue";
 import TranslationsCollapse from "@/modules/shared/translations/components/form/TranslationsCollapse.vue";
-import useCategory from "../composables/UseCategoryStore";
-import { fields } from "../components/tabs/data/fields";
-import { onMounted, onUnmounted, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useCategory, translationableFields } from "../composables/UseCategoryStore";
+import { useModelLoader } from "@/modules/shared/generic/composables/useModelLoader";
 
 /* ------------------------------ Props & Refs ------------------------------ */
 
-const activeName = ref("categoryData");
-
 const {
   can,
-  category,
-  getCategory,
-  clearCategory,
+  item,
+  fetch,
+  clearItem,
   status: { isFetching },
 } = useCategory();
 
-const route = useRoute();
-
-/* ---------------------------------- Hooks --------------------------------- */
-
-onMounted(() => {
-  loadCategory();
+const {
+  activeName,
+  files,
+  images,
+  isLoadingMediasOrConverting,
+  handleSaved,
+} = useModelLoader({
+  modelType: "categories",
+  fetchModel: fetch,
+  clearModel: clearItem,
+  defaultTab: "categoryData",
+  hasMedias: false,
 });
-
-onUnmounted(() => {
-  clearCategory();
-});
-
-/* -------------------------------- Functions ------------------------------- */
-
-/**
- * @description Load the category and set the active tab based on the route
- * @returns {void}
- */
-const loadCategory = (): void => {
-  const categoryId = route.params.id;
-  const activeTab = route.params.tab;
-
-  if (categoryId) {
-    getCategory(categoryId);
-    activeName.value = Array.isArray(activeTab) ? activeTab[0] : activeTab;
-  }
-};
 </script>

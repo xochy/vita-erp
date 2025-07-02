@@ -87,7 +87,6 @@ import type {
 import { useTranslationsMutation } from "@/modules/shared/translations/composables/UseTranslationsStore";
 import { Delete, Edit, Plus } from "@element-plus/icons-vue";
 import { computed, onMounted, ref } from "vue";
-import { fields } from "@/modules/catalogs/categories/components/tabs/data/fields";
 import { ElMessage, ElMessageBox } from "element-plus";
 
 /* ------------------------------ Props & Refs ------------------------------ */
@@ -122,7 +121,7 @@ onMounted(() => {
  * @returns {boolean}
  */
 const canAddTranslation = computed(() => {
-  return translations.value.length < fields.length;
+  return translations.value.length < props.fields.length;
 });
 
 const areThereTranslations = computed(() => translations.value.length > 0);

@@ -1,9 +1,9 @@
 <template>
   <ModelDetails
-    :model="equipment"
+    :model="category"
     :isLoading="isLoading"
     :deleteFunction="destroy"
-    redirectRouteName="equipments"
+    redirectRouteName="categories"
     :canDelete="can.destroy"
     :images="images"
     :hasImageSection="hasImageSection"
@@ -14,17 +14,17 @@
 
 <script setup lang="ts">
 import ModelDetails from "@/components/shared/cards/GenericDetailsCard.vue";
-import type { Equipment } from "../../interfaces/equipment";
+import type { Category } from "../interfaces/category";
 import type { Media } from "@/modules/media/files/interfaces";
 import { computed } from "vue";
-import { useEquipment } from "../../composables/UseEquipmentStore";
+import { useCategory } from "../composables/UseCategoryStore";
 
 const props = defineProps<{
-  equipment: Equipment;
+  category: Category;
   isLoading: boolean;
   images?: Media[];
 }>();
 
-const { can, destroy } = useEquipment();
+const { can, destroy } = useCategory();
 const hasImageSection = computed(() => !!props.images && props.images.length > 0);
 </script>

@@ -5,7 +5,7 @@ export const rules = ref<FormRules>({
   "attributes.name": [
     {
       required: true,
-      message: "Please enter the category name",
+      message: "Please enter the equipment name",
       trigger: "blur",
     },
     {
@@ -17,7 +17,7 @@ export const rules = ref<FormRules>({
   "attributes.description": [
     {
       required: true,
-      message: "Please enter the category description",
+      message: "Please enter the equipment description",
       trigger: "blur",
     },
     {

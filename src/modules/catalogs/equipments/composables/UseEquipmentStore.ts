@@ -1,5 +1,5 @@
-import type { TranslationableField } from "@/modules/shared/translations/interfaces";
 import type { Equipment } from "../interfaces/equipment";
+import type { TranslationableField } from "@/modules/shared/translations/interfaces";
 import { useEquipmentStore } from "../store/Equipment";
 import { useGenericItem } from "@/modules/shared/generic/composables/useGenericItem";
 
