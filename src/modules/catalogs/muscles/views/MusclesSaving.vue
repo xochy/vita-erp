@@ -4,7 +4,7 @@
   <el-tabs v-else v-model="activeName">
     <!-- #region::Tab for muscle form -->
     <el-tab-pane v-if="can.save" label="Data" name="muscleData">
-      <BasicSkeleton v-if="isFetchingMedias || convertingFiles" />
+      <BasicSkeleton v-if="isLoadingMediasOrConverting" />
       <MuscleForm v-else :files="files" @saved="handleSaved" />
     </el-tab-pane>
     <!-- #endregion::Tab for muscle form -->
@@ -24,7 +24,7 @@
 
     <!-- #region::Tab for muscle details -->
     <el-tab-pane label="Details" name="details">
-      <BasicSkeleton v-if="isFetchingMedias" />
+      <BasicSkeleton v-if="isLoadingMediasOrConverting" />
       <MuscleDetails
         v-else-if="muscle.id"
         :muscle="muscle"
@@ -42,21 +42,16 @@ import BasicSkeleton from "@/components/shared/skeletons/BasicSkeleton.vue";
 import MuscleDetails from "../components/tabs/details/MuscleDetails.vue";
 import MuscleForm from "../components/tabs/data/MuscleForm.vue";
 import TranslationsCollapse from "@/modules/shared/translations/components/form/TranslationsCollapse.vue";
-import type { Media } from "@/modules/media/files/interfaces";
-import type { UploadUserFile } from "element-plus";
-import useMedia from "@/modules/shared/media/composables/UseMediaStore";
 import useMuscle from "../composables/UseMuscleStore";
-import { convertToUploadUserFile } from "@/helpers/MediasUtils";
-import { fields } from "../components/tabs/data/fields";
-import { onMounted, onUnmounted, ref } from "vue";
-import { useRoute } from "vue-router";
-import type { MediasDownload } from "@/modules/shared/interfaces/medias/MediasDownload";
+import type { TranslationableField } from "@/modules/shared/translations/interfaces";
+import { useModelLoader } from "@/modules/shared/generic/composables/useModelLoader";
 
 /* ------------------------------ Props & Refs ------------------------------ */
 
-const activeName = ref("muscleData");
-const files = ref<UploadUserFile[]>([]);
-const images = ref<Media[]>([]);
+const fields: TranslationableField[] = [
+  { label: "Name", value: "name" },
+  { label: "Description", value: "description" },
+];
 
 const {
   can,
@@ -66,57 +61,18 @@ const {
   status: { isFetching },
 } = useMuscle();
 
-const { fetchMedias, isFetching: isFetchingMedias } = useMedia();
-const convertingFiles = ref(false);
-
-const route = useRoute();
-
-/* ---------------------------------- Hooks --------------------------------- */
-
-onMounted(() => {
-  loadMuscle();
+const {
+  activeName,
+  files,
+  images,
+  isLoadingMediasOrConverting,
+  handleSaved,
+} = useModelLoader({
+  modelType: "muscles",
+  fetchModel: getMuscle,
+  clearModel: clearMuscle,
+  defaultTab: "muscleData",
+  hasMedias: true,
+  mediaCollection: "muscles-images",
 });
-
-onUnmounted(() => {
-  clearMuscle();
-});
-
-/* -------------------------------- Functions ------------------------------- */
-
-const handleSaved = (medias: Media[]) => {
-  images.value = medias;
-  activeName.value = "details";
-};
-
-/**
- * @description Load the muscle and set the active tab based on the route
- * @returns {void}
- */
-const loadMuscle = (): void => {
-  const muscleId = route.params.id;
-  const activeTab = route.params.tab || "muscleData";
-
-  if (muscleId) {
-    getMuscle(muscleId, {
-      onSuccess: ({ data }) => {
-        fetchMedias(`${data.relationships?.medias.links.related}`, {
-          onSuccess: async ({ data }) => {
-            images.value = data;
-
-            convertingFiles.value = true;
-            const mediasDownload: MediasDownload = {
-              modelId: Array.isArray(muscleId) ? muscleId[0] : muscleId,
-              modelType: "muscles",
-              medias: data,
-              collection: "images",
-            };
-            files.value = await convertToUploadUserFile(mediasDownload);
-            convertingFiles.value = false;
-          },
-        });
-      },
-    });
-    activeName.value = Array.isArray(activeTab) ? activeTab[0] : activeTab;
-  }
-};
 </script>

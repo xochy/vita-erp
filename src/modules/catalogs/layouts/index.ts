@@ -17,6 +17,10 @@ export default [
             heading: "Muscles",
             route: "/muscles",
           },
+          {
+            heading: "Equipment",
+            route: "/equipments",
+          }
         ],
       },
       {
