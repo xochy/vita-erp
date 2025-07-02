@@ -29,6 +29,7 @@ export const useDeleteHandler = () => {
         .then(() => {
           deleteCallback(itemId, {
             onSuccess: () => {
+              console.log(goToRoute);
               if (goToRoute) {
                 route.push({ name: goToRoute });
               }
@@ -36,6 +37,7 @@ export const useDeleteHandler = () => {
           });
         })
         .catch(() => {
+          console.log("Delete canceled");
           ElMessage({
             type: "info",
             message: "Deleting canceled",

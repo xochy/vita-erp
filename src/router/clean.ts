@@ -13,6 +13,7 @@ import RolesRoutes from "@/modules/accounts/roles/router";
 // Catalog workouts routes
 import MusclesRoutes from "@/modules/catalogs/muscles/router";
 import CategoriesRoutes from "@/modules/catalogs/categories/router";
+import EquipmentRoutes from "@/modules/catalogs/equipments/router";
 
 // Catalog plans routes
 import GoalsRoutes from "@/modules/catalogs/goals/router";
@@ -112,6 +113,7 @@ const routes: Array<RouteRecordRaw> = [
   // Catalog workouts routes
   ...MusclesRoutes,
   ...CategoriesRoutes,
+  ...EquipmentRoutes,
 
   // Catalog plans routes
   ...GoalsRoutes,

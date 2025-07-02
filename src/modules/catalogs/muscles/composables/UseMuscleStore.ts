@@ -80,7 +80,7 @@ const saveMuscleFiles = async ({ muscleId, files }): Promise<any> => {
   const formData = new FormData();
   formData.append("id", muscleId);
   formData.append("path", "muscles");
-  formData.append("collection", "images");
+  formData.append("collection", "muscles-images");
 
   files.forEach((file, index) => {
     formData.append(`files[${index}]`, file.raw);
