@@ -13,7 +13,9 @@ import { GenericApiService } from "../services/GenericApiService";
 import { storeToRefs } from "pinia";
 
 /**
- * Composable genérico para manejar elementos individuales
+ * Generic composable for managing a single item of a model.
+ * Provides methods for fetching, creating, updating, and deleting items,
+ * as well as file uploads if configured.
  */
 export function useGenericItem<T extends BaseModel>(
   endpoint: string,
@@ -25,10 +27,16 @@ export function useGenericItem<T extends BaseModel>(
   const apiService = new GenericApiService<T>(endpoint);
   const { item } = storeToRefs(store);
 
-  // Generar nombre del modelo en singular para permisos y mensajes
-  const modelName = endpoint.endsWith("s") ? endpoint.slice(0, -1) : endpoint;
-  const modelNameCapitalized =
-    modelName.charAt(0).toUpperCase() + modelName.slice(1);
+  // Generate model name for permissions (keep plural, replace hyphens with spaces)
+  const modelName = endpoint.replace(/-/g, ' ');
+
+  // Generate singular model name for messages (remove 's', replace hyphens with spaces, capitalize each word)
+  const singularModelName = endpoint.endsWith('s') ? endpoint.slice(0, -1) : endpoint;
+  const modelNameCapitalized = singularModelName
+    .replace(/-/g, ' ')
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
 
   // Mensajes por defecto con opción de personalización
   const messages = {

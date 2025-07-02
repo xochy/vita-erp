@@ -1,9 +1,9 @@
 <template>
   <ModelDetails
-    :model="category"
+    :model="physicalCondition"
     :isLoading="isLoading"
     :deleteFunction="destroy"
-    redirectRouteName="categories"
+    redirectRouteName="physical-conditions"
     :canDelete="can.destroy"
     titleKey="name"
     descriptionKey="description"
@@ -12,15 +12,15 @@
 
 <script setup lang="ts">
 import ModelDetails from "@/components/shared/cards/GenericDetailsCard.vue";
-import type { Category } from "../interfaces/category";
-import { useCategory } from "../composables/UseCategoryStore";
+import type { PhysicalCondition } from "../interfaces/physicalCondition";
+import { usePhysicalCondition } from "../composables/UsePhysicalConditionStore";
 
 /* ------------------------------ Props & Refs ------------------------------ */
 
 defineProps<{
-  category: Category;
+  physicalCondition: PhysicalCondition;
   isLoading: boolean;
 }>();
 
-const { can, destroy } = useCategory();
+const { can, destroy } = usePhysicalCondition();
 </script>

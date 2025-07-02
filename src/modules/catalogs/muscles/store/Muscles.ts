@@ -1,4 +1,4 @@
-import type { Muscle } from "../interfaces";
+import type { Muscle } from "../interfaces/muscle";
 import { createListStore } from "@/modules/shared/generic/stores/ListStore";
 
 /**

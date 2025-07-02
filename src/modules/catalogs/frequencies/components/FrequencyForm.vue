@@ -1,8 +1,8 @@
 <template>
   <GenericForm
-    formTitle="Category Form"
-    formId="category_saving_form"
-    :composable="useCategoryStoreInstance"
+    formTitle="Frequency Form"
+    formId="frequency_saving_form"
+    :composable="useFrequencyStoreInstance"
     :validationRules="rules"
     @saved="handleSaved"
   >
@@ -13,8 +13,8 @@
             v-model="model.attributes.name"
             name="attributes.name"
             label="Name"
-            placeholder="Enter category name"
-            tooltip="Specify a category name"
+            placeholder="Enter frequency name"
+            tooltip="Specify a frequency name"
           />
         </el-col>
       </el-row>
@@ -24,8 +24,8 @@
             v-model="model.attributes.description"
             name="attributes.description"
             label="Description"
-            placeholder="Enter category description"
-            tooltip="Specify a category description"
+            placeholder="Enter frequency description"
+            tooltip="Specify a frequency description"
             type="textarea"
           />
         </el-col>
@@ -38,12 +38,12 @@
 import GenericForm from "@/components/shared/forms/GenericForm.vue";
 import GenericTextInput from "@/components/shared/forms/fields/GenericTextInput.vue";
 import type { Media } from "@/modules/media/files/interfaces";
-import { rules } from "../validation/categoryFormValidationRules";
-import { useCategory } from "../composables/UseCategoryStore";
+import { rules } from "../validation/frequencyFormValidationRules";
+import { useFrequency } from "../composables/UseFrequencyStore";
 
 /* ------------------------------ Props & Refs ------------------------------ */
 
-const useCategoryStoreInstance = useCategory();
+const useFrequencyStoreInstance = useFrequency();
 
 /* -------------------------------- Functions ------------------------------- */
 

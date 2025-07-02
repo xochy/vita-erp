@@ -2,14 +2,14 @@
   <BasicSkeleton v-if="isFetching" />
 
   <el-tabs v-else v-model="activeName">
-    <!-- #region::Tab for equipment form -->
+    <!-- #region::Tab for category form -->
     <el-tab-pane v-if="can.save" label="Data" name="categoryData">
       <BasicSkeleton v-if="isLoadingMediasOrConverting" />
       <CategoryForm v-else :files="files" @saved="handleSaved" />
     </el-tab-pane>
     <!-- #endregion::Tab for category form -->
 
-    <!-- #region::Tab for muscle translations -->
+    <!-- #region::Tab for category translations -->
     <el-tab-pane lazy label="Translations" name="translations">
       <TranslationsCollapse
         v-if="item.relationships?.translations"
@@ -20,20 +20,19 @@
       />
       <el-empty v-else description="No category translations created." :image-size="100" />
     </el-tab-pane>
-    <!-- #endregion::Tab for muscle translations -->
+    <!-- #endregion::Tab for category translations -->
 
-    <!-- #region::Tab for equipment details -->
+    <!-- #region::Tab for category details -->
     <el-tab-pane label="Details" name="details">
       <BasicSkeleton v-if="isLoadingMediasOrConverting" />
       <CategoryDetails
         v-else-if="item.id"
         :category="item"
-        :images="images"
         :is-loading="isFetching"
       />
       <el-empty v-else description="No category created." :image-size="100" />
     </el-tab-pane>
-    <!-- #endregion::Tab for equipment details -->
+    <!-- #endregion::Tab for category details -->
   </el-tabs>
 </template>
 
@@ -58,7 +57,6 @@ const {
 const {
   activeName,
   files,
-  images,
   isLoadingMediasOrConverting,
   handleSaved,
 } = useModelLoader({

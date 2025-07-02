@@ -1,24 +1,45 @@
 <template>
+  <!-- #region::Error State -->
   <el-result
     v-if="isError"
     icon="error"
     title="Error"
     sub-title="An error occurred while fetching goals."
   />
+  <!-- #endregion::Error State -->
 
-  <GoalsTable
+  <!-- #region::Generic Table for Goals -->
+  <GenericTable
     v-else
+    :data="items"
     :is-loading="isLoading"
-    :goals="goals"
-    @sort-change="getSortBy"
+    main-column-prop="name"
+    main-column-label="Name"
+    show-description-column
+    use-link-for-main-column
+    show-translations-column
+    :can-modify="can.modify"
+    :delete-action="destroy"
+    @sort-change="setSortBy"
+    @load-item="handleLoadGoal"
+    @edit-item="handleEditGoal"
+    empty-message="No goal found."
+    router-name-for-saving="goals-saving"
+    main-column-attribute-path="attributes.name"
   >
+    <!-- #region::Table Options -->
     <template #options>
       <el-row class="mb-5">
         <el-col :span="6">
-          <TableSearcher @search="getSearchBy" />
+          <TableSearcher @search="setSearchBy" />
         </el-col>
       </el-row>
     </template>
+    <!-- #endregion::Table Options -->
+
+    <template #columns> </template>
+
+    <!-- #region::Table Pagination -->
     <template #pagination>
       <el-pagination
         v-model:current-page="currentPage"
@@ -29,23 +50,68 @@
         :page-sizes="[5, 10, 15, 20]"
         :disabled="isLoading"
         :total="total"
-        @size-change="getPerPage"
-        @current-change="getPage"
+        @size-change="setPerPage"
+        @current-change="setCurrentPage"
       />
     </template>
-  </GoalsTable>
+    <!-- #endregion::Table Pagination -->
+  </GenericTable>
+  <!-- #endregion::Generic Table for Goals -->
 </template>
 
 <script setup lang="ts">
-import GoalsTable from '../components/GoalsTable.vue';
-import TableSearcher from '@/components/shared/tables/TableSearcher.vue';
-import useGoals from '../composables/UseGoalsStore';
+import GenericTable from "@/components/shared/tables/GenericTable.vue";
+import TableSearcher from "@/components/shared/tables/TableSearcher.vue";
+import type { Goal } from "../interfaces/goal";
+import { useGoal } from "../composables/UseGoalStore";
+import { useGoals } from "../composables/UseGoalsStore";
+import { useRouter } from "vue-router";
 
-const FIELDS_SET = 'name,description,createdAt,translations';
+/* ------------------------------ Refs & Props ------------------------------ */
+
+const FIELDS_SET = "name,description,createdAt,translations";
 
 const {
-  goals,
+  items,
   status: { isLoading, isError },
-  pag: { currentPage, perPage, total, getPage, getSortBy, getPerPage, getSearchBy },
+  pagination: {
+    currentPage,
+    perPage,
+    total,
+    setSortBy,
+    setSearchBy,
+    setPerPage,
+    setCurrentPage,
+  },
 } = useGoals(FIELDS_SET);
+
+const { can, destroy } = useGoal();
+
+const router = useRouter();
+
+/* -------------------------------- Functions ------------------------------- */
+
+/**
+ * @description Load the goal details.
+ * @param {Goal} goal
+ * @returns {void}
+ */
+const handleLoadGoal = (goal: Goal): void => {
+  router.push({
+    name: "goals-saving",
+    params: { id: String(goal.id), tab: "details" },
+  });
+};
+
+/**
+ * @description Handle the editing of a goal.
+ * @param {number} goalId
+ * @returns {void}
+ */
+const handleEditGoal = (goalId: number): void => {
+  router.push({
+    name: "goals-saving",
+    params: { id: String(goalId), tab: "goalData" },
+  });
+};
 </script>

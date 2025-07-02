@@ -1,8 +1,8 @@
 <template>
   <GenericForm
-    formTitle="Equipment Form"
-    formId="equipment_saving_form"
-    :composable="useEquipmentStoreInstance"
+    formTitle="Muscle Form"
+    formId="muscle_saving_form"
+    :composable="useMuscleStoreInstance"
     :validationRules="rules"
     @saved="handleSaved"
   >
@@ -13,8 +13,8 @@
             v-model="model.attributes.name"
             name="attributes.name"
             label="Name"
-            placeholder="Enter equipment name"
-            tooltip="Specify an equipment name"
+            placeholder="Enter muscle name"
+            tooltip="Specify a muscle name"
           />
         </el-col>
       </el-row>
@@ -24,8 +24,8 @@
             v-model="model.attributes.description"
             name="attributes.description"
             label="Description"
-            placeholder="Enter equipment description"
-            tooltip="Specify an equipment description"
+            placeholder="Enter muscle description"
+            tooltip="Specify a muscle description"
             type="textarea"
           />
         </el-col>
@@ -46,25 +46,25 @@ import GenericTextInput from "@/components/shared/forms/fields/GenericTextInput.
 import type { Media } from "@/modules/media/files/interfaces";
 import type { UploadUserFile } from "element-plus";
 import { ref } from "vue";
-import { rules } from "../validation/equipmentFormValidationRules";
-import { useEquipment } from "../composables/UseEquipmentStore";
+import { rules } from "../validation/muscleFormValidationRules";
+import { useMuscle } from "../composables/UseMuscleStore";
 
 /* ------------------------------ Props & Refs ------------------------------ */
 
 const props = defineProps<{ files: UploadUserFile[] }>();
 
 const images = ref<UploadUserFile[]>(props.files || []);
-const useEquipmentStoreInstance = useEquipment();
+const useMuscleStoreInstance = useMuscle();
 
 /* -------------------------------- Functions ------------------------------- */
 
 const handleSaved = async () => {
-  const equipmentId = useEquipmentStoreInstance.item.value.id;
+  const muscleId = useMuscleStoreInstance.item.value.id;
 
-  if (equipmentId && images.value.length && useEquipmentStoreInstance.uploadFiles) {
-    await useEquipmentStoreInstance.uploadFiles(
+  if (muscleId && images.value.length && useMuscleStoreInstance.uploadFiles) {
+    await useMuscleStoreInstance.uploadFiles(
       {
-        itemId: equipmentId,
+        itemId: muscleId,
         files: images.value,
       },
       {

@@ -12,11 +12,11 @@
     <!-- #region::Tab for muscle translations -->
     <el-tab-pane lazy label="Translations" name="translations">
       <TranslationsCollapse
-        v-if="muscle.relationships?.translations"
-        :fields="fields"
+        v-if="item.relationships?.translations"
+        :fields="translationableFields"
         :model-type="'muscles'"
-        :model-id="muscle.id"
-        :translations-link="muscle.relationships?.translations.links.related"
+        :model-id="item.id"
+        :translations-link="item.relationships?.translations.links.related"
       />
       <el-empty v-else description="No muscle created." :image-size="100" />
     </el-tab-pane>
@@ -26,10 +26,10 @@
     <el-tab-pane label="Details" name="details">
       <BasicSkeleton v-if="isLoadingMediasOrConverting" />
       <MuscleDetails
-        v-else-if="muscle.id"
-        :muscle="muscle"
+        v-else-if="item.id"
+        :muscle="item"
         :images="images"
-        :isLoading="isFetching"
+        :is-loading="isFetching"
       />
       <el-empty v-else description="No muscle created." :image-size="100" />
     </el-tab-pane>
@@ -39,25 +39,19 @@
 
 <script setup lang="ts">
 import BasicSkeleton from "@/components/shared/skeletons/BasicSkeleton.vue";
-import MuscleDetails from "../components/tabs/details/MuscleDetails.vue";
-import MuscleForm from "../components/tabs/data/MuscleForm.vue";
+import MuscleDetails from "../components/MuscleDetails.vue";
+import MuscleForm from "../components/MuscleForm.vue";
 import TranslationsCollapse from "@/modules/shared/translations/components/form/TranslationsCollapse.vue";
-import useMuscle from "../composables/UseMuscleStore";
-import type { TranslationableField } from "@/modules/shared/translations/interfaces";
+import { useMuscle, translationableFields } from "../composables/UseMuscleStore";
 import { useModelLoader } from "@/modules/shared/generic/composables/useModelLoader";
 
 /* ------------------------------ Props & Refs ------------------------------ */
 
-const fields: TranslationableField[] = [
-  { label: "Name", value: "name" },
-  { label: "Description", value: "description" },
-];
-
 const {
   can,
-  muscle,
-  getMuscle,
-  clearMuscle,
+  item,
+  fetch,
+  clearItem,
   status: { isFetching },
 } = useMuscle();
 
@@ -69,8 +63,8 @@ const {
   handleSaved,
 } = useModelLoader({
   modelType: "muscles",
-  fetchModel: getMuscle,
-  clearModel: clearMuscle,
+  fetchModel: fetch,
+  clearModel: clearItem,
   defaultTab: "muscleData",
   hasMedias: true,
   mediaCollection: "muscles-images",

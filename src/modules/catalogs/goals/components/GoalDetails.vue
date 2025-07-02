@@ -1,9 +1,9 @@
 <template>
   <ModelDetails
-    :model="category"
+    :model="goal"
     :isLoading="isLoading"
     :deleteFunction="destroy"
-    redirectRouteName="categories"
+    redirectRouteName="goals"
     :canDelete="can.destroy"
     titleKey="name"
     descriptionKey="description"
@@ -12,15 +12,15 @@
 
 <script setup lang="ts">
 import ModelDetails from "@/components/shared/cards/GenericDetailsCard.vue";
-import type { Category } from "../interfaces/category";
-import { useCategory } from "../composables/UseCategoryStore";
+import type { Goal } from "../interfaces/goal";
+import { useGoal } from "../composables/UseGoalStore";
 
 /* ------------------------------ Props & Refs ------------------------------ */
 
 defineProps<{
-  category: Category;
+  goal: Goal;
   isLoading: boolean;
 }>();
 
-const { can, destroy } = useCategory();
+const { can, destroy } = useGoal();
 </script>

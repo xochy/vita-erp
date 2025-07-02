@@ -1,9 +1,9 @@
 <template>
   <ModelDetails
-    :model="category"
+    :model="frequency"
     :isLoading="isLoading"
     :deleteFunction="destroy"
-    redirectRouteName="categories"
+    redirectRouteName="frequencies"
     :canDelete="can.destroy"
     titleKey="name"
     descriptionKey="description"
@@ -12,15 +12,15 @@
 
 <script setup lang="ts">
 import ModelDetails from "@/components/shared/cards/GenericDetailsCard.vue";
-import type { Category } from "../interfaces/category";
-import { useCategory } from "../composables/UseCategoryStore";
+import type { Frequency } from "../interfaces/frequency";
+import { useFrequency } from "../composables/UseFrequencyStore";
 
 /* ------------------------------ Props & Refs ------------------------------ */
 
 defineProps<{
-  category: Category;
+  frequency: Frequency;
   isLoading: boolean;
 }>();
 
-const { can, destroy } = useCategory();
+const { can, destroy } = useFrequency();
 </script>

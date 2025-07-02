@@ -9,7 +9,7 @@
     </el-tab-pane>
     <!-- #endregion::Tab for equipment form -->
 
-    <!-- #region::Tab for muscle translations -->
+    <!-- #region::Tab for equipment translations -->
     <el-tab-pane lazy label="Translations" name="translations">
       <TranslationsCollapse
         v-if="item.relationships?.translations"
@@ -20,7 +20,7 @@
       />
       <el-empty v-else description="No equipment created." :image-size="100" />
     </el-tab-pane>
-    <!-- #endregion::Tab for muscle translations -->
+    <!-- #endregion::Tab for equipment translations -->
 
     <!-- #region::Tab for equipment details -->
     <el-tab-pane label="Details" name="details">

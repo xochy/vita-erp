@@ -1,11 +1,14 @@
 <template>
+  <!-- #region::Error State -->
   <el-result
     v-if="isError"
     icon="error"
     title="Error"
     sub-title="An error occurred while fetching categories."
   />
+  <!-- #endregion::Error State -->
 
+  <!-- #region::Generic Table for Categories -->
   <GenericTable
     v-else
     :data="items"
@@ -24,6 +27,7 @@
     router-name-for-saving="categories-saving"
     main-column-attribute-path="attributes.name"
   >
+    <!-- #region::Table Options -->
     <template #options>
       <el-row class="mb-5">
         <el-col :span="6">
@@ -31,7 +35,11 @@
         </el-col>
       </el-row>
     </template>
+    <!-- #endregion::Table Options -->
+
     <template #columns> </template>
+
+    <!-- #region::Table Pagination -->
     <template #pagination>
       <el-pagination
         v-model:current-page="currentPage"
@@ -46,7 +54,9 @@
         @current-change="setCurrentPage"
       />
     </template>
+    <!-- #endregion::Table Pagination -->
   </GenericTable>
+  <!-- #endregion::Generic Table for Categories -->
 </template>
 
 <script setup lang="ts">
@@ -82,8 +92,8 @@ const router = useRouter();
 /* -------------------------------- Functions ------------------------------- */
 
 /**
- * @description Load the equipment details.
- * @param {Equipment} equipment
+ * @description Load the category details.
+ * @param {Category} category
  * @returns {void}
  */
 const handleLoadCategory = (category: Category): void => {
