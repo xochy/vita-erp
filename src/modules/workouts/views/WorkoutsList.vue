@@ -6,6 +6,8 @@
     sub-title="An error occurred while fetching categories."
   />
 
+  <el-empty v-else-if="isEmpty" description="No workouts found." />
+
   <WorkoutsTable v-else :is-loading="isLoading" :workouts="workouts">
     <template #options>
       <el-row class="mb-5">
@@ -35,10 +37,19 @@
 import WorkoutsTable from "../components/WorkoutsTable.vue";
 import TableSearcher from "@/components/shared/tables/TableSearcher.vue";
 import useWorkouts from "../composables/UseWorkoutsStore";
+import { computed } from "vue";
+
+/* ------------------------------ Refs & Props ------------------------------ */
 
 const {
   workouts,
   status: { isLoading, isError },
   pag: { currentPage, perPage, total, getPage, getSortBy, getPerPage, getSearchBy },
 } = useWorkouts();
+
+/* -------------------------------- Computed -------------------------------- */
+
+const isEmpty = computed(() => {
+  return !isLoading.value && workouts.value.length === 0;
+});
 </script>
