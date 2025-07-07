@@ -8,11 +8,11 @@
 
   <el-empty v-else-if="isEmpty" description="No workouts found." />
 
-  <WorkoutsTable v-else :is-loading="isLoading" :workouts="workouts">
+  <WorkoutsTable v-else :is-loading="isLoading" :workouts="items">
     <template #options>
       <el-row class="mb-5">
         <el-col :span="6">
-          <TableSearcher @search="getSearchBy" />
+          <TableSearcher @search="setSearchBy" />
         </el-col>
       </el-row>
     </template>
@@ -26,8 +26,8 @@
         :page-sizes="[5, 10, 15, 20]"
         :disabled="isLoading"
         :total="total"
-        @size-change="getPerPage"
-        @current-change="getPage"
+        @size-change="setPerPage"
+        @current-change="setCurrentPage"
       />
     </template>
   </WorkoutsTable>
@@ -36,20 +36,20 @@
 <script setup lang="ts">
 import WorkoutsTable from "../components/WorkoutsTable.vue";
 import TableSearcher from "@/components/shared/tables/TableSearcher.vue";
-import useWorkouts from "../composables/UseWorkoutsStore";
+import { useWorkouts } from "../composables/UseWorkoutsStore";
 import { computed } from "vue";
 
 /* ------------------------------ Refs & Props ------------------------------ */
 
 const {
-  workouts,
+  items,
   status: { isLoading, isError },
-  pag: { currentPage, perPage, total, getPage, getSortBy, getPerPage, getSearchBy },
+  pagination: { currentPage, perPage, total, setSearchBy, setPerPage, setCurrentPage },
 } = useWorkouts();
 
 /* -------------------------------- Computed -------------------------------- */
 
 const isEmpty = computed(() => {
-  return !isLoading.value && workouts.value.length === 0;
+  return !isLoading.value && items.value.length === 0;
 });
 </script>

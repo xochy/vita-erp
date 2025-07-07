@@ -23,7 +23,7 @@ export class GenericApiService<T extends BaseModel> {
       const params = generateQueryParams({
         "page[size]": pageSize,
         "page[number]": pageNumber,
-        [`fields[${this.endpoint}]`]: fields,
+        ...(fields && { [`fields[${this.endpoint}]`]: fields }),
         sort: sortBy,
         ...(searchBy && { "filter[search]": searchBy }),
       });
@@ -36,6 +36,23 @@ export class GenericApiService<T extends BaseModel> {
       return data;
     } catch (error) {
       showErrorNotification(`An error occurred while fetching ${this.endpoint}.`);
+      throw error;
+    }
+  }
+
+  /**
+   * Obtiene una lista de elementos sin paginación
+   */
+  async getAll(fields: string = ""): Promise<BaseListResponse<T>> {
+    try {
+      const params = fields ? { [`fields[${this.endpoint}]`]: fields } : {};
+      const { data } = await ApiService.vueInstance.axios.get<BaseListResponse<T>>(
+        this.endpoint,
+        { params }
+      );
+      return data;
+    } catch (error) {
+      showErrorNotification(`An error occurred while fetching all ${this.endpoint}.`);
       throw error;
     }
   }
@@ -60,6 +77,7 @@ export class GenericApiService<T extends BaseModel> {
         data: {
           type: this.endpoint,
           attributes: item.attributes,
+          relationships: item.relationships || {},
         },
       }
     );

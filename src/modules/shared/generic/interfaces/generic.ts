@@ -9,6 +9,7 @@ export interface BaseModel {
   id: string;
   type: string;
   attributes: Record<string, any>;
+  relationships?: Record<string, any>;
 }
 
 /**
@@ -70,6 +71,17 @@ export type GenericCollectionStore<T extends BaseModel> = Store<
   {},
   GenericCollectionActions<T>
 > & GenericCollectionActions<T>;
+
+export type GenericFlatCollectionStore<T extends BaseModel> = Store<
+  string,
+  { items: T[] },
+  {},
+  {
+    setItems(items: T[]): void;
+  }
+> & {
+  setItems(items: T[]): void;
+};
 
 export type GenericItemStore<T extends BaseModel> = Store<
   string,

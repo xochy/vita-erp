@@ -1,6 +1,6 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
-import type { Workout } from "../interfaces";
+import type { MultipleModelData } from "@/modules/shared/translations/interfaces";
+import type { Workout } from "../interfaces/workout";
+import { createItemStore } from "@/modules/shared/generic/stores/ItemStore";
 
 /**
  * @description Initialize a workout object
@@ -11,9 +11,17 @@ const initializeWorkout = (): Workout => ({
   type: "workouts",
   attributes: {
     group: "",
-    levels: "",
+    levels: "[]",
     name: "",
     performance: "",
+  },
+  relationships: {
+    // category will be a single ModelData object
+    category: undefined,
+    // muscles will be a MultipleModelData object with 'data' as an array
+    muscles: { data: [] as MultipleModelData['data'] },
+    // equipments will be a MultipleModelData object with 'data' as an array
+    equipments: { data: [] as MultipleModelData['data'] },
   },
 });
 
@@ -21,20 +29,7 @@ const initializeWorkout = (): Workout => ({
  * @description Store for managing the workout state
  * @returns {Object} The workout store
  */
-export const useWorkoutStore = defineStore("workout", () => {
-  const workout = ref<Workout>(initializeWorkout());
-
-  const setWorkout = (selectedWorkout: Workout): void => {
-    workout.value = JSON.parse(JSON.stringify(selectedWorkout));
-  };
-
-  const clearWorkout = (): void => {
-    workout.value = initializeWorkout();
-  };
-
-  return {
-    workout,
-    setWorkout,
-    clearWorkout,
-  };
-});
+export const useWorkoutStore = createItemStore<Workout>(
+  "workout",
+  initializeWorkout
+);

@@ -13,7 +13,7 @@ import { GenericApiService } from "../services/GenericApiService";
 export function useGenericList<T extends BaseModel>(
   endpoint: string,
   store: GenericCollectionStore<T>,
-  fields: string
+  fields: string = ""
 ) {
   const authStore = useAuthStore();
   const queryClient = useQueryClient();
@@ -54,8 +54,8 @@ export function useGenericList<T extends BaseModel>(
     });
   };
 
-  // Generar nombre del modelo en singular para permisos
-  const modelName = endpoint.endsWith('s') ? endpoint.slice(0, -1) : endpoint;
+  // Generate model name for permissions (keep plural, replace hyphens with spaces)
+  const modelName = endpoint.replace(/-/g, ' ');
 
   return {
     status: {

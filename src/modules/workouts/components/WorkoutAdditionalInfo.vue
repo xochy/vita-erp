@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import { More } from "@element-plus/icons-vue";
 import { computed, ref } from "vue";
-import type { Workout } from "../interfaces";
+import type { Workout } from "../interfaces/workout";
 import WorkoutCategory from "./relationships/WorkoutCategory.vue";
 import WorkoutMuscles from "./relationships/WorkoutMuscles.vue";
 

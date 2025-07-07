@@ -1,37 +1,28 @@
-import type { ModelLinks } from "@/modules/shared/translations/interfaces";
+import type { BaseModel } from "@/modules/shared/generic/interfaces/generic";
+import type {
+  ModelData,
+  ModelLinks,
+  MultipleModelData,
+} from "@/modules/shared/translations/interfaces";
 
-export interface Workout {
-    type          : string;
-    id            : string;
-    attributes    : Attributes;
-    relationships?: Relationships;
-    links        ?: DataLinks;
-}
-
-export interface Attributes {
-    group       : string;
-    levels      : string;
-    name        : string;
-    performance : string;
-    comments   ?: string;
-    corrections?: string;
-    warnings   ?: string;
-    imageUrl   ?: string;
-    slug       ?: string;
-    createdAt  ?: Date;
-    updatedAt  ?: Date;
-}
-
-export interface DataLinks {
-    self: string;
+export interface Workout extends BaseModel {
+  type: "workouts";
+  attributes: {
+    group      : string;
+    levels     : string;
+    name       : string;
+    performance: string;
+  };
+  relationships?: Relationships;
 }
 
 export interface Relationships {
-    category    : ModelLinks;
-    muscles     : ModelLinks;
-    equipments  : ModelLinks;
-    routines    : ModelLinks;
-    translations: ModelLinks;
-    variations  : ModelLinks;
-    medias      : ModelLinks;
+  // category can by ModelLinks or ModelData
+  category    ?: ModelLinks | ModelData;
+  muscles     ?: ModelLinks | MultipleModelData;
+  equipments  ?: ModelLinks | MultipleModelData;
+  routines    ?: ModelLinks;
+  translations?: ModelLinks;
+  variations  ?: ModelLinks;
+  medias      ?: ModelLinks;
 }

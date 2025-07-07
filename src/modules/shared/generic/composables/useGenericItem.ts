@@ -162,6 +162,7 @@ export function useGenericItem<T extends BaseModel>(
     // Datos
     item,
     clearItem: store.clearItem,
+    setItem: store.setItem,
 
     // Permisos
     can: {
