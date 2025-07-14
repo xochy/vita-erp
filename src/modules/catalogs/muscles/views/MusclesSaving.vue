@@ -1,5 +1,5 @@
 <template>
-  <BasicSkeleton v-if="isFetching" />
+  <BasicSkeleton v-if="isLoading" />
 
   <el-tabs v-else v-model="activeName">
     <!-- #region::Tab for muscle form -->
@@ -29,7 +29,7 @@
         v-else-if="item.id"
         :muscle="item"
         :images="images"
-        :is-loading="isFetching"
+        :is-loading="isLoading"
       />
       <el-empty v-else description="No muscle created." :image-size="100" />
     </el-tab-pane>
@@ -52,7 +52,7 @@ const {
   item,
   fetch,
   clearItem,
-  status: { isFetching },
+  isLoading,
 } = useMuscle();
 
 const {

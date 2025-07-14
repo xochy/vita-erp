@@ -97,30 +97,45 @@
           />
         </el-col>
       </el-row>
+      <el-row :gutter="20">
+        <el-col :span="24">
+          <GenericImagesUploader v-model="images" />
+        </el-col>
+      </el-row>
     </template>
   </GenericForm>
 </template>
 
 <script setup lang="ts">
 import GenericForm from "@/components/shared/forms/GenericForm.vue";
-import GenericMultipleOptionSelect from "@/components/shared/forms/fields/GenericMultipleOptionSelect.vue";
-import GenericOptionSelect from "@/components/shared/forms/fields/GenericOptionSelect.vue";
+import GenericImagesUploader from "@/components/shared/forms/fields/GenericImagesUploader.vue";
 import GenericMultipleOptionCheck from "@/components/shared/forms/fields/GenericMultipleOptionCheck.vue";
-import GenericOptionRadio from "@/components/shared/forms/fields/GenericOptionRadio.vue";
+import GenericMultipleOptionSelect from "@/components/shared/forms/fields/GenericMultipleOptionSelect.vue";
 import GenericMultipleOptionSelectWithPivot from "@/components/shared/forms/fields/GenericMultipleOptionSelectWithPivot.vue";
+import GenericOptionRadio from "@/components/shared/forms/fields/GenericOptionRadio.vue";
+import GenericOptionSelect from "@/components/shared/forms/fields/GenericOptionSelect.vue";
 import GenericTextInput from "@/components/shared/forms/fields/GenericTextInput.vue";
 import type { Media } from "@/modules/media/files/interfaces";
+import type { UploadUserFile } from "element-plus";
+import { onMounted, ref } from "vue";
 import { rules } from "../validation/workoutFormValidationRules";
 import { useFlatCategories } from "@/modules/catalogs/categories/composables/UseFlatCategoriesStore";
-import { useFlatMuscles } from "@/modules/catalogs/muscles/composables/UseFlatMusclesStore";
 import { useFlatEquipments } from "@/modules/catalogs/equipments/composables/UseFlatEquipmentsStore";
+import { useFlatMuscles } from "@/modules/catalogs/muscles/composables/UseFlatMusclesStore";
 import { useWorkout } from "../composables/UseWorkoutStore";
 
 /* ------------------------------ Props & Refs ------------------------------ */
 
 const FLAT_MODEL_FIELDS_SET = "name";
 
+const props = defineProps<{ files: UploadUserFile[] }>();
+
+const images = ref<UploadUserFile[]>(props.files || []);
 const useWorkoutStoreInstance = useWorkout();
+
+onMounted(() => {
+  console.log("WorkoutForm mounted");
+});
 
 const {
   items: categories,

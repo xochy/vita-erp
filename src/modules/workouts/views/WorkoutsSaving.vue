@@ -1,11 +1,15 @@
 <template>
-  <BasicSkeleton v-if="isFetching" />
+  <BasicSkeleton v-if="isLoading" />
 
-  <el-tabs v-else v-model="activeName">
+  <el-tabs v-show="!isLoading" v-model="activeName">
     <!-- #region::Tab for workout form -->
-    <el-tab-pane v-if="can.save" label="Data" name="workoutData">
+    <el-tab-pane v-if="can.save" lazy label="Data" name="workoutData">
       <BasicSkeleton v-if="isLoadingMediasOrConverting" />
-      <WorkoutForm v-else :files="files" @saved="handleSaved" />
+      <WorkoutForm
+        v-else
+        :files="files"
+        @saved="handleSaved"
+      />
     </el-tab-pane>
     <!-- #endregion::Tab for workout form -->
 
@@ -28,7 +32,8 @@
       <WorkoutDetails
         v-else-if="item.id"
         :workout="item"
-        :is-loading="isFetching"
+        :images="images"
+        :is-loading="isLoading"
       />
       <el-empty v-else description="No workout created." :image-size="100" />
     </el-tab-pane>
@@ -46,17 +51,12 @@ import { useModelLoader } from "@/modules/shared/generic/composables/useModelLoa
 
 /* ------------------------------ Props & Refs ------------------------------ */
 
-const {
-  can,
-  item,
-  fetch,
-  clearItem,
-  status: { isFetching },
-} = useWorkout();
+const { can, item, fetch, clearItem, isLoading } = useWorkout();
 
 const {
   activeName,
   files,
+  images,
   isLoadingMediasOrConverting,
   handleSaved,
 } = useModelLoader({
@@ -64,6 +64,6 @@ const {
   fetchModel: fetch,
   clearModel: clearItem,
   defaultTab: "workoutData",
-  hasMedias: false,
+  mediaCollection: "workouts-images",
 });
 </script>
